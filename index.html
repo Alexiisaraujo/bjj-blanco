@@ -51,26 +51,24 @@
       repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
   }
 
-  /* photo frame w/ graceful fallback */
+  /* photo frame — always shows a nice pattern; real photo fades in on top when it loads */
   .photo{
-    position:relative; overflow:hidden; background:var(--mat-2);
-    border:1px solid var(--line);
+    position:relative; overflow:hidden; border:1px solid var(--line);
+    background:repeating-linear-gradient(135deg, var(--mat-2), var(--mat-2) 12px, var(--mat) 12px, var(--mat) 24px);
+    display:flex; align-items:center; justify-content:center;
   }
-  .photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo::before{content:'🥋'; font-size:30px; opacity:0.28; position:absolute; z-index:0;}
+  .photo img{
+    position:relative; z-index:1; width:100%; height:100%; object-fit:cover; display:block;
+    opacity:0; transition:opacity .35s ease;
+  }
+  .photo img.loaded{opacity:1;}
   .photo .cap{
-    position:absolute; left:0; right:0; bottom:0; padding:10px 14px;
+    position:absolute; left:0; right:0; bottom:0; padding:10px 14px; z-index:2;
     background:linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
     font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:0.05em; color:var(--gi-dim);
     text-transform:uppercase;
   }
-  .photo.fallback{
-    display:flex; align-items:center; justify-content:center;
-    background:repeating-linear-gradient(135deg, var(--mat-2), var(--mat-2) 12px, var(--mat) 12px, var(--mat) 24px);
-  }
-  .photo.fallback::after{
-    content:'🥋'; font-size:34px; opacity:0.35;
-  }
-  .photo.fallback img{display:none;}
 
   /* ============ PROGRESS BELT ============ */
   #belt-track{position:fixed; top:0; left:0; right:0; height:7px; z-index:500; background:var(--gi); box-shadow:0 1px 0 rgba(0,0,0,0.4);}
@@ -137,8 +135,9 @@
   .card .k{font-family:'JetBrains Mono'; font-size:11px; color:var(--gold); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px; display:block;}
 
   .rules-list{list-style:none; counter-reset:r;}
-  .rules-list li{counter-increment:r; display:grid; grid-template-columns:44px 1fr; gap:18px; padding:20px 0; border-top:1px solid var(--line);}
+  .rules-list li{counter-increment:r; display:grid; grid-template-columns:44px minmax(0,1fr); gap:18px; padding:20px 0; border-top:1px solid var(--line);}
   .rules-list li::before{content:counter(r,decimal-leading-zero); font-family:'JetBrains Mono'; color:var(--muted); font-size:13px; padding-top:2px;}
+  .rules-list li .txt-wrap{min-width:0;}
   .rules-list li strong{color:var(--gi); display:block; margin-bottom:3px; font-size:15px;}
   .rules-list li span{color:var(--gi-dim); font-size:14.5px;}
 
@@ -300,11 +299,11 @@
   </div>
 
   <ol class="rules-list">
-    <li><strong>Saluda al entrar y salir del tatami.</strong><span>Una inclinación o un simple saludo con la mano al pisar y dejar la colchoneta. Es respeto básico hacia el espacio y tus compañeros.</span></li>
-    <li><strong>Higiene no negociable.</strong><span>Uñas cortas (manos y pies), gi limpio, sin joyas, aliento cuidado. Vas a estar a centímetros de la cara de otras personas.</span></li>
-    <li><strong>Ojotas fuera del tatami.</strong><span>Nunca camines descalzo fuera de la colchoneta y luego pises el tatami — usa sandalias para ir al baño o bebedero.</span></li>
-    <li><strong>Jerarquía y respeto.</strong><span>Los cinturones más avanzados suelen guiar el entrenamiento. Escúchalos, y sé especialmente cuidadoso entrenando con principiantes nuevos o niños.</span></li>
-    <li><strong>Comunica si algo duele.</strong><span>Decir "para" o avisar una lesión previa antes de rodar no es debilidad — es lo que te permite entrenar por años sin romperte.</span></li>
+    <li><div class="txt-wrap"><strong>Saluda al entrar y salir del tatami.</strong><span>Una inclinación o un simple saludo con la mano al pisar y dejar la colchoneta. Es respeto básico hacia el espacio y tus compañeros.</span></div></li>
+    <li><div class="txt-wrap"><strong>Higiene no negociable.</strong><span>Uñas cortas (manos y pies), gi limpio, sin joyas, aliento cuidado. Vas a estar a centímetros de la cara de otras personas.</span></div></li>
+    <li><div class="txt-wrap"><strong>Ojotas fuera del tatami.</strong><span>Nunca camines descalzo fuera de la colchoneta y luego pises el tatami — usa sandalias para ir al baño o bebedero.</span></div></li>
+    <li><div class="txt-wrap"><strong>Jerarquía y respeto.</strong><span>Los cinturones más avanzados suelen guiar el entrenamiento. Escúchalos, y sé especialmente cuidadoso entrenando con principiantes nuevos o niños.</span></div></li>
+    <li><div class="txt-wrap"><strong>Comunica si algo duele.</strong><span>Decir "para" o avisar una lesión previa antes de rodar no es debilidad — es lo que te permite entrenar por años sin romperte.</span></div></li>
   </ol>
 
   <div class="rule-box">
@@ -529,12 +528,16 @@
 </footer>
 
 <script>
-  // ---- graceful photo fallback ----
-  document.querySelectorAll('.photo img').forEach(img=>{
-    const wrap = img.closest('.photo');
-    if(!img.getAttribute('src')){ wrap.classList.add('fallback'); return; }
-    img.addEventListener('error', ()=> wrap.classList.add('fallback'));
-  });
+  // ---- graceful photo loading (fade in on load, hide on error to reveal placeholder) ----
+  function wirePhoto(img){
+    if(img.dataset.wired) return;
+    img.dataset.wired = '1';
+    if(!img.getAttribute('src')){ return; }
+    if(img.complete && img.naturalWidth > 0){ img.classList.add('loaded'); return; }
+    img.addEventListener('load', ()=>{ if(img.naturalWidth>0) img.classList.add('loaded'); });
+    img.addEventListener('error', ()=>{ img.style.display='none'; });
+  }
+  document.querySelectorAll('.photo img').forEach(wirePhoto);
 
   // ---- Belt progress bar ----
   const fill = document.getElementById('belt-fill');
@@ -603,12 +606,8 @@
       </div>`;
     posList.appendChild(card);
   });
-  // re-run fallback binding for dynamically inserted photos
-  document.querySelectorAll('.photo img').forEach(img=>{
-    const wrap = img.closest('.photo');
-    if(!img.getAttribute('src')){ wrap.classList.add('fallback'); return; }
-    img.addEventListener('error', ()=> wrap.classList.add('fallback'));
-  });
+  // re-run photo wiring for dynamically inserted position photos
+  document.querySelectorAll('.photo img').forEach(wirePhoto);
 
   // ---- Checklist (in-memory state) ----
   const items = [
