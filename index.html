@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinturón Blanco — Guía Completa de Brazilian Jiu-Jitsu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1110;
+    --bg-panel:#161b19;
+    --mat:#1a211d;
+    --mat-2:#202a24;
+    --line:#2a322c;
+    --gi:#f2efe3;
+    --gi-dim:#c9c4b3;
+    --muted:#8b9289;
+    --red:#c1362f;
+    --red-dim:#7a2622;
+    --gold:#c9a45f;
+    --blue:#3c6e91;
+    --radius:3px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--gi);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--red); color:var(--gi);}
+
+  h1,h2,h3,.display{
+    font-family:'Anton',sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:1.02;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+
+  .tatami-bg{
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+  }
+
+  /* photo frame w/ graceful fallback */
+  .photo{
+    position:relative; overflow:hidden; background:var(--mat-2);
+    border:1px solid var(--line);
+  }
+  .photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo .cap{
+    position:absolute; left:0; right:0; bottom:0; padding:10px 14px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+    font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:0.05em; color:var(--gi-dim);
+    text-transform:uppercase;
+  }
+  .photo.fallback{
+    display:flex; align-items:center; justify-content:center;
+    background:repeating-linear-gradient(135deg, var(--mat-2), var(--mat-2) 12px, var(--mat) 12px, var(--mat) 24px);
+  }
+  .photo.fallback::after{
+    content:'🥋'; font-size:34px; opacity:0.35;
+  }
+  .photo.fallback img{display:none;}
+
+  /* ============ PROGRESS BELT ============ */
+  #belt-track{position:fixed; top:0; left:0; right:0; height:7px; z-index:500; background:var(--gi); box-shadow:0 1px 0 rgba(0,0,0,0.4);}
+  #belt-fill{height:100%; width:0%; background:repeating-linear-gradient(115deg, var(--red), var(--red) 10px, var(--red-dim) 10px, var(--red-dim) 20px); transition:width 0.1s linear;}
+  #stripe-label{
+    position:fixed; top:12px; right:16px; z-index:500;
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em;
+    color:var(--muted); background:rgba(14,17,16,0.9); padding:5px 10px;
+    border:1px solid var(--line); border-radius:var(--radius);
+    display:flex; gap:6px; align-items:center;
+  }
+  .stripe-dot{width:6px; height:14px; background:var(--line); border-radius:1px;}
+  .stripe-dot.on{background:var(--red);}
+
+  /* ============ LAYOUT ============ */
+  .wrap{display:grid; grid-template-columns:250px 1fr; max-width:1360px; margin:0 auto;}
+  nav#side{position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto; padding:90px 24px 40px 32px; border-right:1px solid var(--line);}
+  nav#side .nav-title{font-family:'JetBrains Mono'; font-size:11px; letter-spacing:0.15em; color:var(--muted); margin-bottom:18px; text-transform:uppercase;}
+  nav#side ul{list-style:none;}
+  nav#side li{margin-bottom:4px;}
+  nav#side a{display:block; padding:8px 10px; font-size:13.5px; color:var(--gi-dim); text-decoration:none; border-left:2px solid transparent; transition:all .15s;}
+  nav#side a .n{color:var(--muted); font-family:'JetBrains Mono'; font-size:11px; margin-right:8px;}
+  nav#side a:hover{color:var(--gi); border-left-color:var(--muted);}
+  nav#side a.active{color:var(--gi); border-left-color:var(--red); background:rgba(193,54,47,0.08);}
+  main{min-width:0;}
+
+  /* ============ HERO ============ */
+  #hero{padding:150px 56px 0; position:relative; border-bottom:1px solid var(--line); overflow:hidden;}
+  #hero .inner{display:grid; grid-template-columns:1.1fr 0.9fr; gap:50px; align-items:end; padding-bottom:56px;}
+  #hero .eyebrow{font-family:'JetBrains Mono'; font-size:12px; letter-spacing:0.2em; color:var(--red); text-transform:uppercase; margin-bottom:22px; display:flex; align-items:center; gap:10px;}
+  #hero .eyebrow::before{content:''; width:26px; height:1px; background:var(--red);}
+  #hero h1{font-size:clamp(42px, 6vw, 82px); color:var(--gi);}
+  #hero h1 span{color:var(--red);}
+  #hero .sub{max-width:600px; margin-top:24px; font-size:16.5px; color:var(--gi-dim); font-weight:400;}
+  #hero .stats{display:flex; gap:0; margin-top:44px; border-top:1px solid var(--line); flex-wrap:wrap;}
+  #hero .stat{padding:18px 28px 0 0; margin-right:28px; border-right:1px solid var(--line); flex:0 0 auto;}
+  #hero .stat:last-child{border-right:none;}
+  #hero .stat .num{font-family:'Anton'; font-size:28px; color:var(--gold);}
+  #hero .stat .lbl{font-family:'JetBrains Mono'; font-size:10px; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:4px;}
+  #hero .hero-photo{aspect-ratio:4/5; border-radius:var(--radius);}
+  #hero .hero-photo-strip{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;}
+  #hero .hero-photo-strip .photo{aspect-ratio:1/1;}
+
+  /* ============ SECTIONS ============ */
+  section.part{padding:90px 56px; border-bottom:1px solid var(--line); scroll-margin-top:20px;}
+  section.part:nth-child(even){background:var(--bg-panel);}
+  .part-head{display:flex; align-items:baseline; gap:18px; margin-bottom:14px;}
+  .part-head .idx{font-family:'JetBrains Mono'; font-size:14px; color:var(--red);}
+  .part h2{font-size:clamp(28px,3.4vw,44px); color:var(--gi);}
+  .part .kicker{color:var(--muted); font-size:15px; max-width:640px; margin-bottom:44px; margin-top:10px;}
+
+  .rule-box{background:var(--mat); border:1px solid var(--line); border-left:3px solid var(--red); padding:26px 30px; margin:30px 0; border-radius:var(--radius);}
+  .rule-box .tag{font-family:'JetBrains Mono'; font-size:11px; color:var(--red); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:8px;}
+  .rule-box p{color:var(--gi-dim); font-size:15px;}
+  .rule-box strong{color:var(--gi);}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px;}
+  .card{background:var(--mat); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .card .photo{aspect-ratio:16/10;}
+  .card .body{padding:22px 24px;}
+  .card h3{font-size:18px; color:var(--gi); margin-bottom:8px; font-family:'Inter'; font-weight:700; text-transform:none;}
+  .card p{color:var(--gi-dim); font-size:14.5px;}
+  .card .k{font-family:'JetBrains Mono'; font-size:11px; color:var(--gold); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px; display:block;}
+
+  .rules-list{list-style:none; counter-reset:r;}
+  .rules-list li{counter-increment:r; display:grid; grid-template-columns:44px 1fr; gap:18px; padding:20px 0; border-top:1px solid var(--line);}
+  .rules-list li::before{content:counter(r,decimal-leading-zero); font-family:'JetBrains Mono'; color:var(--muted); font-size:13px; padding-top:2px;}
+  .rules-list li strong{color:var(--gi); display:block; margin-bottom:3px; font-size:15px;}
+  .rules-list li span{color:var(--gi-dim); font-size:14.5px;}
+
+  .gallery-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:30px 0;}
+  .gallery-strip .photo{aspect-ratio:3/4; border-radius:var(--radius);}
+
+  .pyramid{display:flex; flex-direction:column; gap:8px; max-width:680px; margin:20px 0 10px;}
+  .pyramid .row{display:flex; align-items:center; gap:16px; padding:16px 20px; border:1px solid var(--line); background:var(--mat); border-left:4px solid var(--gold);}
+  .pyramid .row.top{border-left-color:var(--red);}
+  .pyramid .rank{font-family:'Anton'; font-size:22px; color:var(--red); width:30px;}
+  .pyramid .name{font-weight:700; color:var(--gi); font-size:15.5px;}
+  .pyramid .desc{color:var(--muted); font-size:13.5px;}
+
+  /* position detail cards WITH photo */
+  .pos-card{border:1px solid var(--line); background:var(--mat); margin-bottom:20px; overflow:hidden; border-radius:var(--radius);}
+  .pos-head{display:grid; grid-template-columns:110px 1fr auto; gap:20px; align-items:center; padding:16px 22px; background:var(--mat-2); cursor:pointer;}
+  .pos-head .photo{width:110px; height:78px; border-radius:2px;}
+  .pos-head h3{font-family:'Anton'; font-size:19px; color:var(--gi); text-transform:uppercase;}
+  .pos-head .lvl{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--gold); margin-top:3px;}
+  .pos-head .chev{font-size:18px; color:var(--muted); transition:transform .2s;}
+  .pos-head.on .chev{transform:rotate(45deg);}
+  .pos-body{padding:0 28px 26px; color:var(--gi-dim); font-size:14.5px; display:none;}
+  .pos-body.open{display:block; padding-top:20px;}
+  .pos-body ul{margin:14px 0 0 18px;}
+  .pos-body li{margin-bottom:6px;}
+
+  /* submission cards WITH photo header */
+  .sub-card{border:1px solid var(--line); background:var(--mat); margin-bottom:26px; border-radius:var(--radius); overflow:hidden;}
+  .sub-grid{display:grid; grid-template-columns:280px 1fr;}
+  .sub-grid .photo{aspect-ratio:auto; height:100%; min-height:260px;}
+  .sub-content{}
+  .sub-top{padding:24px 28px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px;}
+  .sub-top h3{font-family:'Anton'; font-size:25px; color:var(--gi); text-transform:uppercase;}
+  .sub-top .from{font-family:'JetBrains Mono'; font-size:11px; color:var(--muted); text-transform:uppercase;}
+  .sub-top .diff{font-family:'JetBrains Mono'; font-size:11px; padding:4px 10px; border:1px solid var(--gold); color:var(--gold); border-radius:20px; height:fit-content;}
+  .steps{padding:20px 28px 4px; counter-reset:s;}
+  .steps .step{counter-increment:s; display:grid; grid-template-columns:30px 1fr; gap:14px; padding-bottom:14px;}
+  .steps .step::before{content:counter(s); font-family:'JetBrains Mono'; font-size:12px; color:var(--bg); background:var(--gold); width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; flex-shrink:0;}
+  .steps .step p{color:var(--gi-dim); font-size:14px;}
+  .caution{margin:6px 28px 22px; padding:13px 16px; background:rgba(193,54,47,0.08); border:1px solid var(--red-dim); font-size:13px; color:var(--gi-dim); border-radius:var(--radius);}
+  .caution strong{color:var(--red);}
+
+  @media(max-width:700px){ .sub-grid{grid-template-columns:1fr;} .sub-grid .photo{height:180px; min-height:0;} }
+
+  .timeline{position:relative; margin:30px 0; padding-left:30px; border-left:2px solid var(--line);}
+  .tl-item{position:relative; padding-bottom:36px;}
+  .tl-item::before{content:''; position:absolute; left:-37px; top:2px; width:12px; height:12px; border-radius:50%; background:var(--red); border:3px solid var(--bg);}
+  .tl-item .time{font-family:'JetBrains Mono'; font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.06em;}
+  .tl-item h3{font-size:17px; color:var(--gi); margin:6px 0; font-family:'Inter'; font-weight:700; text-transform:none;}
+  .tl-item p{color:var(--gi-dim); font-size:14.5px;}
+
+  .glos{display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid var(--line);}
+  .glos-item{padding:16px 18px; border-bottom:1px solid var(--line); border-right:1px solid var(--line);}
+  .glos-item:nth-child(2n){border-right:none;}
+  .glos-item .term{font-family:'JetBrains Mono'; font-size:13.5px; color:var(--gold); margin-bottom:3px;}
+  .glos-item .def{font-size:13.5px; color:var(--gi-dim);}
+
+  .checklist{margin-top:20px;}
+  .check-row{display:flex; align-items:center; gap:16px; padding:16px 20px; border:1px solid var(--line); margin-bottom:8px; background:var(--mat); cursor:pointer; border-radius:var(--radius); transition:border-color .15s;}
+  .check-row:hover{border-color:var(--muted);}
+  .box{width:20px; height:20px; border:2px solid var(--muted); flex-shrink:0; position:relative; border-radius:3px;}
+  .box.checked{background:var(--red); border-color:var(--red);}
+  .box.checked::after{content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--gi); font-size:13px; font-weight:700;}
+  .check-row span.txt{font-size:14.5px; color:var(--gi-dim);}
+  .check-row.done span.txt{color:var(--muted); text-decoration:line-through;}
+  #progress-summary{font-family:'JetBrains Mono'; font-size:12px; color:var(--gold); margin-top:16px;}
+
+  footer{padding:56px; text-align:center; color:var(--muted); font-size:12.5px;}
+  footer .credit{margin-top:8px; font-family:'JetBrains Mono'; font-size:10.5px; opacity:0.6;}
+
+  #nav-toggle{display:none;}
+
+  @media(max-width:900px){
+    .wrap{grid-template-columns:1fr;}
+    nav#side{position:fixed; top:7px; left:0; right:0; height:auto; max-height:0; overflow:hidden; background:var(--bg); z-index:400; border-right:none; border-bottom:1px solid var(--line); padding:0 24px; transition:max-height .3s ease;}
+    nav#side.open{max-height:70vh; overflow-y:auto; padding:20px 24px;}
+    #nav-toggle{display:flex; position:fixed; top:14px; left:16px; z-index:450; background:var(--mat); border:1px solid var(--line); color:var(--gi); font-family:'JetBrains Mono'; font-size:11px; padding:8px 12px; align-items:center; gap:8px; border-radius:var(--radius); cursor:pointer;}
+    #stripe-label{top:14px; right:16px;}
+    #hero{padding:120px 24px 0;}
+    #hero .inner{grid-template-columns:1fr; padding-bottom:40px;}
+    section.part{padding:60px 24px;}
+    .grid2,.grid3{grid-template-columns:1fr;}
+    .glos{grid-template-columns:1fr;}
+    .glos-item{border-right:none;}
+    .gallery-strip{grid-template-columns:repeat(2,1fr);}
+    .pos-head{grid-template-columns:70px 1fr auto;}
+    .pos-head .photo{width:70px; height:50px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="belt-track"><div id="belt-fill"></div></div>
+<div id="stripe-label">
+  <span class="mono">PROGRESO</span>
+  <div class="stripe-dot" data-i="0"></div>
+  <div class="stripe-dot" data-i="1"></div>
+  <div class="stripe-dot" data-i="2"></div>
+  <div class="stripe-dot" data-i="3"></div>
+</div>
+<button id="nav-toggle" onclick="document.getElementById('side').classList.toggle('open')">☰ ÍNDICE</button>
+
+<div class="wrap">
+<nav id="side">
+  <div class="nav-title">Índice del cinturón</div>
+  <ul>
+    <li><a href="#hero"><span class="n">00</span>Portada</a></li>
+    <li><a href="#etiqueta"><span class="n">01</span>Etiqueta &amp; Tap Out</a></li>
+    <li><a href="#movimientos"><span class="n">02</span>Movimientos base</a></li>
+    <li><a href="#jerarquia"><span class="n">03</span>Jerarquía de posiciones</a></li>
+    <li><a href="#posiciones"><span class="n">04</span>Posiciones a fondo</a></li>
+    <li><a href="#sumisiones"><span class="n">05</span>4 sumisiones clave</a></li>
+    <li><a href="#escapes"><span class="n">06</span>Escapes esenciales</a></li>
+    <li><a href="#clase"><span class="n">07</span>Anatomía de una clase</a></li>
+    <li><a href="#seguridad"><span class="n">08</span>Seguridad &amp; mentalidad</a></li>
+    <li><a href="#glosario"><span class="n">09</span>Glosario</a></li>
+    <li><a href="#checklist"><span class="n">10</span>Checklist final</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<section id="hero" class="tatami-bg">
+  <div class="eyebrow">Guía oficiosa · Nivel: Cinturón blanco</div>
+  <div class="inner">
+    <div>
+      <h1>DE CERO A<br><span>PRIMERA STRIPE.</span></h1>
+      <p class="sub">Todo lo que un cinturón blanco necesita saber, en el orden correcto: etiqueta, movimiento de cuerpo, posiciones, sumisiones, escapes y mentalidad. Sin humo — solo lo que realmente te hace sobrevivir en el tatami.</p>
+      <div class="stats">
+        <div class="stat"><div class="num">11</div><div class="lbl">Capítulos</div></div>
+        <div class="stat"><div class="num">04</div><div class="lbl">Sumisiones core</div></div>
+        <div class="stat"><div class="num">06</div><div class="lbl">Posiciones</div></div>
+        <div class="stat"><div class="num">01</div><div class="lbl">Regla de oro</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="photo hero-photo" data-cap="Entrenamiento de Jiu-Jitsu">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_08.jpg" alt="Seminario de Brazilian Jiu-Jitsu">
+        <div class="cap">Rolling en el tatami</div>
+      </div>
+      <div class="hero-photo-strip">
+        <div class="photo" data-cap="Guardia"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Guard1.jpg" alt="Guardia cerrada en BJJ"></div>
+        <div class="photo" data-cap="Kimura"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Brazilian_Jiu-jitsu_Kimura_lock_from_guard.jpg" alt="Kimura desde guardia"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 ETIQUETA -->
+<section id="etiqueta" class="part">
+  <div class="part-head"><span class="idx">01</span><h2>Etiqueta &amp; el Tap Out</h2></div>
+  <p class="kicker">Antes de aprender una sola técnica, todo cinturón blanco debe entender cómo comportarse en el tatami y cómo entrenar sin lesionarse.</p>
+
+  <div class="gallery-strip">
+    <div class="photo" data-cap="Gi tradicional"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/BJJ%2C_brazilian-jiujitsu_01.jpg" alt="Practicante con gi de Jiu-Jitsu"></div>
+    <div class="photo" data-cap="Entrenamiento en pareja"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/BJJ%2C_brazilian-jiujitsu_04.jpg" alt="Entrenamiento de Jiu-Jitsu en pareja"></div>
+    <div class="photo" data-cap="Pasando la guardia"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Passar_no_corredor.jpg" alt="Pase de guardia en pasillo de tatami"></div>
+    <div class="photo" data-cap="Clase grupal"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/BJJ%2C_brazilian-jiujitsu_05.jpg" alt="Clase grupal de Jiu-Jitsu"></div>
+  </div>
+
+  <ol class="rules-list">
+    <li><strong>Saluda al entrar y salir del tatami.</strong><span>Una inclinación o un simple saludo con la mano al pisar y dejar la colchoneta. Es respeto básico hacia el espacio y tus compañeros.</span></li>
+    <li><strong>Higiene no negociable.</strong><span>Uñas cortas (manos y pies), gi limpio, sin joyas, aliento cuidado. Vas a estar a centímetros de la cara de otras personas.</span></li>
+    <li><strong>Ojotas fuera del tatami.</strong><span>Nunca camines descalzo fuera de la colchoneta y luego pises el tatami — usa sandalias para ir al baño o bebedero.</span></li>
+    <li><strong>Jerarquía y respeto.</strong><span>Los cinturones más avanzados suelen guiar el entrenamiento. Escúchalos, y sé especialmente cuidadoso entrenando con principiantes nuevos o niños.</span></li>
+    <li><strong>Comunica si algo duele.</strong><span>Decir "para" o avisar una lesión previa antes de rodar no es debilidad — es lo que te permite entrenar por años sin romperte.</span></li>
+  </ol>
+
+  <div class="rule-box">
+    <div class="tag">La regla más importante de todo el jiu-jitsu</div>
+    <p><strong>El "tap"</strong> — golpear 2-3 veces con la mano o decir "tap" en voz alta — significa <strong>"me rindo, suelta ya"</strong>. Debes tapear apenas sientas presión real, dolor o falta de aire, no esperar al límite. Si tu compañero tapea, sueltas inmediatamente, sin terminar el movimiento "un poco más". No hay vergüenza en tapear: todos, incluidos los cinturones negros, tapean todos los días entrenando.</p>
+  </div>
+</section>
+
+<!-- 02 MOVIMIENTOS -->
+<section id="movimientos" class="part">
+  <div class="part-head"><span class="idx">02</span><h2>Movimientos fundamentales del cuerpo</h2></div>
+  <p class="kicker">Antes de técnicas "vistosas", el cinturón blanco domina estos 4 movimientos. Son la base física de absolutamente todo lo demás.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="photo" data-cap="Base de guardia"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Brazilian_Jiu-jitsu-Closed_guard.jpg" alt="Guardia cerrada, base para el escape de cadera"></div>
+      <div class="body"><span class="k">01 · Solo / En pareja</span><h3>El puente (Upa / Bridge)</h3><p>Acostado boca arriba, apoyas pies y cabeza en el suelo y empujas la cadera hacia arriba con fuerza explosiva. Desestabiliza a quien está montado sobre ti — es la base de casi todos los escapes de montada.</p></div>
+    </div>
+    <div class="card">
+      <div class="photo" data-cap="Movimiento de cadera"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/BJJ-half_guard.jpg" alt="Media guardia, movimiento de cadera"></div>
+      <div class="body"><span class="k">02 · El más importante</span><h3>Escape de cadera (Shrimping)</h3><p>Acostado de lado, empujas con el pie de apoyo y "escapas" la cadera hacia atrás creando espacio. Se usa para salir de casi todas las posiciones malas. Practícalo solo, 5 minutos al día.</p></div>
+    </div>
+    <div class="card">
+      <div class="photo fallback" data-cap="Break-fall"><img src="" alt="Caída segura break-fall"></div>
+      <div class="body"><span class="k">03 · Seguridad</span><h3>Break-fall (caída segura)</h3><p>Aprender a caer sin golpear la cabeza ni la espalda de lleno, repartiendo el impacto con el brazo y girando el cuerpo. Obligatorio antes de cualquier proyección (throw).</p></div>
+    </div>
+    <div class="card">
+      <div class="photo fallback" data-cap="Rolling / Rodar"><img src="" alt="Rodar sobre el hombro"></div>
+      <div class="body"><span class="k">04 · Movilidad</span><h3>Rodar (Rolling)</h3><p>Rodar hacia adelante y atrás sobre el hombro — nunca sobre la cabeza — para caer seguro cuando te desequilibran o te proyectan.</p></div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="tag">Recuerda de la clase anterior</div>
+    <p><strong>"El suelo es el enemigo de tu cadera."</strong> Si tus glúteos quedan pegados al tatami, pierdes toda la palanca. La cadera es el motor de casi todos los movimientos en BJJ: manténla siempre viva, nunca aplastada.</p>
+  </div>
+</section>
+
+<!-- 03 JERARQUIA -->
+<section id="jerarquia" class="part">
+  <div class="part-head"><span class="idx">03</span><h2>Jerarquía de posiciones</h2></div>
+  <p class="kicker">En Jiu-Jitsu existe un orden claro de "quién está ganando" según la posición. De mejor a peor, siendo tú quien la tiene:</p>
+
+  <div class="pyramid">
+    <div class="row top"><div class="rank">1</div><div><div class="name">Espalda (Back Control)</div><div class="desc">Control total, la mejor posición del juego</div></div></div>
+    <div class="row"><div class="rank">2</div><div><div class="name">Montada (Mount)</div><div class="desc">Sentado sobre el pecho del rival</div></div></div>
+    <div class="row"><div class="rank">3</div><div><div class="name">Knee on Belly</div><div class="desc">Rodilla sobre el abdomen, muy incómoda para el rival</div></div></div>
+    <div class="row"><div class="rank">4</div><div><div class="name">Side Control</div><div class="desc">Perpendicular sobre el rival, "100 kilos"</div></div></div>
+    <div class="row"><div class="rank">5</div><div><div class="name">Guardia (Guard)</div><div class="desc">Abajo, pero con piernas de por medio — posición ofensiva también</div></div></div>
+    <div class="row"><div class="rank">6</div><div><div class="name">Turtle (Tortuga)</div><div class="desc">Encogido en cuatro apoyos, defendiendo</div></div></div>
+  </div>
+  <p style="color:var(--muted); font-size:13.5px; margin-top:10px;">Nota: la guardia no es "perder". Es una posición neutral desde la que se hacen la mayoría de las sumisiones para principiantes.</p>
+</section>
+
+<!-- 04 POSICIONES -->
+<section id="posiciones" class="part">
+  <div class="part-head"><span class="idx">04</span><h2>Posiciones a fondo</h2></div>
+  <p class="kicker">Toca cada posición para expandir el detalle y ver la foto de referencia. Entiende cómo se arma, qué controla y qué peligros tiene cada una.</p>
+
+  <div id="pos-list"></div>
+</section>
+
+<!-- 05 SUMISIONES -->
+<section id="sumisiones" class="part">
+  <div class="part-head"><span class="idx">05</span><h2>Las 4 sumisiones esenciales</h2></div>
+  <p class="kicker">Todo cinturón blanco debería salir dominando, lento y con control, estas cuatro llaves.</p>
+
+  <div class="sub-card">
+    <div class="sub-grid">
+      <div class="photo" data-cap="Control de espalda"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_Leite_2009_BJJ_Championships.jpg" alt="Control de espalda en competencia de BJJ"></div>
+      <div class="sub-content">
+        <div class="sub-top"><div><h3>Rear Naked Choke</h3><div class="from">Desde: control de espalda · "Mata león"</div></div><div class="diff">La más segura</div></div>
+        <div class="steps">
+          <div class="step"><p>Desde la espalda, pasa un brazo por debajo del mentón del rival, rodeando el cuello.</p></div>
+          <div class="step"><p>Cierra la mano de ese brazo sobre tu propio bíceps del otro brazo.</p></div>
+          <div class="step"><p>La mano del otro brazo va detrás de la cabeza — nunca cruces los dedos, evita que se enganchen.</p></div>
+          <div class="step"><p>Aprieta juntando los codos hacia el centro y arqueando ligeramente la espalda, presionando las arterias a los costados del cuello, nunca la tráquea.</p></div>
+        </div>
+        <div class="caution"><strong>Cuidado:</strong> presiona los costados del cuello (arterias), nunca la garganta central. Suelta al primer tap.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-grid">
+      <div class="photo fallback" data-cap="Armbar / Juji Gatame"><img src="" alt="Armbar"></div>
+      <div class="sub-content">
+        <div class="sub-top"><div><h3>Armbar (Juji Gatame)</h3><div class="from">Desde: guardia, montada o side control</div></div><div class="diff">Requiere control</div></div>
+        <div class="steps">
+          <div class="step"><p>Controla el brazo del rival con ambas manos, atrapando la muñeca cerca de tu pecho.</p></div>
+          <div class="step"><p>Gira la cadera 90° hasta quedar perpendicular al cuerpo del rival, con una pierna cruzando su cara/cuello.</p></div>
+          <div class="step"><p>Apoya el codo del rival justo sobre tu hueso de la cadera (no más arriba ni más abajo).</p></div>
+          <div class="step"><p>Aprieta las rodillas juntas y eleva la cadera lentamente, hiperextendiendo el codo con control.</p></div>
+        </div>
+        <div class="caution"><strong>Cuidado:</strong> es la técnica donde más se lesiona por apurarse. Sube la presión gradualmente y detente al tap.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-grid">
+      <div class="photo" data-cap="Triángulo"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Body_triangle.png" alt="Diagrama de triángulo corporal en BJJ"></div>
+      <div class="sub-content">
+        <div class="sub-top"><div><h3>Triangle Choke</h3><div class="from">Desde: guardia</div></div><div class="diff">Técnica, no fuerza</div></div>
+        <div class="steps">
+          <div class="step"><p>Desde guardia, controla una muñeca del rival y sube una pierna sobre su hombro opuesto.</p></div>
+          <div class="step"><p>Cruza el tobillo de esa pierna detrás de tu propia rodilla, formando un triángulo alrededor del cuello y un brazo del rival.</p></div>
+          <div class="step"><p>Ajusta el ángulo llevando la cadera hacia el lado, apuntando la rodilla hacia abajo para cerrar el triángulo.</p></div>
+          <div class="step"><p>Aprieta juntando la rodilla hacia tu pecho — el estrangulamiento viene de la presión de las piernas, no de tirar con los brazos.</p></div>
+        </div>
+        <div class="caution"><strong>Clave:</strong> si tu compañero no puede hablar o hace el gesto de tap, suelta de inmediato.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-card">
+    <div class="sub-grid">
+      <div class="photo" data-cap="Kimura desde guardia"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Brazilian_Jiu-jitsu_Kimura_lock_from_guard.jpg" alt="Kimura desde guardia en BJJ"></div>
+      <div class="sub-content">
+        <div class="sub-top"><div><h3>Kimura</h3><div class="from">Desde: guardia, side control o espalda</div></div><div class="diff">Versátil</div></div>
+        <div class="steps">
+          <div class="step"><p>Atrapa la muñeca del rival con una mano y pásala por debajo de su brazo con la otra, formando una figura de "4".</p></div>
+          <div class="step"><p>Sujeta tu propia muñeca por debajo del brazo del rival, cerrando el agarre.</p></div>
+          <div class="step"><p>Rota el hombro del rival llevando su muñeca hacia su espalda baja, manteniendo el codo pegado a su cuerpo.</p></div>
+        </div>
+        <div class="caution"><strong>Cuidado:</strong> el hombro se lesiona rápido — aplica presión lenta y constante, nunca de golpe.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ESCAPES -->
+<section id="escapes" class="part">
+  <div class="part-head"><span class="idx">06</span><h2>Escapes esenciales</h2></div>
+  <p class="kicker">Un buen cinturón blanco escapa más de lo que ataca. Estos son los 3 escapes que debes dominar primero.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <div class="photo fallback" data-cap="Escape de montada"><img src="" alt="Escape de montada"></div>
+      <div class="body"><span class="k">De montada</span><h3>Upa + Shrimp</h3><p>Usa el puente para desequilibrar al rival hacia un lado y el escape de cadera para sacarte de encima y recuperar guardia.</p></div>
+    </div>
+    <div class="card">
+      <div class="photo fallback" data-cap="Escape de side control"><img src="" alt="Escape de side control"></div>
+      <div class="body"><span class="k">De side control</span><h3>Codo-rodilla</h3><p>Crea espacio con el codo y la rodilla contra el cuerpo del rival, mete la pierna de vuelta usando el escape de cadera.</p></div>
+    </div>
+    <div class="card">
+      <div class="photo fallback" data-cap="Escape de espalda"><img src="" alt="Escape de espalda"></div>
+      <div class="body"><span class="k">De la espalda</span><h3>Protección de cuello</h3><p>Protege el cuello con ambas manos, gira hacia un lado para "romper" los ganchos del rival y quedar de frente a él.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CLASE -->
+<section id="clase" class="part">
+  <div class="part-head"><span class="idx">07</span><h2>Anatomía de una clase típica</h2></div>
+  <p class="kicker">Así se estructura casi cualquier clase de Jiu-Jitsu en el mundo, sin importar la academia.</p>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="time">00:00 — 00:15</div><h3>Calentamiento</h3><p>Trote, movimientos de cadera, break-falls y shrimping para activar el cuerpo.</p></div>
+    <div class="tl-item"><div class="time">00:15 — 00:45</div><h3>Técnica (Drilling)</h3><p>El instructor enseña 1-2 técnicas. Se practican en parejas sin resistencia, repitiendo el movimiento para grabarlo en el cuerpo.</p></div>
+    <div class="tl-item"><div class="time">00:45 — 01:15</div><h3>Sparring (Rolling)</h3><p>Combate real controlado donde aplicas lo aprendido. Como blanco, tus compañeros más experimentados suelen "ceder" un poco para que aprendas.</p></div>
+    <div class="tl-item"><div class="time">01:15 — 01:20</div><h3>Cierre</h3><p>Estiramiento y saludo final de la clase.</p></div>
+  </div>
+
+  <div class="gallery-strip">
+    <div class="photo" data-cap="Drilling técnico"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_17.jpg" alt="Drilling de técnica en seminario BJJ"></div>
+    <div class="photo" data-cap="Práctica en pareja"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_18.jpg" alt="Práctica de técnica en pareja"></div>
+    <div class="photo" data-cap="Sparring"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_19.jpg" alt="Sparring controlado en BJJ"></div>
+    <div class="photo" data-cap="Sumisión en entrenamiento"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Jiu_jitsu_submission.png" alt="Sumisión aplicada en entrenamiento"></div>
+  </div>
+</section>
+
+<!-- 08 SEGURIDAD -->
+<section id="seguridad" class="part">
+  <div class="part-head"><span class="idx">08</span><h2>Seguridad &amp; mentalidad de cinturón blanco</h2></div>
+  <p class="kicker">Lo que separa a un blanco que llega a azul de uno que se lesiona o abandona.</p>
+
+  <div class="grid2">
+    <div class="card"><div class="body" style="padding-top:22px;"><span class="k">Cuerpo</span><h3>Técnica antes que fuerza</h3><p>Al principio vas a querer forzar todo. Resístete — la técnica siempre gana a largo plazo.</p></div></div>
+    <div class="card"><div class="body" style="padding-top:22px;"><span class="k">Cuerpo</span><h3>Relájate en el sparring</h3><p>Tensar todo el cuerpo te cansa el doble de rápido. Respira y suelta lo que no estés usando.</p></div></div>
+    <div class="card"><div class="body" style="padding-top:22px;"><span class="k">Mente</span><h3>Pierde con humildad</h3><p>Vas a tapear muchísimo al inicio — es la forma normal y esperada de aprender algo técnico.</p></div></div>
+    <div class="card"><div class="body" style="padding-top:22px;"><span class="k">Mente</span><h3>Consistencia &gt; intensidad</h3><p>Entrenar 2-3 veces por semana de forma constante vence a entrenar intenso una sola vez y desaparecer.</p></div></div>
+  </div>
+</section>
+
+<!-- 09 GLOSARIO -->
+<section id="glosario" class="part">
+  <div class="part-head"><span class="idx">09</span><h2>Glosario esencial</h2></div>
+  <p class="kicker">Los términos que vas a escuchar en cada clase, sin excepción.</p>
+
+  <div class="glos">
+    <div class="glos-item"><div class="term">Gi</div><div class="def">El uniforme de tela gruesa usado en BJJ tradicional.</div></div>
+    <div class="glos-item"><div class="term">No-Gi</div><div class="def">Entrenamiento sin kimono, con ropa deportiva ajustada.</div></div>
+    <div class="glos-item"><div class="term">Rolling</div><div class="def">El sparring o combate de práctica.</div></div>
+    <div class="glos-item"><div class="term">Tap / Tap out</div><div class="def">La señal de rendición — golpear 2-3 veces o decirlo en voz alta.</div></div>
+    <div class="glos-item"><div class="term">Guard (Guardia)</div><div class="def">Posición donde controlas al rival con las piernas estando tú abajo.</div></div>
+    <div class="glos-item"><div class="term">Sweep (Raspagem)</div><div class="def">Movimiento para invertir la posición y pasar de abajo a arriba.</div></div>
+    <div class="glos-item"><div class="term">Pass (Pasar guardia)</div><div class="def">Superar las piernas del rival para llegar a una posición dominante.</div></div>
+    <div class="glos-item"><div class="term">Submission</div><div class="def">Cualquier técnica de sumisión: llave o estrangulamiento.</div></div>
+    <div class="glos-item"><div class="term">Hooks</div><div class="def">Los ganchos de los pies/piernas usados para controlar la espalda del rival.</div></div>
+    <div class="glos-item"><div class="term">Frame</div><div class="def">Uso de brazos o piernas como barra rígida para crear espacio.</div></div>
+    <div class="glos-item"><div class="term">Posture</div><div class="def">Mantener la espalda erguida dentro de la guardia del rival para evitar sumisiones.</div></div>
+    <div class="glos-item"><div class="term">Base</div><div class="def">Equilibrio y estabilidad corporal para no ser barrido fácilmente.</div></div>
+  </div>
+</section>
+
+<!-- 10 CHECKLIST -->
+<section id="checklist" class="part">
+  <div class="part-head"><span class="idx">10</span><h2>Checklist para tu primera stripe</h2></div>
+  <p class="kicker">Marca lo que ya puedes hacer con confianza. Cuando completes todo, estás listo para tu primera stripe de blanco.</p>
+
+  <div class="checklist" id="check-container"></div>
+  <div id="progress-summary"></div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Hecho para tu primer año en el tatami · Entrena seguido, tapea temprano, respeta a tus compañeros. 🥋
+  <div class="credit">Fotografías: Wikimedia Commons (dominio público / licencias libres)</div>
+</footer>
+
+<script>
+  // ---- graceful photo fallback ----
+  document.querySelectorAll('.photo img').forEach(img=>{
+    const wrap = img.closest('.photo');
+    if(!img.getAttribute('src')){ wrap.classList.add('fallback'); return; }
+    img.addEventListener('error', ()=> wrap.classList.add('fallback'));
+  });
+
+  // ---- Belt progress bar ----
+  const fill = document.getElementById('belt-fill');
+  const dots = document.querySelectorAll('.stripe-dot');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled/max)*100 : 0;
+    fill.style.width = pct + '%';
+    const stripes = Math.min(4, Math.floor(pct/25) + (pct>0?1:0));
+    dots.forEach((d,i)=> d.classList.toggle('on', i < stripes));
+  }
+  document.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // ---- Scroll spy nav ----
+  const sections = document.querySelectorAll('section.part, #hero');
+  const navLinks = document.querySelectorAll('#side a');
+  const spy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.classList.remove('active'));
+        const link = document.querySelector('#side a[href="#'+e.target.id+'"]');
+        if(link) link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  sections.forEach(s=>spy.observe(s));
+  navLinks.forEach(a=>a.addEventListener('click', ()=> document.getElementById('side').classList.remove('open')));
+
+  // ---- Position accordion (with photos) ----
+  const positions = [
+    {name:'Guardia (Guard)', lvl:'Neutral / Defensiva-Ofensiva', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Guard1.jpg',
+      desc:'Estás de espaldas en el suelo con las piernas rodeando o cerca de tu oponente, que está frente a ti. No es una posición de derrota: desde aquí se hacen la mayoría de las sumisiones para principiantes.',
+      points:['Guardia cerrada: tus tobillos se cruzan detrás de la espalda del rival.','Guardia abierta: piernas sueltas, controlas distancia con los pies.','Mantén siempre la postura del rival rota hacia adelante para poder atacar.']},
+    {name:'Montada (Mount)', lvl:'Muy dominante', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_18.jpg',
+      desc:'Te sientas sobre el torso del oponente, con una rodilla a cada lado de su cuerpo. Posición ideal para atacar el cuello y los brazos.',
+      points:['Mantén las rodillas apretadas contra el cuerpo rival para no ser barrido.','Baja el centro de gravedad si el rival intenta hacer puente (upa).','Desde aquí se conectan armbars, kimuras y estrangulamientos.']},
+    {name:'Side Control', lvl:'Dominante · "100 kilos"', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Megaton_Dias_Seminar_19.jpg',
+      desc:'Te ubicas perpendicular sobre el pecho de tu rival, con tu peso presionando su torso, evitando que use las piernas para defenderse.',
+      points:['Controla la cadera y el hombro lejano del rival.','Presiona el pecho con tu peso, no con tensión muscular.','Punto de partida para pasar a montada o knee on belly.']},
+    {name:'Espalda (Back Control)', lvl:'La mejor posición', img:'https://commons.wikimedia.org/wiki/Special:FilePath/Lucas_Leite_2009_BJJ_Championships.jpg',
+      desc:'Te ubicas detrás del rival, con las piernas "enganchadas" (hooks) en sus caderas y los brazos rodeando su cuello y hombro.',
+      points:['Los hooks (ganchos de pie) evitan que el rival gire y escape.','Nunca cruces los tobillos frente al abdomen del rival — riesgo de lesión propia.','Desde aquí sale el Rear Naked Choke, la sumisión más común de cinturón blanco a azul.']},
+    {name:'Knee on Belly', lvl:'Dominante · transición', img:'', 
+      desc:'Apoyas una rodilla sobre el abdomen del rival, con el otro pie en el suelo para moverte rápido. Es incómoda y da mucha movilidad para atacar.',
+      points:['Mantén el peso real sobre la rodilla, no solo apoyada.','Excelente posición de transición hacia montada o espalda.']},
+    {name:'Turtle (Tortuga)', lvl:'Defensiva', img:'https://commons.wikimedia.org/wiki/Special:FilePath/BJJ%2C_brazilian-jiujitsu_03.jpg',
+      desc:'El rival está encogido en cuatro apoyos, protegiendo el cuello y el abdomen. Es una posición de defensa común cuando alguien está siendo pasado.',
+      points:['Protege el cuello y los codos pegados al cuerpo.','Busca girar hacia un costado para recuperar guardia.']}
+  ];
+  const posList = document.getElementById('pos-list');
+  positions.forEach((p,i)=>{
+    const card = document.createElement('div');
+    card.className = 'pos-card';
+    card.innerHTML = `
+      <div class="pos-head ${i===0?'on':''}" onclick="this.classList.toggle('on'); this.nextElementSibling.classList.toggle('open')">
+        <div class="photo ${p.img?'':'fallback'}"><img src="${p.img}" alt="${p.name}"></div>
+        <div><h3>${p.name}</h3><div class="lvl">${p.lvl}</div></div>
+        <span class="chev">+</span>
+      </div>
+      <div class="pos-body ${i===0?'open':''}">
+        <p>${p.desc}</p>
+        <ul>${p.points.map(pt=>'<li>'+pt+'</li>').join('')}</ul>
+      </div>`;
+    posList.appendChild(card);
+  });
+  // re-run fallback binding for dynamically inserted photos
+  document.querySelectorAll('.photo img').forEach(img=>{
+    const wrap = img.closest('.photo');
+    if(!img.getAttribute('src')){ wrap.classList.add('fallback'); return; }
+    img.addEventListener('error', ()=> wrap.classList.add('fallback'));
+  });
+
+  // ---- Checklist (in-memory state) ----
+  const items = [
+    'Sé saludar correctamente al entrar y salir del tatami',
+    'Entiendo y uso el tap out sin dudar',
+    'Puedo hacer el escape de cadera (shrimping) fluido',
+    'Puedo hacer un puente (upa) con fuerza',
+    'Sé caer con break-fall sin golpearme',
+    'Reconozco las 6 posiciones principales',
+    'Puedo mantener guardia cerrada básica',
+    'Puedo escapar de side control al menos una vez de cada tres intentos',
+    'Entiendo cómo armar un Rear Naked Choke',
+    'Entiendo cómo armar un Armbar con control',
+    'Conozco al menos 10 términos del glosario'
+  ];
+  const container = document.getElementById('check-container');
+  const state = new Array(items.length).fill(false);
+  function renderChecklist(){
+    container.innerHTML = '';
+    items.forEach((txt,i)=>{
+      const row = document.createElement('div');
+      row.className = 'check-row' + (state[i] ? ' done':'');
+      row.innerHTML = `<div class="box ${state[i]?'checked':''}"></div><span class="txt">${txt}</span>`;
+      row.addEventListener('click', ()=>{ state[i] = !state[i]; renderChecklist(); });
+      container.appendChild(row);
+    });
+    const done = state.filter(Boolean).length;
+    document.getElementById('progress-summary').textContent =
+      '> ' + done + ' / ' + items.length + ' completado — ' + (done===items.length ? '¡Listo para tu primera stripe! 🥋' : 'seguí sumando.');
+  }
+  renderChecklist();
+</script>
+</body>
+</html>
