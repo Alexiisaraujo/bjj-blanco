@@ -195,6 +195,18 @@
   .back-link:hover{color:var(--text);}
   .back-link svg{width:14px; height:14px;}
 
+  /* FUNDAMENTOS (5+5+5) */
+  .fund-block{margin-bottom:20px;}
+  .fund-label{font-size:10.5px; font-weight:800; letter-spacing:1.2px; color:var(--text-dis); text-transform:uppercase; margin-bottom:10px;}
+  .fund-row{display:grid; grid-template-columns:repeat(5,1fr); gap:10px;}
+  .fund-card{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 12px; cursor:pointer; transition:.15s; text-align:center;}
+  .fund-card:hover{border-color:var(--accent-light); transform:translateY(-2px);}
+  .fund-card .fund-ico{width:30px; height:30px; border-radius:8px; background:rgba(37,99,235,.12); color:var(--accent-light); display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;}
+  .fund-card .fund-ico svg{width:15px; height:15px; stroke-width:2;}
+  .fund-card p{font-size:11.5px; font-weight:700; line-height:1.3;}
+  @media (max-width:1200px){ .fund-row{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:860px){ .fund-row{grid-template-columns:repeat(2,1fr);} }
+
   /* GENEALOGY TREE */
   .geneal-tree{position:relative; padding-left:22px;}
   .geneal-era{margin-bottom:22px;}
@@ -288,14 +300,15 @@
       <a class="nav-item" onclick="openTopic('transicoes')"><i data-lucide="link-2"></i>Transições</a>
       <a class="nav-item" onclick="openTopic('estrategia')"><i data-lucide="target"></i>Estratégia</a>
       <a class="nav-item" onclick="openTopic('cadeia')"><i data-lucide="layers"></i>Cadeia de Ataques</a>
+      <a class="nav-item" onclick="scrollToSection('fundamentos-section')"><i data-lucide="layout-grid"></i>Fundamentos (5+5+5)</a>
       <a class="nav-item" onclick="scrollToSection('checklist-section')"><i data-lucide="check-square"></i>Checklist</a>
       <a class="nav-item" onclick="openTopic('glossario')"><i data-lucide="book-open"></i>Glossário</a>
       <a class="nav-item" onclick="openTopic('sobre')"><i data-lucide="info"></i>Sobre este Atlas</a>
     </nav>
     <div class="sidebar-promo">
-      <div class="tag">O QUE É ISTO</div>
-      <div class="cta">UMA ENCICLOPÉDIA</div>
-      <p>Sem cursos. Sem pagamentos.<br>Sem certificados. Apenas conhecimento organizado do Jiu-Jitsu.</p>
+      <div class="tag">FILOSOFIA</div>
+      <div class="cta">POSIÇÃO ANTES DE FINALIZAÇÃO</div>
+      <p>"O jiu-jitsu é o xadrez físico." Cada posição é uma pergunta; cada resposta do oponente abre a próxima.</p>
     </div>
     <div class="sidebar-footer">
       <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Alternar tema claro/escuro"><i data-lucide="moon"></i></button>
@@ -321,7 +334,7 @@
 
           <div class="lib-banner">
             <i data-lucide="library"></i>
-            Este é um atlas de referência, não um curso. Não há aulas, pagamentos, certificados nem progresso obrigatório — apenas conteúdo para consultar na ordem que preferir.
+            "A faixa só cobre duas polegadas de traseiro — o resto você tem que cobrir sozinho." O jiu-jitsu se aprende no tempo de cada um, sem atalho.
           </div>
 
           <div class="hero">
@@ -404,6 +417,22 @@
             <div class="section-head"><h2>MAPA DO CONHECIMENTO</h2></div>
             <div class="art-block" style="margin-bottom:0;">
               <p>Toda posição do Jiu-Jitsu se conecta a outras através de raspagens, passagens e finalizações. Clique em qualquer posição acima para ver como ela se conecta ao restante do mapa na seção "Mapa de Conexões", à direita.</p>
+            </div>
+          </div>
+
+          <div class="section" id="fundamentos-section">
+            <div class="section-head"><h2>FUNDAMENTOS DO CINTURÃO BRANCO</h2><span style="font-size:11.5px; color:var(--text-dis);">O MÍNIMO PARA SOBREVIVER NO TATAME</span></div>
+            <div class="fund-block">
+              <div class="fund-label">5 POSIÇÕES</div>
+              <div class="fund-row" id="fund-posicoes"></div>
+            </div>
+            <div class="fund-block">
+              <div class="fund-label">5 ATAQUES</div>
+              <div class="fund-row" id="fund-ataques"></div>
+            </div>
+            <div class="fund-block">
+              <div class="fund-label">5 DEFESAS</div>
+              <div class="fund-row" id="fund-defesas"></div>
             </div>
           </div>
 
@@ -567,13 +596,8 @@
       <!-- RIGHT COLUMN -->
       <div class="content-right">
         <div class="panel">
-          <div class="panel-title">MAPA DE CONEXÕES</div>
-          <div class="quick-list">
-            <div class="quick-item"><span class="quick-ico" style="background:rgba(34,197,94,.12); color:#22c55e;"><i data-lucide="triangle"></i></span><span>Triângulo</span><i data-lucide="chevron-right" class="chev"></i></div>
-            <div class="quick-item"><span class="quick-ico" style="background:rgba(239,68,68,.12); color:#ef4444;"><i data-lucide="minus"></i></span><span>Armlock</span><i data-lucide="chevron-right" class="chev"></i></div>
-            <div class="quick-item"><span class="quick-ico" style="background:rgba(168,85,247,.12); color:#a855f7;"><i data-lucide="rotate-ccw"></i></span><span>Omoplata</span><i data-lucide="chevron-right" class="chev"></i></div>
-            <div class="quick-item"><span class="quick-ico" style="background:rgba(249,115,22,.12); color:#f97316;"><i data-lucide="arrow-up-right"></i></span><span>Raspagens</span><i data-lucide="chevron-right" class="chev"></i></div>
-          </div>
+          <div class="panel-title">CINTURÕES &amp; GRADUAÇÃO</div>
+          <div class="quick-list" id="belts-list"></div>
         </div>
 
         <div class="panel">
@@ -705,7 +729,7 @@
     estrategia:{eyebrow:"CONCEITO",title:"Estratégia",intro:"Estratégia no Jiu-Jitsu envolve decidir quando atacar, quando manter a posição e quando defender, considerando o ritmo do adversário, o cansaço e o contexto (treino, competição ou autodefesa).",tip:"Um princípio comum: nunca abra mão de uma posição de controle segura por uma finalização de baixa probabilidade."},
     cadeia:{eyebrow:"CONCEITO",title:"Cadeia de Ataques",intro:"Uma cadeia de ataques é uma sequência planejada de ameaças conectadas — por exemplo, ameaçar um triângulo para forçar uma reação que abre espaço para um armlock. Isso explora as defesas do oponente em vez de depender de uma única técnica isolada.",tip:"Boas cadeias de ataque têm no mínimo duas opções que se contradizem: se ele defende uma, a outra fica mais fácil."},
     glossario:{eyebrow:"REFERÊNCIA",title:"Glossário",intro:"Alguns termos comuns usados neste atlas:",list:["Posture — postura ereta do oponente dentro da guarda.","Frame — estrutura feita com os braços para criar espaço.","Stack — empilhamento usado para passar a guarda.","Hook — gancho feito com a perna para prender o oponente, comum no controle das costas.","Base — estabilidade do centro de gravidade.","Grip — pegada em manga, gola, pulso ou perna do oponente.","Tap — sinal de desistência dado ao bater no corpo do oponente ou no chão."]},
-    sobre:{eyebrow:"SOBRE",title:"Sobre este Atlas",intro:"Este é um atlas de referência sobre a teoria do Jiu-Jitsu Brasileiro — não um curso. Não existem aulas, pagamentos, planos, certificados, professores ou alunos matriculados. O conteúdo é organizado como uma enciclopédia: navegue pela ordem que preferir. A prioridade é a precisão técnica, e onde há variações entre escolas de Jiu-Jitsu, isso é indicado explicitamente no texto.",tip:null}
+    sobre:{eyebrow:"SOBRE",title:"Sobre este Atlas",intro:"Este é um atlas de referência sobre a teoria do Jiu-Jitsu Brasileiro, organizado como uma enciclopédia: navegue pela ordem que preferir. A prioridade é a precisão técnica, e onde há variações entre escolas de Jiu-Jitsu, isso é indicado explicitamente no texto.",tip:"Como dizia Hélio Gracie: a técnica bem feita vence a força mal aplicada — esse princípio guia cada posição descrita aqui."}
   };
 
   function renderPositionModal(key){
@@ -833,6 +857,95 @@
   }
   renderGenealogyTree();
 
+  /* ============ CINTURÕES & GRADUAÇÃO ============ */
+  const belts = {
+    branca:{color:"#F2EFE3", title:"Faixa Branca", time:"Ponto de partida", intro:"Fase de sobrevivência: aprender a não ser finalizado, entender as posições básicas e criar o hábito de treinar com constância. Não existe atalho — é tempo de tatame que constrói a base.", tip:"A maior parte da evolução aqui vem de errar muito e tapear cedo, sem ego."},
+    azul:{color:"#3B7BFA", title:"Faixa Azul", time:"~2 anos de treino", intro:"O praticante já entende o mapa geral do jogo e começa a desenvolver um estilo próprio, testando guardas e cadeias de ataque com mais liberdade.", tip:"É comum nessa fase tentar 'copiar' o jogo de outra pessoa antes de achar o próprio jogo."},
+    roxa:{color:"#A855F7", title:"Faixa Roxa", time:"~4-5 anos de treino", intro:"Fase de refinamento técnico e início do ensino — muitos roxas já ajudam a instruir brancas e azuis, o que aprofunda o próprio entendimento.", tip:"Dizem que 'roxa é onde o jiu-jitsu vira seu', porque o jogo já reflete a personalidade do praticante."},
+    marrom:{color:"#92400E", title:"Faixa Marrom", time:"~6-7 anos de treino", intro:"Fase de polimento de detalhes: menos técnicas novas, mais precisão nas que já se sabe. Muitas vezes considerada uma faixa preta 'em teste'.", tip:"A cobrança técnica sobre um marrom costuma ser tão alta quanto sobre um preto."},
+    preta:{color:"#111111", title:"Faixa Preta", time:"~8-10+ anos de treino", intro:"Não é o fim do aprendizado, e sim o reconhecimento de domínio sólido dos fundamentos — a preta é onde a jornada de especialização realmente começa.", tip:"Hélio Gracie dizia que a faixa preta é apenas uma faixa branca que nunca parou de treinar."}
+  };
+  function renderBeltModal(key){
+    const b = belts[key];
+    return `
+      <div class="modal-body" style="padding-top:26px;">
+        <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
+        <div class="modal-eyebrow">GRADUAÇÃO · ${b.time}</div>
+        <h2>${b.title}</h2>
+        <p>${b.intro}</p>
+        <div class="modal-tip"><b style="color:var(--accent-light);">Nota:</b> ${b.tip}</div>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openBelt(key){
+    document.getElementById('modal-box').innerHTML = renderBeltModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+  }
+  function renderBeltsList(){
+    document.getElementById('belts-list').innerHTML = Object.keys(belts).map(k=>{
+      const b = belts[k];
+      return `<div class="quick-item" onclick="openBelt('${k}')">
+        <span class="quick-ico" style="background:${b.color}22; border:1px solid ${b.color}55;"><span style="width:12px;height:12px;border-radius:3px;background:${b.color}; display:block;"></span></span>
+        <span>${b.title}</span><i data-lucide="chevron-right" class="chev"></i>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+  renderBeltsList();
+
+  /* ============ FUNDAMENTOS: 5 posições, 5 ataques, 5 defesas ============ */
+  const fundamentals = {
+    'f-guarda':{group:'Posição', icon:'square', title:'Guarda Fechada', intro:'Você fica de costas no chão prendendo o oponente entre as pernas com os tornozelos cruzados. É a base defensiva e ofensiva mais fundamental do jiu-jitsu.'},
+    'f-montada':{group:'Posição', icon:'triangle', title:'Montada', intro:'Você senta sobre o quadril do oponente, com um joelho de cada lado. Posição dominante com máximo acesso a ataques.'},
+    'f-lateral':{group:'Posição', icon:'minus', title:'Controle Lateral', intro:'Você fica perpendicular ao oponente, pressionando o peito com o peso do corpo. Impede que ele use as pernas para se defender.'},
+    'f-costas':{group:'Posição', icon:'user-check', title:'Controle das Costas', intro:'Você fica atrás do oponente com ganchos nas coxas dele. A posição estatisticamente mais vantajosa do jiu-jitsu.'},
+    'f-joelho':{group:'Posição', icon:'move-diagonal', title:'Joelho na Barriga', intro:'Um joelho apoiado no abdômen do oponente e o outro pé no chão. Posição incômoda de transição, com boa mobilidade para atacar.'},
+    'f-armlock':{group:'Ataque', icon:'minus', title:'Armlock (Juji Gatame)', intro:'Chave de braço que hiperestende o cotovelo do oponente. Um dos primeiros ataques ensinados a partir da guarda ou da montada.'},
+    'f-triangulo':{group:'Ataque', icon:'triangle', title:'Triângulo', intro:'Estrangulamento feito com as próprias pernas, prendendo o pescoço e um braço do oponente entre as coxas.'},
+    'f-cruzado':{group:'Ataque', icon:'shirt', title:'Estrangulamento Cruzado', intro:'Feito com a gola do kimono (gi), cruzando as mãos ao redor do pescoço do oponente a partir da guarda fechada.'},
+    'f-kimura':{group:'Ataque', icon:'lock', title:'Kimura', intro:'Chave de ombro que dobra o braço do oponente atrás das costas, aplicável de várias posições — guarda, lateral e mais.'},
+    'f-mataleao':{group:'Ataque', icon:'wind', title:'Mata-Leão (RNC)', intro:'Estrangulamento sanguíneo aplicado a partir das costas. A finalização mais comum entre faixas brancas e azuis.'},
+    'f-shrimp':{group:'Defesa', icon:'footprints', title:'Hip Escape (Shrimping)', intro:'Movimento de quadril para criar espaço e escapar de posições ruins. É a defesa mais básica e mais usada de todo o jiu-jitsu.'},
+    'f-frame':{group:'Defesa', icon:'shield', title:'Frame (proteção do pescoço)', intro:'Uso dos antebraços como barra rígida contra o pescoço ou o tronco do oponente para impedir que ele feche um estrangulamento.'},
+    'f-ponte':{group:'Defesa', icon:'arrow-up', title:'Ponte e Giro (Bridge)', intro:'Levantar o quadril e girar para o lado ao ser montado, criando espaço para recompor a guarda ou escapar.'},
+    'f-postura':{group:'Defesa', icon:'user', title:'Postura na Guarda', intro:'Manter a coluna ereta e o quadril afastado quando estiver dentro da guarda do oponente, evitando ser puxado para baixo.'},
+    'f-recomposicao':{group:'Defesa', icon:'repeat', title:'Recomposição de Guarda', intro:'Usar os pés e os joelhos para trazer a guarda de volta quando o oponente tenta passar, evitando perder a posição.'}
+  };
+  function renderFundamentalModal(key){
+    const f = fundamentals[key];
+    return `
+      <div class="modal-body" style="padding-top:26px;">
+        <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
+        <div class="modal-eyebrow">${f.group.toUpperCase()} · FUNDAMENTAL</div>
+        <h2>${f.title}</h2>
+        <p>${f.intro}</p>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openFundamental(key){
+    document.getElementById('modal-box').innerHTML = renderFundamentalModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+  }
+  function renderFundamentals(){
+    const groups = {'Posição':'fund-posicoes','Ataque':'fund-ataques','Defesa':'fund-defesas'};
+    Object.keys(groups).forEach(g=>{
+      const wrap = document.getElementById(groups[g]);
+      wrap.innerHTML = Object.keys(fundamentals).filter(k=>fundamentals[k].group===g).map(k=>{
+        const f = fundamentals[k];
+        return `<div class="fund-card" onclick="openFundamental('${k}')">
+          <div class="fund-ico"><i data-lucide="${f.icon}"></i></div>
+          <p>${f.title}</p>
+        </div>`;
+      }).join('');
+    });
+    lucide.createIcons();
+  }
+  renderFundamentals();
+
   /* ============ CHECKLIST (interativo, com memória local) ============ */
   const checklistItems = [
     "Sei saudar corretamente ao entrar e sair do tatame",
@@ -922,7 +1035,9 @@
   const searchIndex = [
     ...Object.keys(topics).map(k=>({key:k, title:topics[k].title, type:'topic'})),
     ...Object.keys(positions).map(k=>({key:k, title:positions[k].title, type:'position'})),
-    ...Object.keys(genealogy).map(k=>({key:k, title:genealogy[k].title, type:'genealogy'}))
+    ...Object.keys(genealogy).map(k=>({key:k, title:genealogy[k].title, type:'genealogy'})),
+    ...Object.keys(belts).map(k=>({key:k, title:belts[k].title, type:'belt'})),
+    ...Object.keys(fundamentals).map(k=>({key:k, title:fundamentals[k].title, type:'fundamental'}))
   ];
   function filterNav(query){
     const box = document.getElementById('search-results');
@@ -937,7 +1052,9 @@
     document.getElementById('search-input').value='';
     if(type==='topic') openTopic(key);
     else if(type==='position') openPositionModal(key);
-    else openGenealogy(key);
+    else if(type==='genealogy') openGenealogy(key);
+    else if(type==='belt') openBelt(key);
+    else openFundamental(key);
   }
 
   /* ============ TEMA claro/escuro (real) ============ */
