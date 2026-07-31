@@ -21,7 +21,16 @@
   button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
   ::selection{background:var(--accent); color:#fff;}
 
-  .app{display:grid; grid-template-columns:248px 1fr; min-height:100vh;}
+  /* THEME (light mode toggle) */
+  body.light{--bg:#F5F5F7; --panel:#FFFFFF; --card:#FFFFFF; --border:#E4E4E7; --text:#0B0B0B; --text-sec:#52525B; --text-dis:#A1A1AA;}
+  body.light .hero::before{background:linear-gradient(90deg, rgba(245,245,247,.97) 0%, rgba(245,245,247,.86) 32%, rgba(245,245,247,.35) 62%, rgba(245,245,247,.25) 100%);}
+  body.light .article-hero::before{background:linear-gradient(0deg, rgba(245,245,247,.95) 5%, rgba(245,245,247,.15) 70%);}
+
+  /* PROGRESS BAR (real, tied to scroll) */
+  #progress-track{position:fixed; top:0; left:0; right:0; height:3px; z-index:600; background:var(--border);}
+  #progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); transition:width .1s linear;}
+
+  .app{display:grid; grid-template-columns:248px 1fr; min-height:100vh; padding-top:3px;}
 
   /* SIDEBAR */
   .sidebar{background:var(--panel); border-right:1px solid var(--border); padding:22px 14px; position:sticky; top:0; height:100vh; display:flex; flex-direction:column;}
@@ -47,12 +56,18 @@
   /* MAIN */
   .main{display:flex; flex-direction:column; min-width:0;}
   .topbar{display:flex; align-items:center; gap:18px; padding:20px 32px;}
-  .search{flex:1; max-width:440px; display:flex; align-items:center; gap:10px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text-dis);}
-  .search svg{width:15px; height:15px; stroke-width:1.8;}
+  .search{position:relative; flex:1; max-width:440px; display:flex; align-items:center; gap:10px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text-dis);}
+  .search svg{width:15px; height:15px; stroke-width:1.8; flex-shrink:0;}
+  .search input{flex:1; background:none; border:none; outline:none; color:var(--text); font-family:inherit; font-size:13px;}
+  .search input::placeholder{color:var(--text-dis);}
   .topbar-right{margin-left:auto; display:flex; align-items:center; gap:18px;}
-  .bell-wrap{position:relative; color:var(--text-sec); display:flex;}
-  .bell-wrap svg{width:19px; height:19px; stroke-width:1.7;}
-  .bell-dot{position:absolute; top:-2px; right:-2px; width:7px; height:7px; border-radius:50%; background:var(--accent-light); border:2px solid var(--bg);}
+  .search-results{position:relative; margin:0 32px;}
+  .search-results:empty{display:none;}
+  .search-results .sr-panel{position:absolute; top:-8px; left:0; right:auto; width:100%; max-width:440px; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; z-index:50; box-shadow:0 12px 28px rgba(0,0,0,.4);}
+  .search-results .sr-item{padding:10px 14px; font-size:13px; font-weight:600; cursor:pointer; border-bottom:1px solid var(--border);}
+  .search-results .sr-item:last-child{border-bottom:none;}
+  .search-results .sr-item:hover{background:var(--panel);}
+  .search-results .sr-empty{padding:10px 14px; font-size:12.5px; color:var(--text-dis);}
   .profile{display:flex; align-items:center; gap:9px;}
   .avatar{width:30px; height:30px; border-radius:50%; background:linear-gradient(160deg,var(--accent-light),#1c3fae); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;}
   .profile-name{font-size:13px; font-weight:600;}
@@ -180,6 +195,28 @@
   .back-link:hover{color:var(--text);}
   .back-link svg{width:14px; height:14px;}
 
+  /* GENEALOGY TREE */
+  .geneal-tree{position:relative; padding-left:22px;}
+  .geneal-era{margin-bottom:22px;}
+  .geneal-era-label{font-size:10.5px; font-weight:800; letter-spacing:1.2px; color:var(--text-dis); text-transform:uppercase; margin-bottom:10px;}
+  .geneal-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .geneal-node{position:relative; display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 14px; cursor:pointer; transition:.15s;}
+  .geneal-node:hover{border-color:var(--accent-light); transform:translateY(-2px);}
+  .geneal-node .yr{font-family:inherit; font-size:10.5px; font-weight:800; color:var(--accent-light); background:rgba(37,99,235,.12); border-radius:6px; padding:3px 7px; flex-shrink:0;}
+  .geneal-node .nm{font-size:12.5px; font-weight:700;}
+  .geneal-node .role{display:block; font-size:10.5px; font-weight:500; color:var(--text-dis); margin-top:1px;}
+  .geneal-line{border-left:2px dashed var(--border); margin-left:8px; padding-left:20px;}
+
+  /* CHECKLIST */
+  .check-row{display:flex; align-items:center; gap:14px; padding:13px 10px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s;}
+  .check-row:last-child{border-bottom:none;}
+  .check-row:hover{background:var(--panel);}
+  .check-box{width:20px; height:20px; border-radius:6px; border:1.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:.15s;}
+  .check-box.on{background:var(--accent); border-color:var(--accent);}
+  .check-box.on svg{width:13px; height:13px; color:#fff; stroke-width:3;}
+  .check-row span.txt{font-size:13px; color:var(--text-sec); transition:.15s;}
+  .check-row.done span.txt{color:var(--text-dis); text-decoration:line-through;}
+
   /* MODAL */
   .modal-overlay{
     position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(3px);
@@ -221,6 +258,8 @@
 </head>
 <body>
 
+<div id="progress-track"><div id="progress-fill"></div></div>
+
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -235,7 +274,8 @@
     <nav class="nav">
       <a class="nav-item active" onclick="showHome()"><i data-lucide="home"></i>Início</a>
       <a class="nav-item" onclick="scrollToSection('map-section')"><i data-lucide="share-2"></i>Mapa do Conhecimento</a>
-      <a class="nav-item" onclick="openTopic('historia')"><i data-lucide="clock"></i>História</a>
+      <a class="nav-item" onclick="scrollToSection('genealogia-section')"><i data-lucide="git-branch"></i>Genealogia</a>
+      <a class="nav-item" onclick="openTopic('historia')"><i data-lucide="clock"></i>História (resumo)</a>
       <a class="nav-item" onclick="openTopic('principios')"><i data-lucide="compass"></i>Princípios</a>
       <a class="nav-item" onclick="scrollToSection('pos-section')"><i data-lucide="shield"></i>Posições</a>
       <a class="nav-item" onclick="openTopic('controle')"><i data-lucide="lock"></i>Controle</a>
@@ -248,6 +288,7 @@
       <a class="nav-item" onclick="openTopic('transicoes')"><i data-lucide="link-2"></i>Transições</a>
       <a class="nav-item" onclick="openTopic('estrategia')"><i data-lucide="target"></i>Estratégia</a>
       <a class="nav-item" onclick="openTopic('cadeia')"><i data-lucide="layers"></i>Cadeia de Ataques</a>
+      <a class="nav-item" onclick="scrollToSection('checklist-section')"><i data-lucide="check-square"></i>Checklist</a>
       <a class="nav-item" onclick="openTopic('glossario')"><i data-lucide="book-open"></i>Glossário</a>
       <a class="nav-item" onclick="openTopic('sobre')"><i data-lucide="info"></i>Sobre este Atlas</a>
     </nav>
@@ -257,21 +298,20 @@
       <p>Sem cursos. Sem pagamentos.<br>Sem certificados. Apenas conhecimento organizado do Jiu-Jitsu.</p>
     </div>
     <div class="sidebar-footer">
-      <button class="icon-btn"><i data-lucide="settings"></i></button>
-      <button class="icon-btn"><i data-lucide="search"></i></button>
-      <button class="icon-btn"><i data-lucide="moon"></i></button>
+      <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Alternar tema claro/escuro"><i data-lucide="moon"></i></button>
     </div>
   </aside>
 
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div class="search"><i data-lucide="search"></i><span>Buscar um conceito, posição ou finalização...</span></div>
-      <div class="topbar-right">
-        <div class="bell-wrap"><i data-lucide="bell"></i><span class="bell-dot"></span></div>
-        <button class="icon-btn" style="border:1px solid var(--border);"><i data-lucide="settings"></i></button>
+      <div class="search">
+        <i data-lucide="search"></i>
+        <input id="search-input" type="text" placeholder="Buscar um conceito, posição ou finalização..." autocomplete="off" oninput="filterNav(this.value)">
       </div>
+      <div class="topbar-right"></div>
     </div>
+    <div id="search-results" class="search-results"></div>
 
     <div class="content-wrap">
       <div class="content-left">
@@ -297,18 +337,13 @@
           </div>
 
           <div class="section">
-            <div class="section-head"><h2>ESTRUTURA DO CONHECIMENTO</h2></div>
-            <div class="path-track">
-              <div class="path-step done"><div class="path-badge"><i data-lucide="check"></i></div><div class="path-icon"><i data-lucide="clock"></i></div><p>HISTÓRIA</p></div>
-              <div class="path-step done"><div class="path-badge"><i data-lucide="check"></i></div><div class="path-icon"><i data-lucide="compass"></i></div><p>PRINCÍPIOS</p></div>
-              <div class="path-step current"><div class="path-badge"><i data-lucide="check"></i></div><div class="path-icon"><i data-lucide="shield"></i></div><p>POSIÇÕES</p></div>
-              <div class="path-step"><span class="path-num">4</span><div class="path-icon"><i data-lucide="lock"></i></div><p>CONTROLE</p></div>
-              <div class="path-step"><span class="path-num">5</span><div class="path-icon"><i data-lucide="shield-off"></i></div><p>ESCAPES</p></div>
-              <div class="path-step"><span class="path-num">6</span><div class="path-icon"><i data-lucide="repeat"></i></div><p>GUARDIAS</p></div>
-              <div class="path-step"><span class="path-num">7</span><div class="path-icon"><i data-lucide="log-in"></i></div><p>PASSAGENS</p></div>
-              <div class="path-step"><span class="path-num">8</span><div class="path-icon"><i data-lucide="triangle"></i></div><p>MONTADA</p></div>
-              <div class="path-step"><span class="path-num">9</span><div class="path-icon"><i data-lucide="swords"></i></div><p>SUMISSÕES</p></div>
-            </div>
+            <div class="section-head"><h2>ESTRUTURA DO CONHECIMENTO</h2><span style="font-size:11.5px; color:var(--text-dis);">FICA VERDE CONFORME VOCÊ EXPLORA</span></div>
+            <div class="path-track" id="path-track"></div>
+          </div>
+
+          <div class="section" id="genealogia-section">
+            <div class="section-head"><h2>GENEALOGIA DO JIU-JITSU</h2><span style="font-size:11.5px; color:var(--text-dis);">CLIQUE EM UM NOME PARA VER A FICHA</span></div>
+            <div class="geneal-tree" id="geneal-tree"></div>
           </div>
 
           <div class="section" id="pos-section">
@@ -369,6 +404,13 @@
             <div class="section-head"><h2>MAPA DO CONHECIMENTO</h2></div>
             <div class="art-block" style="margin-bottom:0;">
               <p>Toda posição do Jiu-Jitsu se conecta a outras através de raspagens, passagens e finalizações. Clique em qualquer posição acima para ver como ela se conecta ao restante do mapa na seção "Mapa de Conexões", à direita.</p>
+            </div>
+          </div>
+
+          <div class="section" id="checklist-section">
+            <div class="section-head"><h2>CHECKLIST DO INICIANTE</h2><span style="font-size:11.5px; color:var(--text-dis);" id="checklist-progress"></span></div>
+            <div class="art-block" style="padding:10px 8px;">
+              <div id="checklist-container"></div>
             </div>
           </div>
 
@@ -707,12 +749,14 @@
     document.getElementById('modal-box').style.position='relative';
     document.getElementById('modal-overlay').classList.add('open');
     lucide.createIcons();
+    markVisited('posicoes');
   }
   function openTopic(key){
     document.getElementById('modal-box').innerHTML = renderTopicModal(key);
     document.getElementById('modal-box').style.position='relative';
     document.getElementById('modal-overlay').classList.add('open');
     lucide.createIcons();
+    markVisited(key);
   }
   function closeModal(){
     document.getElementById('modal-overlay').classList.remove('open');
@@ -734,6 +778,197 @@
     document.getElementById('home-view').style.display='block';
     window.scrollTo(0,0);
   }
+
+  /* ============ GENEALOGIA (história por nomes/anos, clicável) ============ */
+  const genealogy = {
+    origem1882:{yr:"1882",title:"Jigoro Kano funda o Judô",eyebrow:"ORIGEM · JAPÃO",intro:"Kano cria o Judô no Kodokan (Tóquio), sistematizando técnicas de jiu-jitsu japonês antigo em um método de treino seguro, com foco em alavanca e queda controlada.",tip:"O Judô é a raiz técnica direta de onde viria, décadas depois, o Jiu-Jitsu Brasileiro."},
+    maeda:{yr:"1914",title:"Mitsuyo Maeda chega ao Brasil",eyebrow:"ORIGEM · TRANSMISSÃO",intro:"Maeda, um dos melhores alunos de Kano, viaja o mundo fazendo desafios e chega a Belém do Pará, onde ensina judô/jiu-jitsu a Carlos Gracie.",tip:"Maeda também formou outros alunos brasileiros importantes, não só a família Gracie."},
+    carlos:{yr:"1925",title:"Carlos Gracie abre a 1ª academia",eyebrow:"FAMÍLIA GRACIE",intro:"Carlos Gracie funda a Academia Gracie no Rio de Janeiro e ensina os irmãos, entre eles Hélio, criando as bases do que seria chamado de Jiu-Jitsu Brasileiro.",tip:"Carlos também foi responsável por trazer conceitos de nutrição e estilo de vida ligados à prática."},
+    helio:{yr:"1932",title:"Hélio Gracie adapta as técnicas",eyebrow:"FAMÍLIA GRACIE",intro:"Menor e mais franzino, Hélio adapta as técnicas para depender de alavanca e ângulo, não de força — o princípio central do BJJ até hoje. Fica famoso por seus desafios públicos.",tip:"É a essa adaptação que se atribui a frase 'posição antes de finalização', pilar do jiu-jitsu moderno."},
+    fadda:{yr:"1950",title:"Oswaldo Fadda populariza fora do eixo Gracie",eyebrow:"OUTRA LINHAGEM",intro:"Aluno de Luiz França (outro aluno de Maeda), Fadda leva o jiu-jitsu a comunidades fora do circuito das academias Gracie, formando uma linhagem paralela importante.",tip:"Fadda é lembrado por vencer um desafio contra a Academia Gracie usando chaves de pé, até então pouco valorizadas."},
+    rolls:{yr:"1970s",title:"Rolls Gracie moderniza o jogo",eyebrow:"2ª GERAÇÃO",intro:"Sobrinho de Hélio, Rolls mistura wrestling e judô ao jiu-jitsu tradicional, criando bases do jiu-jitsu esportivo moderno, com mais raspagens e passagens dinâmicas.",tip:"Muitos consideram Rolls o primeiro a tratar o jiu-jitsu como esporte competitivo, além de autodefesa."},
+    rickson:{yr:"1980-90s",title:"Rickson Gracie leva o nome ao mundo",eyebrow:"2ª GERAÇÃO",intro:"Com um cartel invicto em desafios e vale-tudo, Rickson se torna o rosto mais respeitado da família na difusão internacional do jiu-jitsu.",tip:"O sucesso de Rickson e de Royce (seu irmão) no primeiro UFC (1993) foi decisivo para a fama mundial do BJJ."},
+    ibjjf:{yr:"1994",title:"Nasce a IBJJF",eyebrow:"ERA ESPORTIVA",intro:"A criação da federação internacional formaliza regras, categorias e o sistema de pontos, consolidando o jiu-jitsu esportivo como o conhecemos hoje.",tip:"Antes da IBJJF, competições regionais brasileiras já existiam, mas sem padronização global."},
+    academias:{yr:"2000s+",title:"Academias modernas se espalham",eyebrow:"ERA MODERNA",intro:"Equipes como Gracie Barra, Alliance, Checkmat e Atos, entre outras, formam gerações de faixas-pretas e levam o esporte a praticamente todos os países.",tip:"Hoje o jiu-jitsu esportivo tem estilos de jogo bem diferentes entre equipes, mas todos partem dos mesmos princípios da linhagem original."}
+  };
+  const genealogyLayout = [
+    {era:"RAIZ NO JAPÃO", keys:["origem1882"]},
+    {era:"CHEGADA AO BRASIL", keys:["maeda"]},
+    {era:"1ª GERAÇÃO GRACIE", keys:["carlos","helio","fadda"]},
+    {era:"2ª GERAÇÃO", keys:["rolls","rickson"]},
+    {era:"ERA ESPORTIVA", keys:["ibjjf","academias"]}
+  ];
+  function renderGenealogyModal(key){
+    const g = genealogy[key];
+    return `
+      <div class="modal-body" style="padding-top:26px;">
+        <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
+        <div class="modal-eyebrow">${g.eyebrow} · ${g.yr}</div>
+        <h2>${g.title}</h2>
+        <p>${g.intro}</p>
+        <div class="modal-tip"><b style="color:var(--accent-light);">Curiosidade:</b> ${g.tip}</div>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openGenealogy(key){
+    document.getElementById('modal-box').innerHTML = renderGenealogyModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+    markVisited('genealogia');
+  }
+  function renderGenealogyTree(){
+    const wrap = document.getElementById('geneal-tree');
+    wrap.innerHTML = genealogyLayout.map(era=>`
+      <div class="geneal-line"><div class="geneal-era">
+        <div class="geneal-era-label">${era.era}</div>
+        <div class="geneal-row">
+          ${era.keys.map(k=>`
+            <div class="geneal-node" onclick="openGenealogy('${k}')">
+              <span class="yr">${genealogy[k].yr}</span>
+              <span><span class="nm">${genealogy[k].title.split(' ').slice(0,3).join(' ')}</span><span class="role">${genealogy[k].eyebrow}</span></span>
+            </div>`).join('')}
+        </div>
+      </div></div>`).join('');
+  }
+  renderGenealogyTree();
+
+  /* ============ CHECKLIST (interativo, com memória local) ============ */
+  const checklistItems = [
+    "Sei saudar corretamente ao entrar e sair do tatame",
+    "Entendo e uso o 'tap out' sem hesitar",
+    "Consigo fazer o hip escape (shrimping) com fluidez",
+    "Reconheço as 6 posições fundamentais deste atlas",
+    "Consigo manter a guarda fechada básica",
+    "Consigo escapar do controle lateral pelo menos 1 em cada 3 tentativas",
+    "Entendo como montar um estrangulamento pelas costas",
+    "Entendo como montar um armlock com controle",
+    "Conheço pelo menos 10 termos do glossário",
+    "Já explorei a genealogia e sei de onde vem o BJJ"
+  ];
+  function getChecklistState(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-checklist')) || new Array(checklistItems.length).fill(false); }
+    catch(e){ return new Array(checklistItems.length).fill(false); }
+  }
+  function saveChecklistState(state){
+    try{ localStorage.setItem('atlasbjj-checklist', JSON.stringify(state)); }catch(e){}
+  }
+  function renderChecklist(){
+    const state = getChecklistState();
+    const container = document.getElementById('checklist-container');
+    container.innerHTML = checklistItems.map((txt,i)=>`
+      <div class="check-row ${state[i]?'done':''}" onclick="toggleCheck(${i})">
+        <div class="check-box ${state[i]?'on':''}">${state[i]?'<i data-lucide=\"check\"></i>':''}</div>
+        <span class="txt">${txt}</span>
+      </div>`).join('');
+    const done = state.filter(Boolean).length;
+    document.getElementById('checklist-progress').textContent = done+' / '+checklistItems.length+' CONCLUÍDO';
+    lucide.createIcons();
+  }
+  function toggleCheck(i){
+    const state = getChecklistState();
+    state[i] = !state[i];
+    saveChecklistState(state);
+    renderChecklist();
+  }
+  renderChecklist();
+
+  /* ============ PATH-TRACK dinâmico (marca progresso real) ============ */
+  const pathSteps = [
+    {key:'genealogia', icon:'clock', label:'HISTÓRIA'},
+    {key:'principios', icon:'compass', label:'PRINCÍPIOS'},
+    {key:'posicoes', icon:'shield', label:'POSIÇÕES'},
+    {key:'controle', icon:'lock', label:'CONTROLE'},
+    {key:'escapes', icon:'shield-off', label:'ESCAPES'},
+    {key:'guardas', icon:'repeat', label:'GUARDAS'},
+    {key:'passagens', icon:'log-in', label:'PASSAGENS'},
+    {key:'sumissoes', icon:'swords', label:'SUMISSÕES'},
+    {key:'cadeia', icon:'layers', label:'ESTRATÉGIA'}
+  ];
+  function getVisited(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-visited')) || []; }catch(e){ return []; }
+  }
+  function markVisited(key){
+    const visited = getVisited();
+    if(!visited.includes(key)){
+      visited.push(key);
+      try{ localStorage.setItem('atlasbjj-visited', JSON.stringify(visited)); }catch(e){}
+    }
+    renderPathTrack();
+  }
+  function renderPathTrack(){
+    const visited = getVisited();
+    const wrap = document.getElementById('path-track');
+    let currentSet = false;
+    wrap.innerHTML = pathSteps.map((s,i)=>{
+      const done = visited.includes(s.key);
+      const isCurrent = !done && !currentSet;
+      if(isCurrent) currentSet = true;
+      return `<div class="path-step ${done?'done':(isCurrent?'current':'')}" style="cursor:pointer;" onclick="jumpToStep('${s.key}')">
+        ${done ? `<div class="path-badge"><i data-lucide="check"></i></div>` : `<span class="path-num">${i+1}</span>`}
+        <div class="path-icon"><i data-lucide="${s.icon}"></i></div><p>${s.label}</p>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+  function jumpToStep(key){
+    if(key==='genealogia') return scrollToSection('genealogia-section');
+    if(key==='posicoes') return scrollToSection('pos-section');
+    openTopic(key);
+  }
+  renderPathTrack();
+
+  /* ============ BUSCADOR funcional ============ */
+  const searchIndex = [
+    ...Object.keys(topics).map(k=>({key:k, title:topics[k].title, type:'topic'})),
+    ...Object.keys(positions).map(k=>({key:k, title:positions[k].title, type:'position'})),
+    ...Object.keys(genealogy).map(k=>({key:k, title:genealogy[k].title, type:'genealogy'}))
+  ];
+  function filterNav(query){
+    const box = document.getElementById('search-results');
+    const q = query.trim().toLowerCase();
+    if(!q){ box.innerHTML=''; return; }
+    const matches = searchIndex.filter(it=>it.title.toLowerCase().includes(q)).slice(0,7);
+    if(!matches.length){ box.innerHTML = `<div class="sr-panel"><div class="sr-empty">Nenhum resultado para "${query}"</div></div>`; return; }
+    box.innerHTML = `<div class="sr-panel">${matches.map(m=>`<div class="sr-item" onclick="goToSearchResult('${m.type}','${m.key}')">${m.title}</div>`).join('')}</div>`;
+  }
+  function goToSearchResult(type,key){
+    document.getElementById('search-results').innerHTML='';
+    document.getElementById('search-input').value='';
+    if(type==='topic') openTopic(key);
+    else if(type==='position') openPositionModal(key);
+    else openGenealogy(key);
+  }
+
+  /* ============ TEMA claro/escuro (real) ============ */
+  function toggleTheme(){
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    try{ localStorage.setItem('atlasbjj-theme', isLight ? 'light' : 'dark'); }catch(e){}
+    document.getElementById('theme-toggle').innerHTML = isLight ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+    lucide.createIcons();
+  }
+  (function initTheme(){
+    try{
+      if(localStorage.getItem('atlasbjj-theme')==='light'){
+        document.body.classList.add('light');
+        document.getElementById('theme-toggle').innerHTML = '<i data-lucide="sun"></i>';
+        lucide.createIcons();
+      }
+    }catch(e){}
+  })();
+
+  /* ============ BARRA DE PROGRESSO real (atada ao scroll) ============ */
+  function updateProgressBar(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop || document.body.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled/max)*100 : 0;
+    document.getElementById('progress-fill').style.width = pct+'%';
+  }
+  document.addEventListener('scroll', updateProgressBar, true);
+  window.addEventListener('scroll', updateProgressBar);
+  updateProgressBar();
 </script>
 </body>
 </html>
