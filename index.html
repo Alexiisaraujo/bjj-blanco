@@ -219,16 +219,6 @@
   .geneal-node .role{display:block; font-size:10.5px; font-weight:500; color:var(--text-dis); margin-top:1px;}
   .geneal-line{border-left:2px dashed var(--border); margin-left:8px; padding-left:20px;}
 
-  /* CHECKLIST */
-  .check-row{display:flex; align-items:center; gap:14px; padding:13px 10px; border-bottom:1px solid var(--border); cursor:pointer; transition:.15s;}
-  .check-row:last-child{border-bottom:none;}
-  .check-row:hover{background:var(--panel);}
-  .check-box{width:20px; height:20px; border-radius:6px; border:1.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:.15s;}
-  .check-box.on{background:var(--accent); border-color:var(--accent);}
-  .check-box.on svg{width:13px; height:13px; color:#fff; stroke-width:3;}
-  .check-row span.txt{font-size:13px; color:var(--text-sec); transition:.15s;}
-  .check-row.done span.txt{color:var(--text-dis); text-decoration:line-through;}
-
   /* MODAL */
   .modal-overlay{
     position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(3px);
@@ -301,7 +291,6 @@
       <a class="nav-item" onclick="openTopic('estrategia')"><i data-lucide="target"></i>Estratégia</a>
       <a class="nav-item" onclick="openTopic('cadeia')"><i data-lucide="layers"></i>Cadeia de Ataques</a>
       <a class="nav-item" onclick="scrollToSection('fundamentos-section')"><i data-lucide="layout-grid"></i>Fundamentos (5+5+5)</a>
-      <a class="nav-item" onclick="scrollToSection('checklist-section')"><i data-lucide="check-square"></i>Checklist</a>
       <a class="nav-item" onclick="openTopic('glossario')"><i data-lucide="book-open"></i>Glossário</a>
       <a class="nav-item" onclick="openTopic('sobre')"><i data-lucide="info"></i>Sobre este Atlas</a>
     </nav>
@@ -433,13 +422,6 @@
             <div class="fund-block">
               <div class="fund-label">5 DEFESAS</div>
               <div class="fund-row" id="fund-defesas"></div>
-            </div>
-          </div>
-
-          <div class="section" id="checklist-section">
-            <div class="section-head"><h2>CHECKLIST DO INICIANTE</h2><span style="font-size:11.5px; color:var(--text-dis);" id="checklist-progress"></span></div>
-            <div class="art-block" style="padding:10px 8px;">
-              <div id="checklist-container"></div>
             </div>
           </div>
 
@@ -945,46 +927,6 @@
     lucide.createIcons();
   }
   renderFundamentals();
-
-  /* ============ CHECKLIST (interativo, com memória local) ============ */
-  const checklistItems = [
-    "Sei saudar corretamente ao entrar e sair do tatame",
-    "Entendo e uso o 'tap out' sem hesitar",
-    "Consigo fazer o hip escape (shrimping) com fluidez",
-    "Reconheço as 6 posições fundamentais deste atlas",
-    "Consigo manter a guarda fechada básica",
-    "Consigo escapar do controle lateral pelo menos 1 em cada 3 tentativas",
-    "Entendo como montar um estrangulamento pelas costas",
-    "Entendo como montar um armlock com controle",
-    "Conheço pelo menos 10 termos do glossário",
-    "Já explorei a genealogia e sei de onde vem o BJJ"
-  ];
-  function getChecklistState(){
-    try{ return JSON.parse(localStorage.getItem('atlasbjj-checklist')) || new Array(checklistItems.length).fill(false); }
-    catch(e){ return new Array(checklistItems.length).fill(false); }
-  }
-  function saveChecklistState(state){
-    try{ localStorage.setItem('atlasbjj-checklist', JSON.stringify(state)); }catch(e){}
-  }
-  function renderChecklist(){
-    const state = getChecklistState();
-    const container = document.getElementById('checklist-container');
-    container.innerHTML = checklistItems.map((txt,i)=>`
-      <div class="check-row ${state[i]?'done':''}" onclick="toggleCheck(${i})">
-        <div class="check-box ${state[i]?'on':''}">${state[i]?'<i data-lucide=\"check\"></i>':''}</div>
-        <span class="txt">${txt}</span>
-      </div>`).join('');
-    const done = state.filter(Boolean).length;
-    document.getElementById('checklist-progress').textContent = done+' / '+checklistItems.length+' CONCLUÍDO';
-    lucide.createIcons();
-  }
-  function toggleCheck(i){
-    const state = getChecklistState();
-    state[i] = !state[i];
-    saveChecklistState(state);
-    renderChecklist();
-  }
-  renderChecklist();
 
   /* ============ PATH-TRACK dinâmico (marca progresso real) ============ */
   const pathSteps = [
