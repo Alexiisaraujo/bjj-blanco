@@ -207,13 +207,6 @@
   @media (max-width:860px){ .glos-grid{grid-template-columns:1fr;} }
 
   /* TIMER */
-  .timer-box{text-align:center; padding:34px 24px;}
-  .timer-display{font-size:64px; font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-1px;}
-  .timer-label{font-size:12px; font-weight:800; letter-spacing:1.5px; color:var(--accent-light); text-transform:uppercase; margin-top:4px;}
-  .timer-controls{display:flex; gap:10px; justify-content:center; margin-top:22px;}
-  .timer-settings{display:flex; gap:22px; justify-content:center; margin-top:24px; flex-wrap:wrap;}
-  .timer-settings label{font-size:11.5px; color:var(--text-sec); display:flex; flex-direction:column; gap:6px; font-weight:600;}
-  .timer-settings input{width:70px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); font-family:inherit; text-align:center;}
 
   /* FUNDAMENTOS (5+5+5) */
   .fund-block{margin-bottom:20px;}
@@ -274,34 +267,96 @@
   }
   .modal-footer{display:flex; gap:10px; margin-top:18px;}
 
+  /* MOBILE NAV DRAWER */
+  #sidebar-overlay{display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:499; backdrop-filter:blur(1px);}
+  #sidebar-overlay.open{display:block;}
+  .menu-btn{display:none; flex-shrink:0;}
+  .mobile-brand{display:none; align-items:center; gap:8px; flex-shrink:0;}
+  .mobile-brand .brand-mark{width:26px; height:26px; border-radius:7px;}
+  .mobile-brand .brand-mark svg{width:14px; height:14px;}
+  .mobile-brand .brand-text-a{font-size:13px; font-weight:800;}
+  .sidebar-close-btn{display:none; margin-left:auto;}
+
   @media (max-width:1200px){ .content-wrap{grid-template-columns:1fr;} .path-track{grid-template-columns:repeat(5,1fr);} .pos-grid{grid-template-columns:repeat(2,1fr);} .two-col{grid-template-columns:1fr;} }
-  @media (max-width:860px){ .app{grid-template-columns:1fr;} .sidebar{display:none;} .path-track{grid-template-columns:repeat(3,1fr);} .pos-grid{grid-template-columns:1fr;} .hero h1{font-size:30px;} }
+
+  @media (max-width:860px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{
+      position:fixed; top:0; left:0; height:100vh; width:82vw; max-width:300px; z-index:500;
+      transform:translateX(-100%); transition:transform .25s ease; box-shadow:0 0 40px rgba(0,0,0,.5);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .sidebar-close-btn{display:flex;}
+    .menu-btn{display:flex;}
+    .mobile-brand{display:flex;}
+    .pos-grid{grid-template-columns:1fr 1fr;}
+    .hero h1{font-size:28px;}
+    .hero{min-height:260px;}
+    .hero-content{padding:28px 22px;}
+    .hero p{font-size:13px;}
+    .hero-actions{flex-wrap:wrap;}
+    .topbar{padding:14px 16px; gap:10px;}
+    .content-wrap{padding:0 16px 32px 16px;}
+    .search input{font-size:12.5px;}
+    .search-results{margin:0 16px;}
+    .lib-banner{flex-wrap:wrap; padding:12px 14px;}
+    .section-head{flex-wrap:wrap; gap:6px;}
+    .fund-row{grid-template-columns:repeat(2,1fr);}
+    .path-track{grid-template-columns:repeat(3,1fr);}
+    .glos-grid{grid-template-columns:1fr;}
+    .modal-overlay{padding:0; align-items:flex-end;}
+    .modal-box{max-width:none; max-height:92vh; border-radius:18px 18px 0 0; border-bottom:none;}
+    .modal-body{padding:20px 18px 24px 18px;}
+    .modal-body h2{font-size:19px;}
+    .article-hero{height:200px;}
+    .article-hero-content{padding:20px 18px;}
+    .article-hero-content h1{font-size:24px;}
+    .geneal-tree{padding-left:10px;}
+    .geneal-line{padding-left:14px;}
+  }
+
+  @media (max-width:480px){
+    .pos-grid{grid-template-columns:1fr;}
+    .pos-thumb{height:170px;}
+    .fund-row{grid-template-columns:repeat(2,1fr);}
+    .path-track{grid-template-columns:repeat(2,1fr);}
+    .hero h1{font-size:24px;}
+    .hero-content{padding:22px 18px;}
+    .btn{padding:11px 16px; font-size:12.5px;}
+    .modal-body h2{font-size:18px;}
+    .tag-row{flex-wrap:wrap; gap:6px;}
+    .brand-text-b{display:none;}
+  }
 </style>
 </head>
 <body>
 
 <div id="progress-track"><div id="progress-fill"></div></div>
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <div class="app">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark"><i data-lucide="triangle"></i></div>
       <div>
         <div class="brand-text-a">ATLAS BJJ</div>
         <div class="brand-text-b">BIBLIOTECA INTERATIVA</div>
       </div>
+      <button class="icon-btn sidebar-close-btn" onclick="closeSidebar()" title="Fechar menu"><i data-lucide="x"></i></button>
     </div>
-    <nav class="nav">
+    <nav class="nav" onclick="closeSidebar()">
       <a class="nav-item active" onclick="showHome()"><i data-lucide="home"></i>Início</a>
       <a class="nav-item" onclick="scrollToSection('map-section')"><i data-lucide="share-2"></i>Mapa de Transições</a>
       <a class="nav-item" onclick="scrollToSection('genealogia-section')"><i data-lucide="git-branch"></i>Genealogia</a>
       <a class="nav-item" onclick="openTopic('historia')"><i data-lucide="clock"></i>História (resumo)</a>
       <a class="nav-item" onclick="openTopic('principios')"><i data-lucide="compass"></i>Princípios</a>
+      <a class="nav-item" onclick="scrollToSection('drills-section')"><i data-lucide="flame"></i>Aquecimento &amp; Drills</a>
+      <a class="nav-item" onclick="scrollToSection('quedas-section')"><i data-lucide="move-down"></i>Quedas (Takedowns)</a>
       <a class="nav-item" onclick="scrollToSection('pos-section')"><i data-lucide="shield"></i>Posições</a>
       <a class="nav-item" onclick="openTopic('controle')"><i data-lucide="lock"></i>Controle</a>
-      <a class="nav-item" onclick="openTopic('escapes')"><i data-lucide="footprints"></i>Escapes</a>
+      <a class="nav-item" onclick="scrollToSection('escapes-section')"><i data-lucide="footprints"></i>Escapes</a>
       <a class="nav-item" onclick="openTopic('guardas')"><i data-lucide="repeat"></i>Guardas</a>
       <a class="nav-item" onclick="openTopic('passagens')"><i data-lucide="move-right"></i>Passagens</a>
       <a class="nav-item" onclick="openPositionModal('montada')"><i data-lucide="triangle"></i>Montada</a>
@@ -313,7 +368,6 @@
       <a class="nav-item" onclick="scrollToSection('fundamentos-section')"><i data-lucide="layout-grid"></i>Fundamentos (5+5+5)</a>
       <a class="nav-item" onclick="scrollToSection('regras-section')"><i data-lucide="scale"></i>Regras &amp; Etiqueta</a>
       <a class="nav-item" onclick="scrollToSection('glossario-section')"><i data-lucide="book-open"></i>Glossário</a>
-      <a class="nav-item" onclick="scrollToSection('timer-section')"><i data-lucide="timer"></i>Cronômetro</a>
       <a class="nav-item" onclick="openTopic('sobre')"><i data-lucide="info"></i>Sobre este Atlas</a>
     </nav>
     <div class="sidebar-promo">
@@ -329,6 +383,11 @@
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
+      <button class="icon-btn menu-btn" onclick="toggleSidebar()" title="Abrir menu"><i data-lucide="menu"></i></button>
+      <div class="mobile-brand">
+        <div class="brand-mark"><i data-lucide="triangle"></i></div>
+        <div class="brand-text-a">ATLAS BJJ</div>
+      </div>
       <div class="search">
         <i data-lucide="search"></i>
         <input id="search-input" type="text" placeholder="Buscar um conceito, posição ou finalização..." autocomplete="off" oninput="filterNav(this.value)">
@@ -349,7 +408,7 @@
           </div>
 
           <div class="hero">
-            <img src="https://images.unsplash.com/photo-1742863067822-7719483acb63?w=1600&q=80&auto=format&fit=crop" alt="Jiu-Jitsu">
+            <img src="https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=1600&q=80&auto=format&fit=crop" alt="Jiu-Jitsu">
             <div class="hero-content">
               <h1>A TEORIA DO<br>JIU-JITSU, EXPLICADA<br>COM PRECISÃO.</h1>
               <p>Um atlas interativo dos conceitos, posições e conexões do Jiu-Jitsu Brasileiro — construído para ser correto do ponto de vista técnico, do zero ao cinturão azul.</p>
@@ -368,6 +427,18 @@
           <div class="section" id="genealogia-section">
             <div class="section-head"><h2>GENEALOGIA DO JIU-JITSU</h2><span style="font-size:11.5px; color:var(--text-dis);">CLIQUE EM UM NOME PARA VER A FICHA</span></div>
             <div class="geneal-tree" id="geneal-tree"></div>
+          </div>
+
+          <div class="section" id="drills-section">
+            <div class="section-head"><h2>AQUECIMENTO &amp; DRILLS SOLO</h2><span style="font-size:11.5px; color:var(--text-dis);">O QUE SE TREINA ANTES DE TOCAR NO COMPANHEIRO</span></div>
+            <div class="lib-banner"><i data-lucide="flame"></i>Toda aula de verdade começa aqui — não com uma técnica de ataque. Estes drills ensinam o corpo a se mover no chão e a cair com segurança antes de qualquer sparring.</div>
+            <div class="pos-grid" id="drills-grid"></div>
+          </div>
+
+          <div class="section" id="quedas-section">
+            <div class="section-head"><h2>QUEDAS (TAKEDOWNS)</h2><span style="font-size:11.5px; color:var(--text-dis);">TODO COMBATE COMEÇA EM PÉ</span></div>
+            <div class="lib-banner"><i data-lucide="move-down"></i>Antes de chegar ao chão, alguém precisa levar a luta para lá. Um cinturão branco precisa conhecer pelo menos estas quedas básicas.</div>
+            <div class="pos-grid" id="quedas-grid"></div>
           </div>
 
           <div class="section" id="pos-section">
@@ -390,7 +461,7 @@
                 </div>
               </div>
               <div class="pos-card" onclick="openPositionModal('lateral')">
-                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1681923445357-0679553160da?w=700&q=80&auto=format&fit=crop" alt="Side Control"></div>
+                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=700&q=80&auto=format&fit=crop" alt="Side Control"></div>
                 <div class="pos-body">
                   <div class="pos-title"><span class="dot" style="background:rgba(250,204,21,.15); color:#facc15;"><i data-lucide="minus"></i></span>Controle Lateral (100kg)</div>
                   <p class="pos-desc">Posição dominante de pressão perpendicular ao oponente.</p>
@@ -398,7 +469,7 @@
                 </div>
               </div>
               <div class="pos-card" onclick="openPositionModal('montada')">
-                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1688744251358-1a195a6a6e66?w=700&q=80&auto=format&fit=crop" alt="Montada"></div>
+                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1682545888368-587f56efd06e?w=700&q=80&auto=format&fit=crop" alt="Montada"></div>
                 <div class="pos-body">
                   <div class="pos-title"><span class="dot" style="background:rgba(239,68,68,.15); color:#ef4444;"><i data-lucide="triangle"></i></span>Montada</div>
                   <p class="pos-desc">A posição dominante mais reconhecida do BJJ. Máxima pressão e opções de ataque.</p>
@@ -406,7 +477,7 @@
                 </div>
               </div>
               <div class="pos-card" onclick="openPositionModal('costas')">
-                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1624824179660-80d32a64a887?w=700&q=80&auto=format&fit=crop" alt="Controle das Costas"></div>
+                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1585537884613-1a9bcd024983?w=700&q=80&auto=format&fit=crop" alt="Controle das Costas"></div>
                 <div class="pos-body">
                   <div class="pos-title"><span class="dot" style="background:rgba(168,85,247,.15); color:#a855f7;"><i data-lucide="user-check"></i></span>Controle das Costas</div>
                   <p class="pos-desc">A posição de maior vantagem estatística. Acesso direto ao estrangulamento.</p>
@@ -414,7 +485,7 @@
                 </div>
               </div>
               <div class="pos-card" onclick="openPositionModal('turtle')">
-                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1599677099973-995395c04be1?w=700&q=80&auto=format&fit=crop" alt="Turtle"></div>
+                <div class="pos-thumb"><img src="https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=700&q=80&auto=format&fit=crop" alt="Turtle"></div>
                 <div class="pos-body">
                   <div class="pos-title"><span class="dot" style="background:rgba(161,161,170,.15); color:#a1a1aa;"><i data-lucide="circle-dashed"></i></span>Turtle (Quatro Apoios)</div>
                   <p class="pos-desc">Posição defensiva de transição. Ponto de partida para retomar a guarda.</p>
@@ -422,6 +493,12 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="section" id="escapes-section">
+            <div class="section-head"><h2>ESCAPES ESSENCIAIS</h2><span style="font-size:11.5px; color:var(--text-dis);">UM BRANCO ESCAPA MUITO MAIS DO QUE ATACA</span></div>
+            <div class="lib-banner"><i data-lucide="footprints"></i>Nas primeiras aulas você passa a maior parte do tempo por baixo, não por cima. Saber sair de uma posição ruim é mais urgente do que qualquer finalização. <a onclick="openTopic('escapes')" style="color:var(--accent-light); font-weight:700; cursor:pointer;">Ler o conceito</a></div>
+            <div class="pos-grid" id="escapes-grid"></div>
           </div>
 
           <div id="map-section" class="section">
@@ -483,24 +560,6 @@
           <div class="section" id="glossario-section">
             <div class="section-head"><h2>GLOSSÁRIO COMPLETO</h2></div>
             <div class="glos-grid" id="glossario-full"></div>
-          </div>
-
-          <div class="section" id="timer-section">
-            <div class="section-head"><h2>CRONÔMETRO DE SPARRING</h2><span style="font-size:11.5px; color:var(--text-dis);">ROUNDS COM DESCANSO, IGUAL TREINO DE VERDADE</span></div>
-            <div class="art-block timer-box">
-              <div class="timer-display" id="timer-display">05:00</div>
-              <div class="timer-label" id="timer-label">PRONTO</div>
-              <div class="timer-controls">
-                <button class="btn btn-primary" id="timer-start" onclick="timerStart()"><i data-lucide="play"></i>INICIAR</button>
-                <button class="btn btn-ghost" onclick="timerPause()"><i data-lucide="pause"></i>PAUSAR</button>
-                <button class="btn btn-ghost" onclick="timerReset()"><i data-lucide="rotate-ccw"></i>RESETAR</button>
-              </div>
-              <div class="timer-settings">
-                <label>Round (min) <input type="number" id="timer-round-min" value="5" min="1" max="15"></label>
-                <label>Descanso (min) <input type="number" id="timer-rest-min" value="1" min="0" max="5"></label>
-                <label>Rounds <input type="number" id="timer-rounds" value="5" min="1" max="10"></label>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -718,7 +777,7 @@
     lateral: {
       eyebrow:"POSIÇÃO · CONTROLE",
       title:"Controle Lateral (100kg)",
-      img:"https://images.unsplash.com/photo-1681923445357-0679553160da?w=900&q=80&auto=format&fit=crop",
+      img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=900&q=80&auto=format&fit=crop",
       intro:"Posição dominante em que você fica perpendicular ao oponente, pressionando o peito dele com o seu peso.",
       steps:[
         "Fique deitado sobre o oponente, seu peito cruzando o peito dele em ângulo reto.",
@@ -733,7 +792,7 @@
     montada: {
       eyebrow:"POSIÇÃO · MONTADA",
       title:"Montada",
-      img:"https://images.unsplash.com/photo-1688744251358-1a195a6a6e66?w=900&q=80&auto=format&fit=crop",
+      img:"https://images.unsplash.com/photo-1682545888368-587f56efd06e?w=900&q=80&auto=format&fit=crop",
       intro:"A posição dominante mais reconhecida do Jiu-Jitsu: você senta sobre o quadril do oponente com um joelho de cada lado do corpo dele.",
       steps:[
         "Sente-se sobre o quadril do oponente, com os joelhos apoiados no chão de cada lado do tronco dele.",
@@ -748,7 +807,7 @@
     costas: {
       eyebrow:"POSIÇÃO · CONTROLE",
       title:"Controle das Costas",
-      img:"https://images.unsplash.com/photo-1624824179660-80d32a64a887?w=900&q=80&auto=format&fit=crop",
+      img:"https://images.unsplash.com/photo-1585537884613-1a9bcd024983?w=900&q=80&auto=format&fit=crop",
       intro:"Considerada a posição de maior vantagem estatística do Jiu-Jitsu, com acesso direto ao pescoço do oponente.",
       steps:[
         "Fique atrás do oponente com o seu peito colado nas costas dele.",
@@ -763,7 +822,7 @@
     turtle: {
       eyebrow:"POSIÇÃO · DEFENSIVA",
       title:"Turtle (Quatro Apoios)",
-      img:"https://images.unsplash.com/photo-1599677099973-995395c04be1?w=900&q=80&auto=format&fit=crop",
+      img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=900&q=80&auto=format&fit=crop",
       intro:"Posição defensiva de transição, usada quando você está de quatro apoios enquanto o oponente ataca por cima ou por trás.",
       steps:[
         "Fique de quatro apoios, com cotovelos e joelhos próximos ao corpo para fechar espaços.",
@@ -776,6 +835,288 @@
       hasFull:false
     }
   };
+
+  /* ============ QUEDAS (TAKEDOWNS) ============ */
+  const takedowns = {
+    'dupla':{
+      eyebrow:"QUEDA · DUPLA ATAQUE",
+      title:"Queda Dupla nas Pernas (Double Leg)",
+      img:"https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=900&q=80&auto=format&fit=crop",
+      intro:"A queda mais fundamental do wrestling e do jiu-jitsu sem kimono: você abaixa o nível, entra por baixo do centro de gravidade do oponente e prende as duas pernas dele para derrubá-lo.",
+      steps:[
+        "Abaixe o nível dobrando os joelhos, mantendo as costas retas — nunca curve a coluna para descer.",
+        "Dê um passo à frente com o pé da frente entre os pés do oponente, penetrando o espaço dele.",
+        "Envolva as duas pernas dele na altura das coxas, cabeça colada no peito ou ao lado da cintura dele (nunca na frente, para não tomar uma cotovelada ou guilhotina).",
+        "Puxe as pernas dele para você enquanto empurra o peito para frente, cortando o ângulo com os pés.",
+        "Complete levando-o ao chão com controle, mantendo a pressão do seu peso sobre ele na queda."
+      ],
+      tip:"O erro mais comum é abaixar a cabeça em vez do nível do quadril — isso expõe o pescoço para uma guilhotina. Nível baixo vem das pernas, não da cabeça.",
+      hasFull:false
+    },
+    'guardapuxada':{
+      eyebrow:"QUEDA · AUTO-QUEDA",
+      title:"Puxar a Guarda (Guard Pull)",
+      img:"https://images.unsplash.com/photo-1682545888368-587f56efd06e?w=900&q=80&auto=format&fit=crop",
+      intro:"Em vez de derrubar o oponente, você mesmo se leva ao chão de forma controlada, puxando-o para dentro da sua guarda. É a estratégia inicial mais usada no jiu-jitsu esportivo com kimono.",
+      steps:[
+        "Feche uma pegada firme na manga e na gola (ou em ambas as mangas) do oponente, mantendo distância de quadril.",
+        "Sente no chão de forma controlada, um quadril de cada vez — nunca caia sentado com as duas pernas juntas de uma vez.",
+        "Use os pés para tocar o quadril ou o bíceps dele, controlando a distância enquanto desce.",
+        "Puxe-o na sua direção com as mãos assim que o seu quadril tocar o chão, para não deixar espaço para ele passar direto.",
+        "Feche a guarda fechada ou aberta imediatamente, antes que ele consiga se afastar ou pressionar."
+      ],
+      tip:"Puxar a guarda sem controlar a manga ou a gola é o erro clássico — sem essa pegada, o oponente simplesmente dá um passo atrás e você fica sentado sem guarda nenhuma.",
+      hasFull:false
+    },
+    'simples':{
+      eyebrow:"QUEDA · UMA PERNA",
+      title:"Queda Simples (Single Leg)",
+      img:"https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=900&q=80&auto=format&fit=crop",
+      intro:"Ataque a uma única perna do oponente, geralmente usado quando ele reage à ameaça da queda dupla ou quando você já tem um grip de manga ou pescoço.",
+      steps:[
+        "Abaixe o nível e prenda apenas uma perna do oponente, envolvendo o joelho ou a coxa dele com os dois braços.",
+        "Levante ligeiramente a perna presa para tirar o equilíbrio dele, mantendo o peito colado na perna.",
+        "Ande em círculo na direção da perna de apoio dele, forçando-o a saltar ou perder a base.",
+        "Finalize derrubando-o para o lado, acompanhando a queda com o próprio corpo em vez de soltar a perna cedo.",
+        "Assim que ele tocar o chão, avance a posição em vez de recuar."
+      ],
+      tip:"Soltar a perna cedo demais é o erro mais comum — mantenha o controle até o oponente estar completamente no chão.",
+      hasFull:false
+    }
+  };
+  function renderTakedownModal(key){
+    const p = takedowns[key];
+    let stepsHtml = p.steps.map((s,i)=>`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('');
+    return `
+      <div class="modal-img">
+        <img src="${p.img}" alt="${p.title}">
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-eyebrow">${p.eyebrow}</div>
+        <h2>${p.title}</h2>
+        <p>${p.intro}</p>
+        <ol class="modal-steps">${stepsHtml}</ol>
+        <div class="modal-tip"><b style="color:var(--accent-light);">Dica:</b> ${p.tip}</div>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openTakedown(key){
+    document.getElementById('modal-box').innerHTML = renderTakedownModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+    markVisited('quedas');
+  }
+  function renderQuedasGrid(){
+    const icons = {dupla:['crosshair','rgba(37,99,235,.15)','var(--accent-light)'], guardapuxada:['arrow-down-to-line','rgba(34,197,94,.15)','#22c55e'], simples:['footprints','rgba(250,204,21,.15)','#facc15']};
+    const wrap = document.getElementById('quedas-grid');
+    wrap.innerHTML = Object.keys(takedowns).map(k=>{
+      const t = takedowns[k], ic = icons[k];
+      return `<div class="pos-card" onclick="openTakedown('${k}')">
+        <div class="pos-thumb"><img src="${t.img.replace('w=900','w=700')}" alt="${t.title}"></div>
+        <div class="pos-body">
+          <div class="pos-title"><span class="dot" style="background:${ic[1]}; color:${ic[2]};"><i data-lucide="${ic[0]}"></i></span>${t.title}</div>
+          <p class="pos-desc">${t.intro.slice(0,90)}${t.intro.length>90?'…':''}</p>
+          <a class="pos-link"><i data-lucide="help-circle" style="width:13px;height:13px;"></i>COMO SE FAZ</a>
+        </div>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  /* ============ ESCAPES ESSENCIAIS (técnicas concretas) ============ */
+  const escapesTech = {
+    'lateral':{
+      eyebrow:"ESCAPE · CONTROLE LATERAL",
+      title:"Escape do Controle Lateral (Hip Escape)",
+      img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=900&q=80&auto=format&fit=crop",
+      intro:"O escape mais usado do jiu-jitsu. Usa o frame e o movimento de quadril (shrimping) para criar espaço e recompor a guarda quando o oponente está no controle lateral.",
+      steps:[
+        "Faça um frame com o antebraço mais próximo contra o pescoço ou o quadril dele, criando uma barreira rígida.",
+        "Vire de lado, na direção do oponente, tirando o quadril de baixo do peso dele.",
+        "Empurre com a perna de baixo (a que está mais perto do chão) para deslocar o quadril para trás, afastando-se dele — é o movimento de shrimping.",
+        "Traga o joelho mais próximo do oponente para dentro, na direção do seu próprio cotovelo, criando espaço para inserir a perna.",
+        "Insira o pé ou o joelho entre o seu corpo e o dele para recompor a guarda."
+      ],
+      tip:"Empurre com a perna, não puxe com os braços — a força do escape vem do quadril e da perna de baixo, os braços só seguram o espaço já criado.",
+      hasFull:false
+    },
+    'montada':{
+      eyebrow:"ESCAPE · MONTADA",
+      title:"Escape da Montada (Ponte e Giro / Upa)",
+      img:"https://images.unsplash.com/photo-1682545888368-587f56efd06e?w=900&q=80&auto=format&fit=crop",
+      intro:"Usa uma ponte explosiva de quadril (bridge) para desequilibrar o oponente montado em você e criar espaço para recompor a guarda ou derrubá-lo de lado.",
+      steps:[
+        "Prenda um dos pulsos ou braços dele contra o seu peito e trave o mesmo lado da perna dele com sua mão ou pé, imobilizando aquele lado do corpo dele.",
+        "Plante os pés no chão, próximos aos glúteos, e levante bem o quadril em direção ao teto (a ponte/bridge).",
+        "No auge da ponte, gire o corpo para o lado do braço/perna que você travou, jogando-o para fora do equilíbrio.",
+        "Acompanhe o giro com o quadril até ficar de lado ou por cima dele, dentro da guarda dele.",
+        "Se ele resistir e você não conseguir virar por cima, recue o quadril para trás e recomponha a guarda fechada."
+      ],
+      tip:"A ponte sem travar o braço e a perna do mesmo lado quase nunca funciona — o oponente só absorve o movimento com a mão livre. Trave primeiro, depois faça a ponte.",
+      hasFull:false
+    },
+    'costas':{
+      eyebrow:"ESCAPE · COSTAS",
+      title:"Escape do Controle das Costas",
+      img:"https://images.unsplash.com/photo-1585537884613-1a9bcd024983?w=900&q=80&auto=format&fit=crop",
+      intro:"A prioridade número um quando o oponente pega as suas costas é proteger o pescoço antes de qualquer tentativa de fuga — sem isso, o mata-leão vem primeiro.",
+      steps:[
+        "Feche as duas mãos ao redor do antebraço dele que está indo em direção ao seu pescoço, protegendo o queixo com o ombro.",
+        "Puxe esse braço para baixo, afastando-o do pescoço, enquanto mantém o queixo colado no peito.",
+        "Trabalhe para remover um dos ganchos (hooks) dele por dentro da sua coxa, usando sua mão para descolar o pé dele da sua perna.",
+        "Gire o quadril na direção do gancho removido, virando-se de frente para o oponente.",
+        "Assim que estiver de frente, empurre-o para trás e recomponha a guarda ou o turtle."
+      ],
+      tip:"Nunca tente escapar puxando os ganchos antes de proteger o pescoço — nessa ordem errada, o oponente finaliza antes que você consiga se virar.",
+      hasFull:false
+    },
+    'turtle':{
+      eyebrow:"ESCAPE · TURTLE",
+      title:"Recomposição a partir do Turtle",
+      img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=900&q=80&auto=format&fit=crop",
+      intro:"Quando você cai em quatro apoios (turtle) sob ataque, este escape usa o giro do quadril para recompor a guarda antes que o oponente consolide o controle das costas.",
+      steps:[
+        "Mantenha cotovelos e joelhos próximos ao corpo, fechando os espaços por onde ele tentaria inserir ganchos.",
+        "Sinta para qual lado o oponente está aplicando mais pressão e gire o corpo para o lado oposto.",
+        "Sente de lado sobre um dos quadris, trazendo um braço para dentro, entre você e ele, como um frame.",
+        "Use a perna de cima para empurrar o quadril dele e criar espaço para o seu próprio quadril entrar.",
+        "Complete o giro até ficar de frente para o oponente, com os pés apontando na direção dele, pronto para recompor a guarda."
+      ],
+      tip:"Ficar totalmente esticado de bruços no turtle é o pior erro possível — isso facilita demais que ele insira os ganchos e pegue as costas.",
+      hasFull:false
+    }
+  };
+  function renderEscapeTechModal(key){
+    const p = escapesTech[key];
+    let stepsHtml = p.steps.map((s,i)=>`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('');
+    return `
+      <div class="modal-img">
+        <img src="${p.img}" alt="${p.title}">
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-eyebrow">${p.eyebrow}</div>
+        <h2>${p.title}</h2>
+        <p>${p.intro}</p>
+        <ol class="modal-steps">${stepsHtml}</ol>
+        <div class="modal-tip"><b style="color:var(--accent-light);">Dica:</b> ${p.tip}</div>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openEscapeTech(key){
+    document.getElementById('modal-box').innerHTML = renderEscapeTechModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+    markVisited('escapes');
+  }
+  function renderEscapesGrid(){
+    const icons = {lateral:['minus','rgba(250,204,21,.15)','#facc15'], montada:['arrow-up','rgba(239,68,68,.15)','#ef4444'], costas:['shield','rgba(168,85,247,.15)','#a855f7'], turtle:['repeat','rgba(161,161,170,.15)','#a1a1aa']};
+    const wrap = document.getElementById('escapes-grid');
+    wrap.innerHTML = Object.keys(escapesTech).map(k=>{
+      const t = escapesTech[k], ic = icons[k];
+      return `<div class="pos-card" onclick="openEscapeTech('${k}')">
+        <div class="pos-thumb"><img src="${t.img.replace('w=900','w=700')}" alt="${t.title}"></div>
+        <div class="pos-body">
+          <div class="pos-title"><span class="dot" style="background:${ic[1]}; color:${ic[2]};"><i data-lucide="${ic[0]}"></i></span>${t.title}</div>
+          <p class="pos-desc">${t.intro.slice(0,90)}${t.intro.length>90?'…':''}</p>
+          <a class="pos-link"><i data-lucide="help-circle" style="width:13px;height:13px;"></i>COMO SE FAZ</a>
+        </div>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+
+  /* ============ AQUECIMENTO & DRILLS SOLO ============ */
+  const drills = {
+    'shrimp':{
+      eyebrow:"DRILL · MOBILIDADE DE QUADRIL",
+      title:"Shrimping (Hip Escape) Solo",
+      img:"https://images.unsplash.com/photo-1585537884613-1a9bcd024983?w=900&q=80&auto=format&fit=crop",
+      intro:"O drill mais repetido em qualquer academia. Ensina o movimento de quadril usado em praticamente todos os escapes, treinado sozinho antes de aplicar com um parceiro.",
+      steps:[
+        "Deite de lado no chão, joelhos dobrados em direção ao peito, um cotovelo apoiado no chão como se fosse um frame.",
+        "Empurre com os dois pés no chão, deslocando o quadril para trás e para longe do 'oponente' imaginário.",
+        "Ao mesmo tempo, gire o tronco levemente, como se estivesse criando espaço para inserir a perna em uma guarda.",
+        "Traga os joelhos de volta ao centro e repita para o outro lado, alternando de forma contínua.",
+        "Encadeie vários shrimps seguidos, deslocando-se pelo tatame, para ganhar resistência e automatizar o movimento."
+      ],
+      tip:"O impulso vem dos pés empurrando o chão, não da barriga ou dos braços — se você está usando abdômen para se mover, o movimento está errado.",
+      hasFull:false
+    },
+    'breakfall':{
+      eyebrow:"DRILL · SEGURANÇA",
+      title:"Queda Protegida (Break-Fall / Ukemi)",
+      img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=900&q=80&auto=format&fit=crop",
+      intro:"Ensina o corpo a absorver o impacto de uma queda sem se machucar — pré-requisito de segurança antes de treinar qualquer queda com um parceiro.",
+      steps:[
+        "Comece agachado, queixo colado no peito para não bater a cabeça no chão.",
+        "Incline-se para trás de forma controlada, arredondando as costas como uma bola, sem sentar em cima da própria coluna.",
+        "No momento em que as costas tocarem o chão, bata os dois braços abertos contra o tatame, com as palmas das mãos, para dissipar o impacto.",
+        "Mantenha o queixo no peito durante toda a queda, e as pernas relaxadas, nunca esticadas e rígidas.",
+        "Repita o movimento a partir de posições cada vez mais altas — de agachado, depois de pé — apenas depois de dominar a versão baixa."
+      ],
+      tip:"Nunca coloque as mãos para trás para 'se apoiar' na queda — isso é a causa mais comum de lesão no punho e no cotovelo entre iniciantes.",
+      hasFull:false
+    },
+    'idaevolta':{
+      eyebrow:"DRILL · TROCA DE NÍVEL",
+      title:"Ida e Volta (Technical Stand-Up)",
+      img:"https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=900&q=80&auto=format&fit=crop",
+      intro:"Drill solo que ensina a sair do chão e voltar para a posição em pé com segurança e base, essencial tanto para escapar do turtle quanto para levantar depois de uma raspagem.",
+      steps:[
+        "Sente no chão e apoie uma mão no chão atrás do corpo, com a perna do mesmo lado dobrada e o pé plantado próximo ao quadril.",
+        "Empurre com essa mão e esse pé para levantar o quadril do chão, mantendo a outra perna estendida para trás como apoio.",
+        "Traga a perna estendida para frente, colocando o pé no chão, ficando momentaneamente em posição de base (uma mão e dois pés no chão).",
+        "Levante o tronco até ficar de pé, mantendo os joelhos levemente flexionados e as mãos na guarda, prontas para reagir.",
+        "Repita alternando o lado de apoio, até o movimento ficar fluido dos dois lados."
+      ],
+      tip:"Levante sempre olhando para o oponente imaginário — levantar de costas ou olhando para o chão é como se perdem as costas de verdade em treino.",
+      hasFull:false
+    }
+  };
+  function renderDrillModal(key){
+    const p = drills[key];
+    let stepsHtml = p.steps.map((s,i)=>`<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('');
+    return `
+      <div class="modal-img">
+        <img src="${p.img}" alt="${p.title}">
+        <button class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-eyebrow">${p.eyebrow}</div>
+        <h2>${p.title}</h2>
+        <p>${p.intro}</p>
+        <ol class="modal-steps">${stepsHtml}</ol>
+        <div class="modal-tip"><b style="color:var(--accent-light);">Dica:</b> ${p.tip}</div>
+        <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
+      </div>`;
+  }
+  function openDrill(key){
+    document.getElementById('modal-box').innerHTML = renderDrillModal(key);
+    document.getElementById('modal-box').style.position='relative';
+    document.getElementById('modal-overlay').classList.add('open');
+    lucide.createIcons();
+    markVisited('drills');
+  }
+  function renderDrillsGrid(){
+    const icons = {shrimp:['footprints','rgba(37,99,235,.15)','var(--accent-light)'], breakfall:['shield-alert','rgba(239,68,68,.15)','#ef4444'], idaevolta:['arrow-up-circle','rgba(34,197,94,.15)','#22c55e']};
+    const wrap = document.getElementById('drills-grid');
+    wrap.innerHTML = Object.keys(drills).map(k=>{
+      const t = drills[k], ic = icons[k];
+      return `<div class="pos-card" onclick="openDrill('${k}')">
+        <div class="pos-thumb"><img src="${t.img.replace('w=900','w=700')}" alt="${t.title}"></div>
+        <div class="pos-body">
+          <div class="pos-title"><span class="dot" style="background:${ic[1]}; color:${ic[2]};"><i data-lucide="${ic[0]}"></i></span>${t.title}</div>
+          <p class="pos-desc">${t.intro.slice(0,90)}${t.intro.length>90?'…':''}</p>
+          <a class="pos-link"><i data-lucide="help-circle" style="width:13px;height:13px;"></i>COMO SE FAZ</a>
+        </div>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
 
   const topics = {
     historia:{eyebrow:"CONTEXTO",title:"História",intro:"O Jiu-Jitsu Brasileiro nasceu no início do século XX a partir do Judô/Jiu-Jitsu japonês, trazido ao Brasil e adaptado pela família Gracie — com destaque para Carlos e Hélio Gracie — priorizando alavanca e técnica de solo sobre força física, para permitir que um praticante menor controlasse um oponente maior.",tip:"O sistema evoluiu com contribuições de outras famílias e academias brasileiras, incluindo Oswaldo Fadda, que popularizou o Jiu-Jitsu fora do eixo Gracie."},
@@ -865,15 +1206,15 @@
 
   /* ============ GENEALOGIA (história por nomes/anos, clicável) ============ */
   const genealogy = {
-    origem1882:{yr:"1882",title:"Jigoro Kano funda o Judô",eyebrow:"ORIGEM · JAPÃO",intro:"Kano cria o Judô no Kodokan (Tóquio), sistematizando técnicas de jiu-jitsu japonês antigo em um método de treino seguro, com foco em alavanca e queda controlada.",tip:"O Judô é a raiz técnica direta de onde viria, décadas depois, o Jiu-Jitsu Brasileiro."},
-    maeda:{yr:"1914",title:"Mitsuyo Maeda chega ao Brasil",eyebrow:"ORIGEM · TRANSMISSÃO",intro:"Maeda, um dos melhores alunos de Kano, viaja o mundo fazendo desafios e chega a Belém do Pará, onde ensina judô/jiu-jitsu a Carlos Gracie.",tip:"Maeda também formou outros alunos brasileiros importantes, não só a família Gracie."},
-    carlos:{yr:"1925",title:"Carlos Gracie abre a 1ª academia",eyebrow:"FAMÍLIA GRACIE",intro:"Carlos Gracie funda a Academia Gracie no Rio de Janeiro e ensina os irmãos, entre eles Hélio, criando as bases do que seria chamado de Jiu-Jitsu Brasileiro.",tip:"Carlos também foi responsável por trazer conceitos de nutrição e estilo de vida ligados à prática."},
-    helio:{yr:"1932",title:"Hélio Gracie adapta as técnicas",eyebrow:"FAMÍLIA GRACIE",intro:"Menor e mais franzino, Hélio adapta as técnicas para depender de alavanca e ângulo, não de força — o princípio central do BJJ até hoje. Fica famoso por seus desafios públicos.",tip:"É a essa adaptação que se atribui a frase 'posição antes de finalização', pilar do jiu-jitsu moderno."},
-    fadda:{yr:"1950",title:"Oswaldo Fadda populariza fora do eixo Gracie",eyebrow:"OUTRA LINHAGEM",intro:"Aluno de Luiz França (outro aluno de Maeda), Fadda leva o jiu-jitsu a comunidades fora do circuito das academias Gracie, formando uma linhagem paralela importante.",tip:"Fadda é lembrado por vencer um desafio contra a Academia Gracie usando chaves de pé, até então pouco valorizadas."},
+    origem1882:{yr:"1882",title:"Jigoro Kano funda o Judô",eyebrow:"ORIGEM · JAPÃO",intro:"Kano cria o Judô no Kodokan (Tóquio), sistematizando técnicas de jiu-jitsu japonês antigo em um método de treino seguro, com foco em alavanca e queda controlada.",tip:"O Judô é a raiz técnica direta de onde viria, décadas depois, o Jiu-Jitsu Brasileiro.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Jigoro-Kano-BW-4375px.jpg?width=500"},
+    maeda:{yr:"1914",title:"Mitsuyo Maeda chega ao Brasil",eyebrow:"ORIGEM · TRANSMISSÃO",intro:"Maeda, um dos melhores alunos de Kano, viaja o mundo fazendo desafios e chega a Belém do Pará, onde ensina judô/jiu-jitsu a Carlos Gracie.",tip:"Maeda também formou outros alunos brasileiros importantes, não só a família Gracie.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Mitsuyo%20Maeda.jpg?width=500"},
+    carlos:{yr:"1925",title:"Carlos Gracie abre a 1ª academia",eyebrow:"FAMÍLIA GRACIE",intro:"Carlos Gracie funda a Academia Gracie no Rio de Janeiro e ensina os irmãos, entre eles Hélio, criando as bases do que seria chamado de Jiu-Jitsu Brasileiro.",tip:"Carlos também foi responsável por trazer conceitos de nutrição e estilo de vida ligados à prática.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Carlos%20Gracie%20(1951).tif?width=500"},
+    helio:{yr:"1932",title:"Hélio Gracie adapta as técnicas",eyebrow:"FAMÍLIA GRACIE",intro:"Menor e mais franzino, Hélio adapta as técnicas para depender de alavanca e ângulo, não de força — o princípio central do BJJ até hoje. Fica famoso por seus desafios públicos.",tip:"É a essa adaptação que se atribui a frase 'posição antes de finalização', pilar do jiu-jitsu moderno.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Helio%20Gracie%20in%202004.jpg?width=500"},
+    fadda:{yr:"1950",title:"Oswaldo Fadda populariza fora do eixo Gracie",eyebrow:"OUTRA LINHAGEM",intro:"Aluno de Luiz França (outro aluno de Maeda), Fadda leva o jiu-jitsu a comunidades fora do circuito das academias Gracie, formando uma linhagem paralela importante.",tip:"Fadda é lembrado por vencer um desafio contra a Academia Gracie usando chaves de pé, até então pouco valorizadas.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Osvaldo%20Fadda.jpg?width=500"},
     rolls:{yr:"1970s",title:"Rolls Gracie moderniza o jogo",eyebrow:"2ª GERAÇÃO",intro:"Sobrinho de Hélio, Rolls mistura wrestling e judô ao jiu-jitsu tradicional, criando bases do jiu-jitsu esportivo moderno, com mais raspagens e passagens dinâmicas.",tip:"Muitos consideram Rolls o primeiro a tratar o jiu-jitsu como esporte competitivo, além de autodefesa."},
-    rickson:{yr:"1980-90s",title:"Rickson Gracie leva o nome ao mundo",eyebrow:"2ª GERAÇÃO",intro:"Com um cartel invicto em desafios e vale-tudo, Rickson se torna o rosto mais respeitado da família na difusão internacional do jiu-jitsu.",tip:"O sucesso de Rickson e de Royce (seu irmão) no primeiro UFC (1993) foi decisivo para a fama mundial do BJJ."},
-    ibjjf:{yr:"1994",title:"Nasce a IBJJF",eyebrow:"ERA ESPORTIVA",intro:"A criação da federação internacional formaliza regras, categorias e o sistema de pontos, consolidando o jiu-jitsu esportivo como o conhecemos hoje.",tip:"Antes da IBJJF, competições regionais brasileiras já existiam, mas sem padronização global."},
-    academias:{yr:"2000s+",title:"Academias modernas se espalham",eyebrow:"ERA MODERNA",intro:"Equipes como Gracie Barra, Alliance, Checkmat e Atos, entre outras, formam gerações de faixas-pretas e levam o esporte a praticamente todos os países.",tip:"Hoje o jiu-jitsu esportivo tem estilos de jogo bem diferentes entre equipes, mas todos partem dos mesmos princípios da linhagem original."}
+    rickson:{yr:"1980-90s",title:"Rickson Gracie leva o nome ao mundo",eyebrow:"2ª GERAÇÃO",intro:"Com um cartel invicto em desafios e vale-tudo, Rickson se torna o rosto mais respeitado da família na difusão internacional do jiu-jitsu.",tip:"O sucesso de Rickson e de Royce (seu irmão) no primeiro UFC (1993) foi decisivo para a fama mundial do BJJ.",img:"https://commons.wikimedia.org/wiki/Special:FilePath/Rickson%20gracie%2020080608.jpg?width=500"},
+    ibjjf:{yr:"1994",title:"Nasce a IBJJF",eyebrow:"ERA ESPORTIVA",intro:"A criação da federação internacional formaliza regras, categorias e o sistema de pontos, consolidando o jiu-jitsu esportivo como o conhecemos hoje.",tip:"Antes da IBJJF, competições regionais brasileiras já existiam, mas sem padronização global.",img:"https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=500&q=80&auto=format&fit=crop"},
+    academias:{yr:"2000s+",title:"Academias modernas se espalham",eyebrow:"ERA MODERNA",intro:"Equipes como Gracie Barra, Alliance, Checkmat e Atos, entre outras, formam gerações de faixas-pretas e levam o esporte a praticamente todos os países.",tip:"Hoje o jiu-jitsu esportivo tem estilos de jogo bem diferentes entre equipes, mas todos partem dos mesmos princípios da linhagem original.",img:"https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=500&q=80&auto=format&fit=crop"}
   };
   const genealogyLayout = [
     {era:"RAIZ NO JAPÃO", keys:["origem1882"]},
@@ -884,9 +1225,14 @@
   ];
   function renderGenealogyModal(key){
     const g = genealogy[key];
+    const photo = g.img ? `
+      <div style="width:88px; height:88px; border-radius:50%; overflow:hidden; border:2px solid var(--accent-light); margin-bottom:14px; flex-shrink:0;">
+        <img src="${g.img}" alt="${g.title}" style="width:100%; height:100%; object-fit:cover;">
+      </div>` : '';
     return `
       <div class="modal-body" style="padding-top:26px;">
         <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
+        ${photo}
         <div class="modal-eyebrow">${g.eyebrow} · ${g.yr}</div>
         <h2>${g.title}</h2>
         <p>${g.intro}</p>
@@ -908,7 +1254,8 @@
         <div class="geneal-era-label">${era.era}</div>
         <div class="geneal-row">
           ${era.keys.map(k=>`
-            <div class="geneal-node" onclick="openGenealogy('${k}')">
+            <div class="geneal-node" onclick="openGenealogy('${k}')" style="display:flex; align-items:center; gap:10px;">
+              ${genealogy[k].img ? `<span style="width:34px; height:34px; border-radius:50%; overflow:hidden; flex-shrink:0; border:1px solid var(--accent-light);"><img src="${genealogy[k].img}" alt="${genealogy[k].title}" style="width:100%; height:100%; object-fit:cover;"></span>` : ''}
               <span class="yr">${genealogy[k].yr}</span>
               <span><span class="nm">${genealogy[k].title.split(' ').slice(0,3).join(' ')}</span><span class="role">${genealogy[k].eyebrow}</span></span>
             </div>`).join('')}
@@ -1006,6 +1353,9 @@
     lucide.createIcons();
   }
   renderFundamentals();
+  renderQuedasGrid();
+  renderEscapesGrid();
+  renderDrillsGrid();
 
   /* ============ MAPA DE TRANSIÇÕES ============ */
   const transitions = {
@@ -1062,58 +1412,10 @@
   }
   renderFullGlossary();
 
-  /* ============ CRONÔMETRO DE SPARRING ============ */
-  let timerInterval = null, timerSeconds = 300, timerPhase = 'round', timerRoundNum = 1;
-  function timerFormat(s){
-    const m = Math.floor(s/60), sec = s%60;
-    return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
-  }
-  function timerRenderDisplay(){
-    document.getElementById('timer-display').textContent = timerFormat(timerSeconds);
-    const totalRounds = parseInt(document.getElementById('timer-rounds').value)||1;
-    document.getElementById('timer-label').textContent =
-      timerPhase==='round' ? `ROUND ${timerRoundNum} / ${totalRounds}` : `DESCANSO`;
-  }
-  function timerStart(){
-    if(timerInterval) return;
-    document.getElementById('timer-round-min').disabled = true;
-    document.getElementById('timer-rest-min').disabled = true;
-    document.getElementById('timer-rounds').disabled = true;
-    timerInterval = setInterval(()=>{
-      timerSeconds--;
-      if(timerSeconds < 0){
-        const roundMin = parseInt(document.getElementById('timer-round-min').value)||5;
-        const restMin = parseInt(document.getElementById('timer-rest-min').value)||1;
-        const totalRounds = parseInt(document.getElementById('timer-rounds').value)||1;
-        if(timerPhase==='round'){
-          if(timerRoundNum >= totalRounds){ timerPause(); timerReset(); return; }
-          timerPhase='rest'; timerSeconds = restMin*60;
-          if(timerSeconds===0){ timerPhase='round'; timerRoundNum++; timerSeconds=roundMin*60; }
-        } else {
-          timerPhase='round'; timerRoundNum++; timerSeconds = roundMin*60;
-        }
-      }
-      timerRenderDisplay();
-    }, 1000);
-  }
-  function timerPause(){
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-  function timerReset(){
-    timerPause();
-    document.getElementById('timer-round-min').disabled = false;
-    document.getElementById('timer-rest-min').disabled = false;
-    document.getElementById('timer-rounds').disabled = false;
-    const roundMin = parseInt(document.getElementById('timer-round-min').value)||5;
-    timerPhase = 'round'; timerRoundNum = 1; timerSeconds = roundMin*60;
-    timerRenderDisplay();
-  }
-  document.getElementById('timer-round-min').addEventListener('change', ()=>{ if(!timerInterval) timerReset(); });
-  timerRenderDisplay();
-
   /* ============ PATH-TRACK dinâmico (marca progresso real) ============ */
   const pathSteps = [
+    {key:'drills', icon:'flame', label:'AQUECIMENTO'},
+    {key:'quedas', icon:'move-down', label:'QUEDAS'},
     {key:'genealogia', icon:'clock', label:'HISTÓRIA'},
     {key:'principios', icon:'compass', label:'PRINCÍPIOS'},
     {key:'posicoes', icon:'shield', label:'POSIÇÕES'},
@@ -1151,8 +1453,11 @@
     lucide.createIcons();
   }
   function jumpToStep(key){
+    if(key==='drills') return scrollToSection('drills-section');
+    if(key==='quedas') return scrollToSection('quedas-section');
     if(key==='genealogia') return scrollToSection('genealogia-section');
     if(key==='posicoes') return scrollToSection('pos-section');
+    if(key==='escapes') return scrollToSection('escapes-section');
     openTopic(key);
   }
   renderPathTrack();
@@ -1164,6 +1469,9 @@
     ...Object.keys(genealogy).map(k=>({key:k, title:genealogy[k].title, type:'genealogy'})),
     ...Object.keys(belts).map(k=>({key:k, title:belts[k].title, type:'belt'})),
     ...Object.keys(fundamentals).map(k=>({key:k, title:fundamentals[k].title, type:'fundamental'})),
+    ...Object.keys(takedowns).map(k=>({key:k, title:takedowns[k].title, type:'takedown'})),
+    ...Object.keys(escapesTech).map(k=>({key:k, title:escapesTech[k].title, type:'escapetech'})),
+    ...Object.keys(drills).map(k=>({key:k, title:drills[k].title, type:'drill'})),
     ...fullGlossary.map(g=>({key:g.term, title:g.term, type:'glossary'}))
   ];
   function filterNav(query){
@@ -1182,7 +1490,20 @@
     else if(type==='genealogy') openGenealogy(key);
     else if(type==='belt') openBelt(key);
     else if(type==='fundamental') openFundamental(key);
+    else if(type==='takedown') openTakedown(key);
+    else if(type==='escapetech') openEscapeTech(key);
+    else if(type==='drill') openDrill(key);
     else scrollToSection('glossario-section');
+  }
+
+  /* ============ MENU MÓVEL (drawer) ============ */
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-overlay').classList.toggle('open');
+  }
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
   }
 
   /* ============ TEMA claro/escuro (real) ============ */
