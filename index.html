@@ -103,7 +103,7 @@
   .section-head h2{font-size:12.5px; font-weight:800; letter-spacing:1.1px; color:#E4E4E7;}
   .see-all{font-size:12.5px; font-weight:700; color:var(--accent-light);}
 
-  .path-track{display:grid; grid-template-columns:repeat(9,1fr); gap:10px;}
+  .path-track{display:grid; grid-template-columns:repeat(auto-fill, minmax(96px, 1fr)); gap:10px;}
   .path-step{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 10px 12px 10px; text-align:center; position:relative; transition:.2s;}
   .path-step:hover{border-color:#3a3a3a; transform:translateY(-2px);}
   .path-icon{width:34px; height:34px; border-radius:9px; background:#1f1f1f; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto; color:var(--text-sec);}
@@ -195,6 +195,26 @@
   .back-link:hover{color:var(--text);}
   .back-link svg{width:14px; height:14px;}
 
+  .trans-block{margin-bottom:16px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px;}
+  .trans-block .trans-from{display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:800; margin-bottom:10px;}
+  .trans-block .trans-from svg{width:15px; height:15px; color:var(--accent-light);}
+
+  /* GLOSSÁRIO COMPLETO */
+  .glos-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .glos-item{background:var(--card); padding:14px 18px;}
+  .glos-item b{display:block; font-size:13px; font-weight:800; margin-bottom:3px;}
+  .glos-item span{font-size:12px; color:var(--text-sec); line-height:1.5;}
+  @media (max-width:860px){ .glos-grid{grid-template-columns:1fr;} }
+
+  /* TIMER */
+  .timer-box{text-align:center; padding:34px 24px;}
+  .timer-display{font-size:64px; font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-1px;}
+  .timer-label{font-size:12px; font-weight:800; letter-spacing:1.5px; color:var(--accent-light); text-transform:uppercase; margin-top:4px;}
+  .timer-controls{display:flex; gap:10px; justify-content:center; margin-top:22px;}
+  .timer-settings{display:flex; gap:22px; justify-content:center; margin-top:24px; flex-wrap:wrap;}
+  .timer-settings label{font-size:11.5px; color:var(--text-sec); display:flex; flex-direction:column; gap:6px; font-weight:600;}
+  .timer-settings input{width:70px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text); font-family:inherit; text-align:center;}
+
   /* FUNDAMENTOS (5+5+5) */
   .fund-block{margin-bottom:20px;}
   .fund-label{font-size:10.5px; font-weight:800; letter-spacing:1.2px; color:var(--text-dis); text-transform:uppercase; margin-bottom:10px;}
@@ -275,7 +295,7 @@
     </div>
     <nav class="nav">
       <a class="nav-item active" onclick="showHome()"><i data-lucide="home"></i>Início</a>
-      <a class="nav-item" onclick="scrollToSection('map-section')"><i data-lucide="share-2"></i>Mapa do Conhecimento</a>
+      <a class="nav-item" onclick="scrollToSection('map-section')"><i data-lucide="share-2"></i>Mapa de Transições</a>
       <a class="nav-item" onclick="scrollToSection('genealogia-section')"><i data-lucide="git-branch"></i>Genealogia</a>
       <a class="nav-item" onclick="openTopic('historia')"><i data-lucide="clock"></i>História (resumo)</a>
       <a class="nav-item" onclick="openTopic('principios')"><i data-lucide="compass"></i>Princípios</a>
@@ -291,7 +311,9 @@
       <a class="nav-item" onclick="openTopic('estrategia')"><i data-lucide="target"></i>Estratégia</a>
       <a class="nav-item" onclick="openTopic('cadeia')"><i data-lucide="layers"></i>Cadeia de Ataques</a>
       <a class="nav-item" onclick="scrollToSection('fundamentos-section')"><i data-lucide="layout-grid"></i>Fundamentos (5+5+5)</a>
-      <a class="nav-item" onclick="openTopic('glossario')"><i data-lucide="book-open"></i>Glossário</a>
+      <a class="nav-item" onclick="scrollToSection('regras-section')"><i data-lucide="scale"></i>Regras &amp; Etiqueta</a>
+      <a class="nav-item" onclick="scrollToSection('glossario-section')"><i data-lucide="book-open"></i>Glossário</a>
+      <a class="nav-item" onclick="scrollToSection('timer-section')"><i data-lucide="timer"></i>Cronômetro</a>
       <a class="nav-item" onclick="openTopic('sobre')"><i data-lucide="info"></i>Sobre este Atlas</a>
     </nav>
     <div class="sidebar-promo">
@@ -403,10 +425,8 @@
           </div>
 
           <div id="map-section" class="section">
-            <div class="section-head"><h2>MAPA DO CONHECIMENTO</h2></div>
-            <div class="art-block" style="margin-bottom:0;">
-              <p>Toda posição do Jiu-Jitsu se conecta a outras através de raspagens, passagens e finalizações. Clique em qualquer posição acima para ver como ela se conecta ao restante do mapa na seção "Mapa de Conexões", à direita.</p>
-            </div>
+            <div class="section-head"><h2>MAPA DE TRANSIÇÕES</h2><span style="font-size:11.5px; color:var(--text-dis);">DE CADA POSIÇÃO, PARA ONDE VOCÊ PODE IR</span></div>
+            <div id="transitions-map"></div>
           </div>
 
           <div class="section" id="fundamentos-section">
@@ -422,6 +442,64 @@
             <div class="fund-block">
               <div class="fund-label">5 DEFESAS</div>
               <div class="fund-row" id="fund-defesas"></div>
+            </div>
+          </div>
+
+          <div class="section" id="regras-section">
+            <div class="section-head"><h2>REGRAS &amp; ETIQUETA DO TATAME</h2><span style="font-size:11.5px; color:var(--text-dis);">O QUE PODE, O QUE NÃO PODE, E COMO SE COMPORTAR</span></div>
+            <div class="two-col">
+              <div class="art-block">
+                <h3><i data-lucide="check-circle"></i>O que pontua (regra esportiva)</h3>
+                <ul>
+                  <li>Queda ou raspagem — 2 pontos.</li>
+                  <li>Passagem de guarda — 3 pontos.</li>
+                  <li>Joelho na barriga — 2 pontos.</li>
+                  <li>Montada — 4 pontos.</li>
+                  <li>Controle das costas (com ganchos) — 4 pontos.</li>
+                </ul>
+              </div>
+              <div class="art-block">
+                <h3><i data-lucide="alert-octagon"></i>Proibido / perigoso p/ branca</h3>
+                <ul>
+                  <li>Torção de joelho (knee reaping) e chaves de perna em geral.</li>
+                  <li>Quedas do tipo "slam" para escapar de triângulo/armlock.</li>
+                  <li>Torções de coluna (twister sem controle) e chaves de tornozelo.</li>
+                  <li>Golpes, cotoveladas ou qualquer ataque fora do jiu-jitsu esportivo.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="art-block">
+              <h3><i data-lucide="handshake"></i>Etiqueta básica do tatame</h3>
+              <ul>
+                <li>Cumprimente o parceiro (aperto de mão ou toque de punho) antes e depois de rolar.</li>
+                <li>Tape cedo — bater 2x no corpo do oponente ou no chão, sem vergonha nem ego.</li>
+                <li>Unhas cortadas, kimono/roupa limpa, sem sapatos no tatame.</li>
+                <li>Avise se estiver machucado antes de começar o treino.</li>
+                <li>Ajuste a intensidade ao nível do parceiro — treino não é competição.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section" id="glossario-section">
+            <div class="section-head"><h2>GLOSSÁRIO COMPLETO</h2></div>
+            <div class="glos-grid" id="glossario-full"></div>
+          </div>
+
+          <div class="section" id="timer-section">
+            <div class="section-head"><h2>CRONÔMETRO DE SPARRING</h2><span style="font-size:11.5px; color:var(--text-dis);">ROUNDS COM DESCANSO, IGUAL TREINO DE VERDADE</span></div>
+            <div class="art-block timer-box">
+              <div class="timer-display" id="timer-display">05:00</div>
+              <div class="timer-label" id="timer-label">PRONTO</div>
+              <div class="timer-controls">
+                <button class="btn btn-primary" id="timer-start" onclick="timerStart()"><i data-lucide="play"></i>INICIAR</button>
+                <button class="btn btn-ghost" onclick="timerPause()"><i data-lucide="pause"></i>PAUSAR</button>
+                <button class="btn btn-ghost" onclick="timerReset()"><i data-lucide="rotate-ccw"></i>RESETAR</button>
+              </div>
+              <div class="timer-settings">
+                <label>Round (min) <input type="number" id="timer-round-min" value="5" min="1" max="15"></label>
+                <label>Descanso (min) <input type="number" id="timer-rest-min" value="1" min="0" max="5"></label>
+                <label>Rounds <input type="number" id="timer-rounds" value="5" min="1" max="10"></label>
+              </div>
             </div>
           </div>
 
@@ -884,11 +962,11 @@
     'f-lateral':{group:'Posição', icon:'minus', title:'Controle Lateral', intro:'Você fica perpendicular ao oponente, pressionando o peito com o peso do corpo. Impede que ele use as pernas para se defender.'},
     'f-costas':{group:'Posição', icon:'user-check', title:'Controle das Costas', intro:'Você fica atrás do oponente com ganchos nas coxas dele. A posição estatisticamente mais vantajosa do jiu-jitsu.'},
     'f-joelho':{group:'Posição', icon:'move-diagonal', title:'Joelho na Barriga', intro:'Um joelho apoiado no abdômen do oponente e o outro pé no chão. Posição incômoda de transição, com boa mobilidade para atacar.'},
-    'f-armlock':{group:'Ataque', icon:'minus', title:'Armlock (Juji Gatame)', intro:'Chave de braço que hiperestende o cotovelo do oponente. Um dos primeiros ataques ensinados a partir da guarda ou da montada.'},
-    'f-triangulo':{group:'Ataque', icon:'triangle', title:'Triângulo', intro:'Estrangulamento feito com as próprias pernas, prendendo o pescoço e um braço do oponente entre as coxas.'},
-    'f-cruzado':{group:'Ataque', icon:'shirt', title:'Estrangulamento Cruzado', intro:'Feito com a gola do kimono (gi), cruzando as mãos ao redor do pescoço do oponente a partir da guarda fechada.'},
-    'f-kimura':{group:'Ataque', icon:'lock', title:'Kimura', intro:'Chave de ombro que dobra o braço do oponente atrás das costas, aplicável de várias posições — guarda, lateral e mais.'},
-    'f-mataleao':{group:'Ataque', icon:'wind', title:'Mata-Leão (RNC)', intro:'Estrangulamento sanguíneo aplicado a partir das costas. A finalização mais comum entre faixas brancas e azuis.'},
+    'f-armlock':{group:'Ataque', icon:'minus', title:'Armlock (Juji Gatame)', intro:'Chave de braço que hiperestende o cotovelo do oponente. Um dos primeiros ataques ensinados a partir da guarda ou da montada.', counter:'Feche o braço preso junto ao corpo e gire o quadril na direção do polegar do atacante para tirar o ângulo da chave.'},
+    'f-triangulo':{group:'Ataque', icon:'triangle', title:'Triângulo', intro:'Estrangulamento feito com as próprias pernas, prendendo o pescoço e um braço do oponente entre as coxas.', counter:'Mantenha a postura e o braço livre pressionando o quadril dele para "empilhar" (stack) e passar por cima antes que as pernas fechem.'},
+    'f-cruzado':{group:'Ataque', icon:'shirt', title:'Estrangulamento Cruzado', intro:'Feito com a gola do kimono (gi), cruzando as mãos ao redor do pescoço do oponente a partir da guarda fechada.', counter:'Controle as mãos dele antes que a segunda pegada feche, e mantenha o queixo baixo protegendo o pescoço.'},
+    'f-kimura':{group:'Ataque', icon:'lock', title:'Kimura', intro:'Chave de ombro que dobra o braço do oponente atrás das costas, aplicável de várias posições — guarda, lateral e mais.', counter:'Dobre o cotovelo para dentro do próprio corpo e gire junto com a chave, nunca deixando o braço esticar contra ela.'},
+    'f-mataleao':{group:'Ataque', icon:'wind', title:'Mata-Leão (RNC)', intro:'Estrangulamento sanguíneo aplicado a partir das costas. A finalização mais comum entre faixas brancas e azuis.', counter:'Proteja o queixo com o próprio ombro ou mão antes que o braço feche ao redor do pescoço, e nunca exponha as costas totalmente retas.'},
     'f-shrimp':{group:'Defesa', icon:'footprints', title:'Hip Escape (Shrimping)', intro:'Movimento de quadril para criar espaço e escapar de posições ruins. É a defesa mais básica e mais usada de todo o jiu-jitsu.'},
     'f-frame':{group:'Defesa', icon:'shield', title:'Frame (proteção do pescoço)', intro:'Uso dos antebraços como barra rígida contra o pescoço ou o tronco do oponente para impedir que ele feche um estrangulamento.'},
     'f-ponte':{group:'Defesa', icon:'arrow-up', title:'Ponte e Giro (Bridge)', intro:'Levantar o quadril e girar para o lado ao ser montado, criando espaço para recompor a guarda ou escapar.'},
@@ -903,6 +981,7 @@
         <div class="modal-eyebrow">${f.group.toUpperCase()} · FUNDAMENTAL</div>
         <h2>${f.title}</h2>
         <p>${f.intro}</p>
+        ${f.counter ? `<div class="modal-tip"><b style="color:var(--accent-light);">Como se defender:</b> ${f.counter}</div>` : ''}
         <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
       </div>`;
   }
@@ -927,6 +1006,111 @@
     lucide.createIcons();
   }
   renderFundamentals();
+
+  /* ============ MAPA DE TRANSIÇÕES ============ */
+  const transitions = {
+    fechada:{icon:'square', dests:[{icon:'shield',label:'Guarda Aberta (se ele fica de pé)'},{icon:'triangle',label:'Montada (via raspagem)'},{icon:'swords',label:'Finalização direta'}]},
+    aberta:{icon:'shield', dests:[{icon:'minus',label:'Controle Lateral (se ele passa)'},{icon:'triangle',label:'Montada (via raspagem)'},{icon:'arrow-up-right',label:'Raspagem para cima'}]},
+    lateral:{icon:'minus', dests:[{icon:'triangle',label:'Montada'},{icon:'move-diagonal',label:'Joelho na Barriga'},{icon:'user-check',label:'Costas (se ele vira)'}]},
+    montada:{icon:'triangle', dests:[{icon:'user-check',label:'Costas (se ele vira de bruços)'},{icon:'swords',label:'Finalização'},{icon:'shield',label:'Guarda Aberta (se ele recompõe)'}]},
+    costas:{icon:'user-check', dests:[{icon:'wind',label:'Mata-Leão (finalização)'},{icon:'triangle',label:'Montada (se perde 1 gancho)'}]},
+    turtle:{icon:'circle-dashed', dests:[{icon:'user-check',label:'Costas (se ele pega as costas)'},{icon:'shield',label:'Guarda Aberta (ao recompor)'}]}
+  };
+  function renderTransitionsMap(){
+    const wrap = document.getElementById('transitions-map');
+    wrap.innerHTML = Object.keys(transitions).map(key=>{
+      const t = transitions[key];
+      const title = positions[key].title;
+      return `<div class="trans-block">
+        <div class="trans-from" style="cursor:pointer;" onclick="openPositionModal('${key}')"><i data-lucide="${t.icon}"></i>${title}</div>
+        <div class="flow-row">
+          ${t.dests.map(d=>`<span class="flow-arrow"><i data-lucide="arrow-right"></i></span><span class="flow-chip"><i data-lucide="${d.icon}"></i>${d.label}</span>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+    lucide.createIcons();
+  }
+  renderTransitionsMap();
+
+  /* ============ GLOSSÁRIO COMPLETO ============ */
+  const fullGlossary = [
+    {term:"Posture", def:"Postura ereta do oponente dentro da guarda — quebrá-la é pré-requisito para a maioria dos ataques."},
+    {term:"Frame", def:"Estrutura rígida feita com os braços/antebraços para criar espaço e negar pressão."},
+    {term:"Stack", def:"Empilhamento: dobrar o guardeiro sobre si mesmo para pressionar e passar a guarda."},
+    {term:"Hook", def:"Gancho feito com a perna para prender o oponente, essencial no controle das costas."},
+    {term:"Base", def:"Estabilidade do centro de gravidade, que evita ser derrubado ou raspado com facilidade."},
+    {term:"Grip", def:"Pegada em manga, gola, pulso ou perna do oponente usada para controlar distância ou puxar."},
+    {term:"Tap", def:"Sinal de desistência dado batendo no corpo do oponente, no chão, ou dizendo em voz alta."},
+    {term:"Guard Pull", def:"Puxar o oponente para dentro da própria guarda a partir da posição de pé."},
+    {term:"Sweep (Raspagem)", def:"Inverter a posição de baixo para cima usando alavanca de quadril e pernas."},
+    {term:"Pass (Passagem)", def:"Neutralizar as pernas do guardeiro e alcançar uma posição de controle."},
+    {term:"Roll", def:"Termo usado para 'sparring' — treino livre entre dois praticantes."},
+    {term:"Gi / No-Gi", def:"Gi é o treino com kimono; No-Gi é sem kimono, geralmente com rash guard e shorts."},
+    {term:"Turtle", def:"Posição defensiva em quatro apoios, protegendo pescoço e costas."},
+    {term:"Underhook", def:"Passar o braço por baixo do braço do oponente para ganhar controle de tronco."},
+    {term:"Overhook", def:"Passar o braço por cima do braço do oponente, geralmente para kimura ou guilhotina."},
+    {term:"Seatbelt", def:"Pegada usada no controle das costas: um braço por baixo, outro ao redor do pescoço."},
+    {term:"Bridge (Upa)", def:"Levantar o quadril fazendo ponte, usado para escapar da montada."},
+    {term:"Shrimping", def:"Movimento de quadril em forma de 'camarão' para criar espaço e escapar."},
+    {term:"Kimono / Faixa", def:"Uniforme de treino e o cinto que indica a graduação do praticante."},
+    {term:"Berimbolo", def:"Sequência avançada de raspagem que gira em torno do quadril do oponente, comum em faixas mais altas."}
+  ];
+  function renderFullGlossary(){
+    document.getElementById('glossario-full').innerHTML = fullGlossary.map(g=>`
+      <div class="glos-item"><b>${g.term}</b><span>${g.def}</span></div>
+    `).join('');
+  }
+  renderFullGlossary();
+
+  /* ============ CRONÔMETRO DE SPARRING ============ */
+  let timerInterval = null, timerSeconds = 300, timerPhase = 'round', timerRoundNum = 1;
+  function timerFormat(s){
+    const m = Math.floor(s/60), sec = s%60;
+    return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  }
+  function timerRenderDisplay(){
+    document.getElementById('timer-display').textContent = timerFormat(timerSeconds);
+    const totalRounds = parseInt(document.getElementById('timer-rounds').value)||1;
+    document.getElementById('timer-label').textContent =
+      timerPhase==='round' ? `ROUND ${timerRoundNum} / ${totalRounds}` : `DESCANSO`;
+  }
+  function timerStart(){
+    if(timerInterval) return;
+    document.getElementById('timer-round-min').disabled = true;
+    document.getElementById('timer-rest-min').disabled = true;
+    document.getElementById('timer-rounds').disabled = true;
+    timerInterval = setInterval(()=>{
+      timerSeconds--;
+      if(timerSeconds < 0){
+        const roundMin = parseInt(document.getElementById('timer-round-min').value)||5;
+        const restMin = parseInt(document.getElementById('timer-rest-min').value)||1;
+        const totalRounds = parseInt(document.getElementById('timer-rounds').value)||1;
+        if(timerPhase==='round'){
+          if(timerRoundNum >= totalRounds){ timerPause(); timerReset(); return; }
+          timerPhase='rest'; timerSeconds = restMin*60;
+          if(timerSeconds===0){ timerPhase='round'; timerRoundNum++; timerSeconds=roundMin*60; }
+        } else {
+          timerPhase='round'; timerRoundNum++; timerSeconds = roundMin*60;
+        }
+      }
+      timerRenderDisplay();
+    }, 1000);
+  }
+  function timerPause(){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  function timerReset(){
+    timerPause();
+    document.getElementById('timer-round-min').disabled = false;
+    document.getElementById('timer-rest-min').disabled = false;
+    document.getElementById('timer-rounds').disabled = false;
+    const roundMin = parseInt(document.getElementById('timer-round-min').value)||5;
+    timerPhase = 'round'; timerRoundNum = 1; timerSeconds = roundMin*60;
+    timerRenderDisplay();
+  }
+  document.getElementById('timer-round-min').addEventListener('change', ()=>{ if(!timerInterval) timerReset(); });
+  timerRenderDisplay();
 
   /* ============ PATH-TRACK dinâmico (marca progresso real) ============ */
   const pathSteps = [
@@ -979,7 +1163,8 @@
     ...Object.keys(positions).map(k=>({key:k, title:positions[k].title, type:'position'})),
     ...Object.keys(genealogy).map(k=>({key:k, title:genealogy[k].title, type:'genealogy'})),
     ...Object.keys(belts).map(k=>({key:k, title:belts[k].title, type:'belt'})),
-    ...Object.keys(fundamentals).map(k=>({key:k, title:fundamentals[k].title, type:'fundamental'}))
+    ...Object.keys(fundamentals).map(k=>({key:k, title:fundamentals[k].title, type:'fundamental'})),
+    ...fullGlossary.map(g=>({key:g.term, title:g.term, type:'glossary'}))
   ];
   function filterNav(query){
     const box = document.getElementById('search-results');
@@ -996,7 +1181,8 @@
     else if(type==='position') openPositionModal(key);
     else if(type==='genealogy') openGenealogy(key);
     else if(type==='belt') openBelt(key);
-    else openFundamental(key);
+    else if(type==='fundamental') openFundamental(key);
+    else scrollToSection('glossario-section');
   }
 
   /* ============ TEMA claro/escuro (real) ============ */
