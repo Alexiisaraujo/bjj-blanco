@@ -199,7 +199,74 @@
   .today-name{font-size:13.5px; font-weight:700; flex:1;}
   .today-sub{font-size:11.5px; color:var(--text-dis);}
 
-  /* ===== ARTICLE VIEW ===== */
+  /* ===== LANDING (portada) ===== */
+  #landing-view{position:fixed; inset:0; z-index:900; background:var(--bg); overflow-y:auto;}
+  .land-hero{position:relative; min-height:86vh; display:flex; align-items:center; overflow:hidden;}
+  .land-hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.55;}
+  .land-hero::before{content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(11,11,11,.55) 0%, rgba(11,11,11,.75) 55%, var(--bg) 100%);}
+  .land-hero-content{position:relative; z-index:2; max-width:720px; margin:0 auto; padding:0 32px; text-align:center;}
+  .land-eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:800; letter-spacing:1.6px; color:var(--accent-light); text-transform:uppercase; margin-bottom:18px;}
+  .land-hero-content h1{font-size:46px; font-weight:900; line-height:1.08; letter-spacing:-.6px;}
+  .land-hero-content p{margin:18px auto 0 auto; max-width:520px; font-size:15px; color:#D4D4D8; line-height:1.7;}
+  .land-hero-actions{display:flex; gap:12px; justify-content:center; margin-top:30px; flex-wrap:wrap;}
+  .land-belt-preview{display:flex; align-items:center; justify-content:center; gap:6px; margin-top:34px; font-size:11px; font-weight:700; color:var(--text-dis); letter-spacing:.4px;}
+  .land-belt-preview span.step{padding:5px 11px; border-radius:99px; border:1px solid var(--border); background:var(--card);}
+  .land-belt-preview svg{width:12px; height:12px;}
+
+  .land-section{max-width:1040px; margin:0 auto; padding:70px 32px;}
+  .land-section-head{text-align:center; max-width:600px; margin:0 auto 40px auto;}
+  .land-tag{font-size:11px; font-weight:800; letter-spacing:1.4px; color:var(--accent-light); text-transform:uppercase;}
+  .land-section-head h2{font-size:28px; font-weight:900; margin-top:8px; letter-spacing:-.3px;}
+  .land-section-head p{font-size:13.5px; color:var(--text-sec); margin-top:10px; line-height:1.7;}
+
+  .land-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .land-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px 18px;}
+  .land-card .ico{width:34px; height:34px; border-radius:9px; background:rgba(37,99,235,.12); color:var(--accent-light); display:flex; align-items:center; justify-content:center; margin-bottom:14px;}
+  .land-card .ico svg{width:16px; height:16px; stroke-width:2;}
+  .land-card h3{font-size:13.5px; font-weight:800; margin-bottom:6px;}
+  .land-card p{font-size:12px; color:var(--text-sec); line-height:1.6;}
+  @media (max-width:1000px){ .land-grid{grid-template-columns:repeat(2,1fr);} }
+
+  .land-split{display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:stretch;}
+  .land-split-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;}
+  .land-split-card img{width:100%; height:170px; object-fit:cover; opacity:.9;}
+  .land-split-card .body{padding:18px 20px;}
+  .land-split-card .tagpill{font-size:10px; font-weight:800; letter-spacing:1px; color:var(--accent-light);}
+  .land-split-card h3{font-size:15px; font-weight:800; margin-top:6px;}
+  .land-split-card p{font-size:12.5px; color:var(--text-sec); margin-top:8px; line-height:1.6;}
+  @media (max-width:760px){ .land-split{grid-template-columns:1fr;} }
+
+  .land-journey{display:flex; flex-direction:column; gap:0; margin-top:10px;}
+  .land-journey-step{display:flex; gap:16px; padding:18px 0; border-bottom:1px solid var(--border);}
+  .land-journey-step:last-child{border-bottom:none;}
+  .land-journey-num{width:32px; height:32px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; color:var(--accent-light); flex-shrink:0;}
+  .land-journey-step h4{font-size:13.5px; font-weight:800;}
+  .land-journey-step p{font-size:12.5px; color:var(--text-sec); margin-top:4px; line-height:1.6;}
+
+  .land-cta{text-align:center; padding:70px 32px 90px 32px;}
+  .land-cta h2{font-size:26px; font-weight:900;}
+  .land-cta p{font-size:13.5px; color:var(--text-sec); margin:12px 0 26px 0;}
+
+  @media (max-width:640px){
+    .land-hero-content h1{font-size:32px;}
+    .land-section{padding:50px 20px;}
+    .land-grid{grid-template-columns:1fr;}
+  }
+
+  .gn-split{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .gn-card{background:#1a1a1a; border:1px solid var(--border); border-radius:10px; padding:14px 16px;}
+  .gn-card .tagpill{font-size:10px; font-weight:800; letter-spacing:1px; color:var(--accent-light);}
+  .gn-card p{font-size:12.5px; color:#D4D4D8; margin-top:6px; line-height:1.55;}
+  @media (max-width:480px){ .gn-split{grid-template-columns:1fr;} }
+  .video-card{display:flex; align-items:center; gap:14px; background:#1a1a1a; border:1px solid var(--border); border-radius:10px; padding:12px; text-decoration:none;}
+  .video-card:hover{border-color:var(--accent-light);}
+  .video-card .vthumb{width:76px; height:54px; border-radius:6px; overflow:hidden; flex-shrink:0; background:#000;}
+  .video-card .vthumb img{width:100%; height:100%; object-fit:cover;}
+  .video-card .vinfo{flex:1; min-width:0;}
+  .video-card .vinfo b{display:block; font-size:12.5px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .video-card .vinfo span{font-size:11px; color:var(--text-dis);}
+  .video-card .vbtn{flex-shrink:0; display:flex; align-items:center; gap:6px; font-size:11px; font-weight:800; color:var(--accent-light);}
+  .video-card .vbtn svg{width:14px; height:14px;}
   #article-view{display:none;}
   .crumbs{font-size:12px; color:var(--text-dis); margin-bottom:16px; display:flex; align-items:center; gap:6px;}
   .crumbs a:hover{color:var(--text-sec);}
@@ -384,6 +451,77 @@
 <div id="progress-track"><div id="progress-fill"></div></div>
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
+<div id="landing-view">
+  <div class="land-hero">
+    <img src="https://images.unsplash.com/photo-1747331796135-0e2354a712e4?w=1800&q=85&auto=format&fit=crop" alt="Treino de Jiu-Jitsu">
+    <div class="land-hero-content">
+      <div class="land-eyebrow"><i data-lucide="triangle" style="width:12px;height:12px;"></i>ATLAS BJJ · PLATAFORMA DE TREINO</div>
+      <h1>DO ZERO ATÉ O<br>NÍVEL PRÉ-AZUL.</h1>
+      <p>Um programa estruturado de Jiu-Jitsu Brasileiro — posições, escapes, guardas, finalizações e drills solo — construído para ser treinado todos os dias, com progresso real que fica salvo.</p>
+      <div class="land-hero-actions">
+        <button class="btn btn-primary" onclick="enterApp()"><i data-lucide="play"></i>COMEÇAR TREINO</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('land-learn').scrollIntoView({behavior:'smooth'})"><i data-lucide="arrow-down"></i>CONHECER O PROGRAMA</button>
+      </div>
+      <div class="land-belt-preview">
+        <span class="step">FAIXA BRANCA</span><i data-lucide="chevron-right"></i>
+        <span class="step">BRANCA AVANÇADA</span><i data-lucide="chevron-right"></i>
+        <span class="step">PRÉ-AZUL</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="land-section" id="land-learn">
+    <div class="land-section-head">
+      <div class="land-tag">O QUE VOCÊ VAI APRENDER</div>
+      <h2>Um sistema, não técnicas soltas</h2>
+      <p>Cada módulo conecta com o próximo — da defesa básica até a cadeia completa de ataque, para que você entenda o porquê de cada movimento.</p>
+    </div>
+    <div class="land-grid">
+      <div class="land-card"><div class="ico"><i data-lucide="shield"></i></div><h3>Posições &amp; Defesa</h3><p>Guarda, montada, controle lateral, costas — e como escapar de cada uma com segurança.</p></div>
+      <div class="land-card"><div class="ico"><i data-lucide="repeat"></i></div><h3>Guardas &amp; Passagens</h3><p>Como manter, recompor e passar guardas — o coração do jogo no chão.</p></div>
+      <div class="land-card"><div class="ico"><i data-lucide="swords"></i></div><h3>Finalizações</h3><p>Armlock, triângulo, kimura, mata-leão — sempre com aviso de quando parceiro é obrigatório.</p></div>
+      <div class="land-card"><div class="ico"><i data-lucide="footprints"></i></div><h3>Drills Solo</h3><p>Movimentação, força e mobilidade para treinar sozinho, sem academia nem parceiro.</p></div>
+    </div>
+  </div>
+
+  <div class="land-section">
+    <div class="land-section-head">
+      <div class="land-tag">GI VERSUS NO-GI</div>
+      <h2>A mesma técnica, dois contextos</h2>
+      <p>Cada finalização e transição mostra o que muda de pegada quando você troca o kimono pelo rash guard.</p>
+    </div>
+    <div class="land-split">
+      <div class="land-split-card">
+        <img src="https://images.unsplash.com/photo-1682545888368-587f56efd06e?w=700&q=80&auto=format&fit=crop" alt="Treino de Gi">
+        <div class="body"><div class="tagpill">GI</div><h3>Pegadas na gola e manga</h3><p>Estrangulamentos e controles que dependem do tecido do kimono — cruzado, xoke, ezequiel.</p></div>
+      </div>
+      <div class="land-split-card">
+        <img src="https://images.unsplash.com/photo-1777305936039-e205e7d594a3?w=700&q=80&auto=format&fit=crop" alt="Treino de No-Gi">
+        <div class="body"><div class="tagpill">NO-GI</div><h3>Controle de pulso e corpo</h3><p>Sem tecido para segurar, o jogo muda para underhooks, wrist control e maior ritmo.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="land-section">
+    <div class="land-section-head">
+      <div class="land-tag">SUA JORNADA</div>
+      <h2>A ordem que você vai seguir</h2>
+    </div>
+    <div class="land-journey">
+      <div class="land-journey-step"><div class="land-journey-num">1</div><div><h4>Dashboard diário</h4><p>Entre e veja exatamente o treino de hoje — aquecimento, técnica, drills e revisão.</p></div></div>
+      <div class="land-journey-step"><div class="land-journey-num">2</div><div><h4>Fundamentos (5+5+5)</h4><p>Domine as 5 posições, 5 ataques e 5 defesas essenciais antes de avançar.</p></div></div>
+      <div class="land-journey-step"><div class="land-journey-num">3</div><div><h4>Biblioteca completa</h4><p>Explore posições, quedas, escapes e a genealogia do jiu-jitsu no seu ritmo.</p></div></div>
+      <div class="land-journey-step"><div class="land-journey-num">4</div><div><h4>Progresso salvo</h4><p>Cada status e sessão fica gravado no seu navegador — feche e volte quando quiser.</p></div></div>
+    </div>
+  </div>
+
+  <div class="land-cta">
+    <h2>Sua jornada rumo ao pré-azul começa agora.</h2>
+    <p>Sem atalhos. Posição antes de finalização.</p>
+    <button class="btn btn-primary" onclick="enterApp()"><i data-lucide="play"></i>COMEÇAR SUA JORNADA</button>
+  </div>
+</div>
+
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -428,6 +566,7 @@
     </div>
     <div class="sidebar-footer">
       <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="Alternar tema claro/escuro"><i data-lucide="moon"></i></button>
+      <a class="icon-btn" href="admin.html" target="_blank" title="Painel Admin"><i data-lucide="settings"></i></a>
     </div>
   </aside>
 
@@ -1288,6 +1427,11 @@
     document.getElementById('article-view').style.display='block';
     window.scrollTo(0,0);
   }
+  function enterApp(){
+    document.getElementById('landing-view').style.display='none';
+    document.body.style.overflow='';
+    showDashboard();
+  }
   function setActiveNav(id){
     document.getElementById('nav-dashboard').classList.toggle('active', id==='nav-dashboard');
     document.getElementById('nav-home').classList.toggle('active', id==='nav-home');
@@ -1509,7 +1653,8 @@
       steps:['Deite de costas e enrole as pernas ao redor do quadril do oponente, cruzando os tornozelos atrás das costas dele.','Puxe os pulsos ou a gola dele para quebrar a postura, trazendo o peito dele em direção ao seu.','Controle a distância com os joelhos apertando as costelas — nunca deixe espaço para ele se levantar reto.'],
       mistakes:['Deixar os tornozelos abertos, permitindo que o oponente se afaste e "empilhe" para passar.','Ficar com as costas totalmente no chão sem quebrar a postura dele, o que facilita passagens.'],
       drill:'Solo: deitado, pratique levantar e girar o quadril simulando a quebra de postura (10 reps x 3 séries).',
-      gi:'Use a gola e a manga para puxar e quebrar a postura.', nogi:'Use pulso e nuca (collar tie) para o mesmo efeito.'},
+      gi:'Use a gola e a manga para puxar e quebrar a postura.', nogi:'Use pulso e nuca (collar tie) para o mesmo efeito.',
+      video:{title:'Closed Guard Detail', channel:'Bernardo Faria BJJ Fanatics', url:'https://www.youtube.com/watch?v=tN-fsCHmmio'}},
     'f-montada':{group:'Posição', icon:'triangle', title:'Montada', intro:'Você senta sobre o quadril do oponente, com um joelho de cada lado. Posição dominante com máximo acesso a ataques.',
       steps:['Sente sobre o quadril dele, joelhos próximos às costelas para máxima mobilidade e pressão.','Mantenha o peso baixo e centralizado — evite sentar muito para trás (facilita bridge/upa) ou muito para frente.','Controle um braço ou a cabeça para impedir que ele crie espaço.'],
       mistakes:['Sentar muito ereto e alto, ficando vulnerável a ser derrubado por um "upa" (bridge).','Deixar os joelhos afastados do corpo dele, perdendo pressão e controle de quadril.'],
@@ -1522,6 +1667,7 @@
       steps:['Cole o peito nas costas dele e insira os dois calcanhares como "ganchos" na parte interna das coxas.','Controle um braço dele com "seatbelt" (um braço por cima do ombro, outro por baixo da axila).','Mantenha o queixo protegido atrás do ombro dele para não ser atingido.'],
       mistakes:['Cruzar os pés atrás das costas dele (perigoso e ilegal em competição — pode sofrer footlock).','Perder o seatbelt e deixar os dois braços dele livres, facilitando a fuga.'],
       drill:'Solo: pratique a entrada dos ganchos deitado de lado, alternando o quadril (10 reps x 3 séries).',
+      gi:'Pode reforçar o seatbelt segurando a gola para travar o estrangulamento cruzado em sequência.', nogi:'O seatbelt depende só de força de braço — sem gola, controle o pulso do braço livre dele.',
       partnerRequired:true},
     'f-joelho':{group:'Posição', icon:'move-diagonal', title:'Joelho na Barriga', intro:'Um joelho apoiado no abdômen do oponente e o outro pé no chão. Posição incômoda de transição, com boa mobilidade para atacar.',
       steps:['Apoie um joelho leve sobre o abdômen dele, o outro pé plantado no chão para base.','Controle a gola ou nuca e o braço distante para impedir que ele gire.','Mantenha o quadril alto e móvel para acompanhar as reações dele.'],
@@ -1587,18 +1733,48 @@
     openFundamental(key);
     renderFundamentals();
   }
+  /* ============ ADMIN OVERRIDES (lidas de admin.html via localStorage) ============ */
+  function loadFundOverrides(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-admin-fundover')) || {}; }catch(e){ return {}; }
+  }
+  function loadFundOrder(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-admin-fundorder')) || []; }catch(e){ return []; }
+  }
+  function getFund(key){
+    const base = fundamentals[key];
+    const ov = loadFundOverrides()[key] || {};
+    const merged = Object.assign({}, base);
+    if(ov.title) merged.title = ov.title;
+    if(ov.intro) merged.intro = ov.intro;
+    if(ov.imgUrl) merged.imgUrl = ov.imgUrl;
+    if(ov.gi) merged.gi = ov.gi;
+    if(ov.nogi) merged.nogi = ov.nogi;
+    if(ov.videoTitle && ov.videoUrl){ merged.video = {title:ov.videoTitle, channel:ov.videoChannel||'', url:ov.videoUrl}; }
+    return merged;
+  }
+  function orderedKeysForGroup(g){
+    const order = loadFundOrder();
+    const groupKeys = Object.keys(fundamentals).filter(k=>fundamentals[k].group===g);
+    if(!order.length) return groupKeys;
+    const ordered = order.filter(k=>groupKeys.includes(k));
+    groupKeys.forEach(k=>{ if(!ordered.includes(k)) ordered.push(k); });
+    return ordered;
+  }
   function renderFundamentalModal(key){
-    const f = fundamentals[key];
+    const f = getFund(key);
     const st = loadFundStatus();
     const idx = st[key]||0;
+    const imgHtml = f.imgUrl ? `<div class="article-hero" style="height:180px; margin-bottom:18px;"><img src="${f.imgUrl}" alt="${f.title}"></div>` : '';
     const stepsHtml = f.steps ? `<div class="art-block"><h3><i data-lucide="list-ordered"></i>PASSO A PASSO</h3><ol style="padding-left:18px; display:flex; flex-direction:column; gap:6px;">${f.steps.map(s=>`<li style="font-size:13.5px; line-height:1.6; color:#D4D4D8;">${s}</li>`).join('')}</ol></div>` : '';
     const mistakesHtml = f.mistakes ? `<div class="art-block"><h3><i data-lucide="alert-triangle"></i>ERROS FREQUENTES</h3><ul class="disadv-list">${f.mistakes.map(m=>`<li>${m}</li>`).join('')}</ul></div>` : '';
     const drillHtml = f.drill ? `<div class="art-block"><h3><i data-lucide="repeat"></i>DRILL SOLO</h3><p>${f.drill}</p></div>` : '';
-    const giNogiHtml = (f.gi || f.nogi) ? `<div class="art-block"><h3><i data-lucide="shirt"></i>GI VS NO-GI</h3>${f.gi?`<p><b>GI:</b> ${f.gi}</p>`:''}${f.nogi?`<p><b>NO-GI:</b> ${f.nogi}</p>`:''}</div>` : '';
+    const giNogiHtml = (f.gi || f.nogi) ? `<div class="art-block"><h3><i data-lucide="shirt"></i>GI VS NO-GI</h3><div class="gn-split">${f.gi?`<div class="gn-card"><div class="tagpill">GI</div><p>${f.gi}</p></div>`:'<div></div>'}${f.nogi?`<div class="gn-card"><div class="tagpill">NO-GI</div><p>${f.nogi}</p></div>`:'<div></div>'}</div></div>` : '';
+    const videoHtml = f.video ? `<div class="art-block"><h3><i data-lucide="youtube"></i>VÍDEO</h3><a class="video-card" href="${f.video.url}" target="_blank" rel="noopener"><div class="vthumb"><img src="https://img.youtube.com/vi/${(f.video.url.split('v=')[1]||'').split('&')[0]}/mqdefault.jpg" alt="${f.video.title}"></div><div class="vinfo"><b>${f.video.title}</b><span>${f.video.channel}</span></div><div class="vbtn"><i data-lucide="external-link"></i>ASSISTIR</div></a></div>` : '';
     const partnerHtml = f.partnerRequired ? `<div class="disclaimer-box"><i data-lucide="alert-triangle"></i><span><b>PARCEIRO OBRIGATÓRIO.</b> Não pratique esta finalização/controle com pressão real sem um parceiro treinado e supervisão.</span></div>` : '';
     return `
       <div class="modal-body" style="padding-top:26px;">
         <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
+        ${imgHtml}
         <div class="modal-eyebrow">${f.group.toUpperCase()} · FUNDAMENTAL</div>
         <h2>${f.title}</h2>
         <p>${f.intro}</p>
@@ -1610,6 +1786,7 @@
         ${mistakesHtml}
         ${drillHtml}
         ${giNogiHtml}
+        ${videoHtml}
         ${f.counter ? `<div class="modal-tip"><b style="color:var(--accent-light);">Como se defender:</b> ${f.counter}</div>` : ''}
         <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
       </div>`;
@@ -1625,8 +1802,8 @@
     const st = loadFundStatus();
     Object.keys(groups).forEach(g=>{
       const wrap = document.getElementById(groups[g]);
-      wrap.innerHTML = Object.keys(fundamentals).filter(k=>fundamentals[k].group===g).map(k=>{
-        const f = fundamentals[k];
+      wrap.innerHTML = orderedKeysForGroup(g).map(k=>{
+        const f = getFund(k);
         const done = (st[k]||0) >= 4;
         return `<div class="fund-card" onclick="openFundamental('${k}')" style="position:relative;">
           ${done ? `<div style="position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#22c55e;"></div>` : ''}

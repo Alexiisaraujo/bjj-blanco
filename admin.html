@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Atlas BJJ — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  :root{
+    --bg:#0B0B0B; --panel:#141414; --card:#191919; --border:#2A2A2A;
+    --accent:#2563EB; --accent-light:#3B7BFA;
+    --text:#FFFFFF; --text-sec:#A1A1AA; --text-dis:#71717A;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:14px; -webkit-font-smoothing:antialiased;}
+  body{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);}
+  a{color:inherit; text-decoration:none;}
+  button, input, textarea{font-family:inherit; color:inherit;}
+  button{cursor:pointer; border:none; background:none;}
+
+  .topbar{display:flex; align-items:center; gap:12px; padding:20px 28px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--bg); z-index:10;}
+  .topbar .mark{width:32px; height:32px; border-radius:8px; background:linear-gradient(160deg,var(--accent-light),var(--accent) 70%); display:flex; align-items:center; justify-content:center;}
+  .topbar .mark svg{width:16px; height:16px; color:#fff;}
+  .topbar h1{font-size:14px; font-weight:800; letter-spacing:.3px;}
+  .topbar .sub{font-size:11px; color:var(--text-dis);}
+  .topbar-right{margin-left:auto; display:flex; gap:10px;}
+  .btn{display:flex; align-items:center; gap:7px; padding:9px 14px; border-radius:9px; font-size:12.5px; font-weight:700; border:1px solid var(--border); transition:.15s;}
+  .btn svg{width:14px; height:14px;}
+  .btn-primary{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .btn-primary:hover{background:var(--accent-light);}
+  .btn-ghost{background:var(--card); color:var(--text);}
+  .btn-ghost:hover{border-color:#3a3a3a;}
+  .btn-danger{background:rgba(239,68,68,.1); color:#f87171; border-color:rgba(239,68,68,.3);}
+
+  .wrap{max-width:920px; margin:0 auto; padding:28px 28px 80px 28px;}
+  .notice{display:flex; gap:10px; align-items:flex-start; font-size:12px; color:var(--text-sec); background:rgba(37,99,235,.06); border:1px solid rgba(37,99,235,.2); border-radius:10px; padding:12px 14px; margin-bottom:22px;}
+  .notice svg{width:15px; height:15px; color:var(--accent-light); flex-shrink:0; margin-top:1px;}
+
+  .group-label{font-size:11px; font-weight:800; letter-spacing:1.2px; color:var(--text-dis); text-transform:uppercase; margin:26px 0 10px 0;}
+  .item{background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden;}
+  .item-head{display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer;}
+  .item-head .order-btns{display:flex; flex-direction:column; gap:2px;}
+  .order-btns button{width:20px; height:16px; display:flex; align-items:center; justify-content:center; background:#1f1f1f; border-radius:4px;}
+  .order-btns button:hover{background:#262626;}
+  .order-btns svg{width:11px; height:11px; color:var(--text-sec);}
+  .item-head .ttl{font-size:13.5px; font-weight:700; flex:1;}
+  .item-head .badge{font-size:10px; font-weight:700; padding:3px 8px; border-radius:99px; background:#1f1f1f; color:var(--text-dis);}
+  .item-head .badge.custom{background:rgba(34,197,94,.12); color:#22c55e;}
+  .item-head svg.chev{width:15px; height:15px; color:var(--text-dis); transition:.15s;}
+  .item.open .item-head svg.chev{transform:rotate(180deg);}
+  .item-body{display:none; padding:0 16px 18px 16px; border-top:1px solid var(--border);}
+  .item.open .item-body{display:block;}
+  .field{margin-top:14px;}
+  .field label{display:block; font-size:11px; font-weight:700; color:var(--text-sec); margin-bottom:6px; letter-spacing:.2px;}
+  .field input, .field textarea{width:100%; background:#111; border:1px solid var(--border); border-radius:8px; padding:9px 11px; font-size:12.5px; outline:none;}
+  .field input:focus, .field textarea:focus{border-color:var(--accent-light);}
+  .field textarea{resize:vertical; min-height:56px;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .thumb-preview{margin-top:8px; height:90px; border-radius:8px; overflow:hidden; background:#111; border:1px solid var(--border); display:flex; align-items:center; justify-content:center;}
+  .thumb-preview img{width:100%; height:100%; object-fit:cover;}
+  .thumb-preview span{font-size:11px; color:var(--text-dis);}
+  .item-actions{display:flex; gap:8px; margin-top:16px;}
+  @media (max-width:640px){ .row2{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="mark"><i data-lucide="settings"></i></div>
+  <div><h1>ATLAS BJJ — ADMIN</h1><div class="sub">Controla ordem, imagens, vídeos e Gi/No-Gi dos Fundamentos</div></div>
+  <div class="topbar-right">
+    <a class="btn btn-ghost" href="index.html"><i data-lucide="arrow-left"></i>VOLTAR AO SITE</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="notice"><i data-lucide="info"></i><span>As alterações ficam salvas no navegador (localStorage) e aparecem automaticamente no <b>index.html</b> quando os dois arquivos estão publicados no mesmo domínio (ex: GitHub Pages). Cole links reais de imagem e de YouTube — nada aqui é inventado.</span></div>
+
+  <div id="groups"></div>
+</div>
+
+<script>
+  const baseItems = [
+    {key:'f-guarda', group:'Posição', title:'Guarda Fechada'},
+    {key:'f-montada', group:'Posição', title:'Montada'},
+    {key:'f-lateral', group:'Posição', title:'Controle Lateral'},
+    {key:'f-costas', group:'Posição', title:'Controle das Costas'},
+    {key:'f-joelho', group:'Posição', title:'Joelho na Barriga'},
+    {key:'f-armlock', group:'Ataque', title:'Armlock (Juji Gatame)'},
+    {key:'f-triangulo', group:'Ataque', title:'Triângulo'},
+    {key:'f-cruzado', group:'Ataque', title:'Estrangulamento Cruzado'},
+    {key:'f-kimura', group:'Ataque', title:'Kimura'},
+    {key:'f-mataleao', group:'Ataque', title:'Mata-Leão (RNC)'},
+    {key:'f-shrimp', group:'Defesa', title:'Hip Escape (Shrimping)'},
+    {key:'f-frame', group:'Defesa', title:'Frame (proteção do pescoço)'},
+    {key:'f-ponte', group:'Defesa', title:'Ponte e Giro (Bridge)'},
+    {key:'f-postura', group:'Defesa', title:'Postura na Guarda'},
+    {key:'f-recomposicao', group:'Defesa', title:'Recomposição de Guarda'}
+  ];
+  const groupsOrder = ['Posição','Ataque','Defesa'];
+
+  function loadOverrides(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-admin-fundover')) || {}; }catch(e){ return {}; }
+  }
+  function saveOverrides(obj){
+    try{ localStorage.setItem('atlasbjj-admin-fundover', JSON.stringify(obj)); }catch(e){}
+  }
+  function loadOrder(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-admin-fundorder')) || []; }catch(e){ return []; }
+  }
+  function saveOrder(arr){
+    try{ localStorage.setItem('atlasbjj-admin-fundorder', JSON.stringify(arr)); }catch(e){}
+  }
+  function orderedKeys(group){
+    const order = loadOrder();
+    const groupKeys = baseItems.filter(i=>i.group===group).map(i=>i.key);
+    if(!order.length) return groupKeys;
+    const ordered = order.filter(k=>groupKeys.includes(k));
+    groupKeys.forEach(k=>{ if(!ordered.includes(k)) ordered.push(k); });
+    return ordered;
+  }
+  function moveItem(group, key, dir){
+    let order = loadOrder();
+    if(!order.length){ order = baseItems.map(i=>i.key); }
+    const groupKeys = orderedKeys(group);
+    const idx = groupKeys.indexOf(key);
+    const swapIdx = idx + dir;
+    if(swapIdx < 0 || swapIdx >= groupKeys.length) return;
+    const a = groupKeys[idx], b = groupKeys[swapIdx];
+    const ia = order.indexOf(a), ib = order.indexOf(b);
+    if(ia===-1 || ib===-1){
+      // rebuild full order list first
+      order = baseItems.map(i=>i.key);
+      const gk = orderedKeys(group);
+      const nIdx = gk.indexOf(a), nSwap = gk.indexOf(b);
+    }
+    [order[order.indexOf(a)], order[order.indexOf(b)]] = [order[order.indexOf(b)], order[order.indexOf(a)]];
+    saveOrder(order);
+    render();
+  }
+  function toggleItem(key){
+    document.getElementById('item-'+key).classList.toggle('open');
+  }
+  function saveField(key, field, value){
+    const ov = loadOverrides();
+    ov[key] = ov[key] || {};
+    ov[key][field] = value;
+    saveOverrides(ov);
+  }
+  function resetItem(key){
+    const ov = loadOverrides();
+    delete ov[key];
+    saveOverrides(ov);
+    render();
+  }
+  function resetAll(){
+    if(!confirm('Restaurar todos os Fundamentos ao padrão? Isso apaga imagens, vídeos e ordem personalizados.')) return;
+    localStorage.removeItem('atlasbjj-admin-fundover');
+    localStorage.removeItem('atlasbjj-admin-fundorder');
+    render();
+  }
+
+  function render(){
+    const wrap = document.getElementById('groups');
+    const ov = loadOverrides();
+    wrap.innerHTML = groupsOrder.map(g=>{
+      const keys = orderedKeys(g);
+      const itemsHtml = keys.map((k,i)=>{
+        const base = baseItems.find(b=>b.key===k);
+        const o = ov[k] || {};
+        const isCustom = Object.keys(o).length > 0;
+        return `<div class="item" id="item-${k}">
+          <div class="item-head" onclick="toggleItem('${k}')">
+            <div class="order-btns" onclick="event.stopPropagation()">
+              <button onclick="moveItem('${g}','${k}',-1)"><i data-lucide="chevron-up"></i></button>
+              <button onclick="moveItem('${g}','${k}',1)"><i data-lucide="chevron-down"></i></button>
+            </div>
+            <div class="ttl">${o.title || base.title}</div>
+            <div class="badge ${isCustom?'custom':''}">${isCustom?'PERSONALIZADO':'PADRÃO'}</div>
+            <i data-lucide="chevron-down" class="chev"></i>
+          </div>
+          <div class="item-body">
+            <div class="field"><label>TÍTULO (deixe em branco para usar o padrão)</label><input type="text" value="${o.title||''}" placeholder="${base.title}" onchange="saveField('${k}','title',this.value)"></div>
+            <div class="field"><label>INTRODUÇÃO</label><textarea placeholder="Descrição padrão do Atlas..." onchange="saveField('${k}','intro',this.value)">${o.intro||''}</textarea></div>
+            <div class="field"><label>URL DA IMAGEM</label><input type="text" value="${o.imgUrl||''}" placeholder="https://..." onchange="saveField('${k}','imgUrl',this.value); renderThumb('${k}',this.value)">
+              <div class="thumb-preview" id="thumb-${k}">${o.imgUrl?`<img src="${o.imgUrl}">`:'<span>Sem imagem</span>'}</div>
+            </div>
+            <div class="field"><label>VÍDEO — TÍTULO REAL</label><input type="text" value="${o.videoTitle||''}" placeholder="Título exato do vídeo no YouTube" onchange="saveField('${k}','videoTitle',this.value)"></div>
+            <div class="row2">
+              <div class="field"><label>VÍDEO — CANAL</label><input type="text" value="${o.videoChannel||''}" placeholder="Nome do canal" onchange="saveField('${k}','videoChannel',this.value)"></div>
+              <div class="field"><label>VÍDEO — LINK YOUTUBE</label><input type="text" value="${o.videoUrl||''}" placeholder="https://www.youtube.com/watch?v=..." onchange="saveField('${k}','videoUrl',this.value)"></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label>TEXTO — GI</label><textarea placeholder="O que muda usando kimono..." onchange="saveField('${k}','gi',this.value)">${o.gi||''}</textarea></div>
+              <div class="field"><label>TEXTO — NO-GI</label><textarea placeholder="O que muda sem kimono..." onchange="saveField('${k}','nogi',this.value)">${o.nogi||''}</textarea></div>
+            </div>
+            <div class="item-actions">
+              <button class="btn btn-danger" onclick="resetItem('${k}')"><i data-lucide="rotate-ccw"></i>RESTAURAR ESTE ITEM</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      return `<div class="group-label">${g === 'Posição' ? '5 POSIÇÕES' : g === 'Ataque' ? '5 ATAQUES' : '5 DEFESAS'}</div>${itemsHtml}`;
+    }).join('');
+    lucide.createIcons();
+  }
+  function renderThumb(key, url){
+    const el = document.getElementById('thumb-'+key);
+    el.innerHTML = url ? `<img src="${url}">` : '<span>Sem imagem</span>';
+  }
+  document.querySelector('.topbar-right').insertAdjacentHTML('afterbegin', `<button class="btn btn-danger" onclick="resetAll()"><i data-lucide="rotate-ccw"></i>RESTAURAR TUDO</button>`);
+  render();
+</script>
+</body>
+</html>
