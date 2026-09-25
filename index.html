@@ -149,6 +149,56 @@
   .glossary-item b{font-weight:700;}
   .glossary-item span{color:var(--text-sec); text-align:right; max-width:170px;}
 
+  /* ===== DASHBOARD ===== */
+  #dashboard-view{display:block;}
+  #home-view{display:none;}
+  .dash-top{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:8px;}
+  .dash-top h1{font-size:24px; font-weight:900;}
+  .dash-top p{font-size:12.5px; color:var(--text-sec);}
+  .belt-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin-bottom:20px;}
+  .belt-card-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
+  .belt-card-head .lbl{font-size:11.5px; font-weight:800; letter-spacing:1px; color:#E4E4E7;}
+  .belt-pct{font-size:22px; font-weight:900; color:var(--accent-light);}
+  .belt-bar-track{height:8px; border-radius:99px; background:#1f1f1f; border:1px solid var(--border); overflow:hidden; margin-bottom:16px;}
+  .belt-bar-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-light)); border-radius:99px; transition:width .3s ease;}
+  .belt-steps{display:flex; align-items:center; gap:0;}
+  .belt-step{flex:1; text-align:center; position:relative; padding-bottom:6px;}
+  .belt-step .dotmark{width:12px; height:12px; border-radius:50%; background:#2A2A2A; border:2px solid var(--border); margin:0 auto 8px auto;}
+  .belt-step.reached .dotmark{background:var(--accent-light); border-color:var(--accent-light);}
+  .belt-step p{font-size:11px; font-weight:700; color:var(--text-dis);}
+  .belt-step.reached p{color:var(--text);}
+  .belt-note{font-size:11px; color:var(--text-dis); margin-top:14px; line-height:1.5;}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:20px;}
+  .stat-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px;}
+  .stat-card .ico{width:30px; height:30px; border-radius:8px; background:rgba(37,99,235,.12); color:var(--accent-light); display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+  .stat-card .ico svg{width:15px; height:15px; stroke-width:2;}
+  .stat-card .val{font-size:20px; font-weight:900;}
+  .stat-card .lbl{font-size:11px; color:var(--text-sec); margin-top:2px;}
+  @media (max-width:1200px){ .stat-grid{grid-template-columns:repeat(3,1fr);} }
+
+  .level-track{display:grid; grid-template-columns:repeat(10,1fr); gap:8px; margin-bottom:20px;}
+  .level-step{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 6px; text-align:center;}
+  .level-step .num{font-size:10px; font-weight:800; color:var(--text-dis);}
+  .level-step p{font-size:9.5px; font-weight:700; color:var(--text-sec); line-height:1.25; margin-top:4px;}
+  .level-step.reached{border-color:var(--accent-light);}
+  .level-step.reached .num{color:var(--accent-light);}
+  .level-step.reached p{color:var(--text);}
+  @media (max-width:1200px){ .level-track{grid-template-columns:repeat(5,1fr);} }
+  @media (max-width:480px){ .level-track{grid-template-columns:repeat(2,1fr);} }
+
+  .today-card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin-bottom:20px;}
+  .today-list{display:flex; flex-direction:column; gap:2px; margin-top:14px;}
+  .today-item{display:flex; align-items:center; gap:12px; padding:11px 6px; border-bottom:1px solid var(--border); cursor:pointer;}
+  .today-item:last-child{border-bottom:none;}
+  .today-check{width:18px; height:18px; border-radius:6px; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .today-check svg{width:12px; height:12px; stroke-width:3; display:none; color:#fff;}
+  .today-item.done .today-check{background:#22c55e; border-color:#22c55e;}
+  .today-item.done .today-check svg{display:block;}
+  .today-item.done .today-name{color:var(--text-dis); text-decoration:line-through;}
+  .today-name{font-size:13.5px; font-weight:700; flex:1;}
+  .today-sub{font-size:11.5px; color:var(--text-dis);}
+
   /* ===== ARTICLE VIEW ===== */
   #article-view{display:none;}
   .crumbs{font-size:12px; color:var(--text-dis); margin-bottom:16px; display:flex; align-items:center; gap:6px;}
@@ -347,7 +397,8 @@
       <button class="icon-btn sidebar-close-btn" onclick="closeSidebar()" title="Fechar menu"><i data-lucide="x"></i></button>
     </div>
     <nav class="nav" onclick="closeSidebar()">
-      <a class="nav-item active" onclick="showHome()"><i data-lucide="home"></i>Início</a>
+      <a class="nav-item active" id="nav-dashboard" onclick="showDashboard()"><i data-lucide="layout-dashboard"></i>Dashboard</a>
+      <a class="nav-item" id="nav-home" onclick="showHome()"><i data-lucide="library"></i>Biblioteca</a>
       <a class="nav-item" onclick="scrollToSection('map-section')"><i data-lucide="share-2"></i>Mapa de Transições</a>
       <a class="nav-item" onclick="scrollToSection('genealogia-section')"><i data-lucide="git-branch"></i>Genealogia</a>
       <a class="nav-item" onclick="openTopic('historia')"><i data-lucide="clock"></i>História (resumo)</a>
@@ -398,6 +449,45 @@
 
     <div class="content-wrap">
       <div class="content-left">
+
+        <!-- ============ DASHBOARD VIEW ============ -->
+        <div id="dashboard-view">
+          <div class="dash-top">
+            <div>
+              <h1>Seu Treino, Hoje</h1>
+              <p>Progresso rumo ao nível técnico pré-azul.</p>
+            </div>
+          </div>
+
+          <div class="belt-card">
+            <div class="belt-card-head">
+              <span class="lbl">PROGRESSO GERAL</span>
+              <span class="belt-pct" id="belt-pct">0%</span>
+            </div>
+            <div class="belt-bar-track"><div class="belt-bar-fill" id="belt-bar-fill" style="width:0%"></div></div>
+            <div class="belt-steps" id="belt-steps"></div>
+            <p class="belt-note">Referência visual baseada na sua exploração da biblioteca — a faixa real depende do seu professor e do treino presencial.</p>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card"><div class="ico"><i data-lucide="clock"></i></div><div class="val" id="stat-hours">0</div><div class="lbl">Horas treinadas</div></div>
+            <div class="stat-card"><div class="ico"><i data-lucide="check-circle"></i></div><div class="val" id="stat-sessions">0</div><div class="lbl">Sessões completas</div></div>
+            <div class="stat-card"><div class="ico"><i data-lucide="book-open"></i></div><div class="val" id="stat-topics">0/0</div><div class="lbl">Tópicos estudados</div></div>
+            <div class="stat-card"><div class="ico"><i data-lucide="layers"></i></div><div class="val" id="stat-level">Nível 1</div><div class="lbl">Nível atual</div></div>
+            <div class="stat-card"><div class="ico"><i data-lucide="award"></i></div><div class="val" id="stat-fund">0/14</div><div class="lbl">Fundamentos prontos</div></div>
+          </div>
+
+          <div class="section">
+            <div class="section-head"><h2>SISTEMA DE NÍVEIS</h2><span style="font-size:11.5px; color:var(--text-dis);">BRANCA → BRANCA AVANÇADA → PRÉ-AZUL</span></div>
+            <div class="level-track" id="level-track"></div>
+          </div>
+
+          <div class="today-card">
+            <div class="panel-title">TREINO DE HOJE</div>
+            <div class="today-list" id="today-list"></div>
+            <button class="btn btn-primary btn-full" id="complete-session-btn" style="margin-top:16px;" onclick="completeSession()">CONCLUIR SESSÃO</button>
+          </div>
+        </div>
 
         <!-- ============ HOME VIEW ============ -->
         <div id="home-view">
@@ -1198,10 +1288,121 @@
     document.getElementById('article-view').style.display='block';
     window.scrollTo(0,0);
   }
+  function setActiveNav(id){
+    document.getElementById('nav-dashboard').classList.toggle('active', id==='nav-dashboard');
+    document.getElementById('nav-home').classList.toggle('active', id==='nav-home');
+  }
   function showHome(){
+    document.getElementById('dashboard-view').style.display='none';
     document.getElementById('article-view').style.display='none';
     document.getElementById('home-view').style.display='block';
+    setActiveNav('nav-home');
     window.scrollTo(0,0);
+  }
+  function showDashboard(){
+    document.getElementById('home-view').style.display='none';
+    document.getElementById('article-view').style.display='none';
+    document.getElementById('dashboard-view').style.display='block';
+    setActiveNav('nav-dashboard');
+    window.scrollTo(0,0);
+    renderDashboard();
+  }
+
+  /* ============ DASHBOARD: progresso, cinturão, níveis, treino de hoje ============ */
+  const beltStages = ['Faixa Branca','Branca Avançada','Pré-Azul'];
+  const levelDefs = [
+    {label:'FUNDAMENTOS'},{label:'POSICIONAL'},{label:'DEFESA'},{label:'GUARDA'},
+    {label:'PASSAGEM'},{label:'FINALIZAÇÕES'},{label:'WRESTLING'},{label:'GI'},
+    {label:'NO-GI'},{label:'INTEGRAÇÃO'}
+  ];
+  const todayPlan = [
+    {key:'warmup', name:'Aquecimento', sub:'10 min — mobilidade + quedas de segurança'},
+    {key:'movement', name:'Movimentação Solo', sub:'10 min — shrimp, ponte, technical stand-up'},
+    {key:'technique', name:'Estudo de Técnica', sub:'15 min — revisar 1 posição da Biblioteca'},
+    {key:'drills', name:'Solo Drills', sub:'10 min — repetição de padrão de movimento'},
+    {key:'strength', name:'Força', sub:'10 min — força funcional básica'},
+    {key:'mobility', name:'Mobilidade', sub:'5 min — quadril e ombros'},
+    {key:'review', name:'Revisão', sub:'5 min — repassar mentalmente o que foi treinado'}
+  ];
+  function loadProgress(){
+    try{
+      const raw = JSON.parse(localStorage.getItem('atlasbjj-progress'));
+      if(raw) return raw;
+    }catch(e){}
+    return {level:1, sessionsCompleted:0, hoursTrained:0, lastSessionDate:null};
+  }
+  function saveProgress(p){
+    try{ localStorage.setItem('atlasbjj-progress', JSON.stringify(p)); }catch(e){}
+  }
+  function todayKey(){ return 'atlasbjj-today-'+new Date().toISOString().slice(0,10); }
+  function loadTodayChecks(){
+    try{ return JSON.parse(localStorage.getItem(todayKey())) || []; }catch(e){ return []; }
+  }
+  function saveTodayChecks(arr){
+    try{ localStorage.setItem(todayKey(), JSON.stringify(arr)); }catch(e){}
+  }
+  function toggleTodayItem(key){
+    const checks = loadTodayChecks();
+    const i = checks.indexOf(key);
+    if(i>=0) checks.splice(i,1); else checks.push(key);
+    saveTodayChecks(checks);
+    renderDashboard();
+  }
+  function completeSession(){
+    const checks = loadTodayChecks();
+    if(checks.length < todayPlan.length){
+      alert('Marque todos os blocos do treino de hoje antes de concluir a sessão.');
+      return;
+    }
+    const p = loadProgress();
+    const today = new Date().toISOString().slice(0,10);
+    if(p.lastSessionDate === today) return;
+    p.sessionsCompleted += 1;
+    p.hoursTrained = Math.round((p.hoursTrained + 1.1) * 10) / 10;
+    p.lastSessionDate = today;
+    saveProgress(p);
+    renderDashboard();
+  }
+  function renderDashboard(){
+    const p = loadProgress();
+    const visitedTopics = getVisited();
+    const totalTopics = pathSteps.length;
+    const pct = Math.round((visitedTopics.length / totalTopics) * 100);
+
+    // faixa: avança conforme % de biblioteca explorada (referência visual, não oficial)
+    let beltIdx = 0;
+    if(pct >= 66) beltIdx = 2; else if(pct >= 33) beltIdx = 1;
+    document.getElementById('belt-pct').textContent = pct+'%';
+    document.getElementById('belt-bar-fill').style.width = pct+'%';
+    document.getElementById('belt-steps').innerHTML = beltStages.map((b,i)=>
+      `<div class="belt-step ${i<=beltIdx?'reached':''}"><div class="dotmark"></div><p>${b}</p></div>`
+    ).join('');
+
+    document.getElementById('stat-hours').textContent = p.hoursTrained;
+    document.getElementById('stat-sessions').textContent = p.sessionsCompleted;
+    document.getElementById('stat-topics').textContent = visitedTopics.length+'/'+totalTopics;
+    document.getElementById('stat-level').textContent = 'Nível '+p.level;
+    const fundSt = loadFundStatus();
+    const fundReady = Object.keys(fundamentals).filter(k=>(fundSt[k]||0)>=4).length;
+    document.getElementById('stat-fund').textContent = fundReady+'/'+Object.keys(fundamentals).length;
+
+    document.getElementById('level-track').innerHTML = levelDefs.map((l,i)=>
+      `<div class="level-step ${i+1<=p.level?'reached':''}"><div class="num">NÍVEL ${i+1}</div><p>${l.label}</p></div>`
+    ).join('');
+
+    const checks = loadTodayChecks();
+    const today = new Date().toISOString().slice(0,10);
+    const doneToday = p.lastSessionDate === today;
+    document.getElementById('today-list').innerHTML = todayPlan.map(t=>
+      `<div class="today-item ${checks.includes(t.key)?'done':''}" onclick="toggleTodayItem('${t.key}')">
+        <div class="today-check"><i data-lucide="check"></i></div>
+        <div><div class="today-name">${t.name}</div><div class="today-sub">${t.sub}</div></div>
+      </div>`
+    ).join('');
+    const btn = document.getElementById('complete-session-btn');
+    btn.disabled = doneToday;
+    btn.textContent = doneToday ? 'SESSÃO DE HOJE CONCLUÍDA' : 'CONCLUIR SESSÃO';
+    lucide.createIcons();
   }
 
   /* ============ GENEALOGIA (história por nomes/anos, clicável) ============ */
@@ -1304,30 +1505,111 @@
 
   /* ============ FUNDAMENTOS: 5 posições, 5 ataques, 5 defesas ============ */
   const fundamentals = {
-    'f-guarda':{group:'Posição', icon:'square', title:'Guarda Fechada', intro:'Você fica de costas no chão prendendo o oponente entre as pernas com os tornozelos cruzados. É a base defensiva e ofensiva mais fundamental do jiu-jitsu.'},
-    'f-montada':{group:'Posição', icon:'triangle', title:'Montada', intro:'Você senta sobre o quadril do oponente, com um joelho de cada lado. Posição dominante com máximo acesso a ataques.'},
-    'f-lateral':{group:'Posição', icon:'minus', title:'Controle Lateral', intro:'Você fica perpendicular ao oponente, pressionando o peito com o peso do corpo. Impede que ele use as pernas para se defender.'},
-    'f-costas':{group:'Posição', icon:'user-check', title:'Controle das Costas', intro:'Você fica atrás do oponente com ganchos nas coxas dele. A posição estatisticamente mais vantajosa do jiu-jitsu.'},
-    'f-joelho':{group:'Posição', icon:'move-diagonal', title:'Joelho na Barriga', intro:'Um joelho apoiado no abdômen do oponente e o outro pé no chão. Posição incômoda de transição, com boa mobilidade para atacar.'},
-    'f-armlock':{group:'Ataque', icon:'minus', title:'Armlock (Juji Gatame)', intro:'Chave de braço que hiperestende o cotovelo do oponente. Um dos primeiros ataques ensinados a partir da guarda ou da montada.', counter:'Feche o braço preso junto ao corpo e gire o quadril na direção do polegar do atacante para tirar o ângulo da chave.'},
-    'f-triangulo':{group:'Ataque', icon:'triangle', title:'Triângulo', intro:'Estrangulamento feito com as próprias pernas, prendendo o pescoço e um braço do oponente entre as coxas.', counter:'Mantenha a postura e o braço livre pressionando o quadril dele para "empilhar" (stack) e passar por cima antes que as pernas fechem.'},
-    'f-cruzado':{group:'Ataque', icon:'shirt', title:'Estrangulamento Cruzado', intro:'Feito com a gola do kimono (gi), cruzando as mãos ao redor do pescoço do oponente a partir da guarda fechada.', counter:'Controle as mãos dele antes que a segunda pegada feche, e mantenha o queixo baixo protegendo o pescoço.'},
-    'f-kimura':{group:'Ataque', icon:'lock', title:'Kimura', intro:'Chave de ombro que dobra o braço do oponente atrás das costas, aplicável de várias posições — guarda, lateral e mais.', counter:'Dobre o cotovelo para dentro do próprio corpo e gire junto com a chave, nunca deixando o braço esticar contra ela.'},
-    'f-mataleao':{group:'Ataque', icon:'wind', title:'Mata-Leão (RNC)', intro:'Estrangulamento sanguíneo aplicado a partir das costas. A finalização mais comum entre faixas brancas e azuis.', counter:'Proteja o queixo com o próprio ombro ou mão antes que o braço feche ao redor do pescoço, e nunca exponha as costas totalmente retas.'},
-    'f-shrimp':{group:'Defesa', icon:'footprints', title:'Hip Escape (Shrimping)', intro:'Movimento de quadril para criar espaço e escapar de posições ruins. É a defesa mais básica e mais usada de todo o jiu-jitsu.'},
-    'f-frame':{group:'Defesa', icon:'shield', title:'Frame (proteção do pescoço)', intro:'Uso dos antebraços como barra rígida contra o pescoço ou o tronco do oponente para impedir que ele feche um estrangulamento.'},
-    'f-ponte':{group:'Defesa', icon:'arrow-up', title:'Ponte e Giro (Bridge)', intro:'Levantar o quadril e girar para o lado ao ser montado, criando espaço para recompor a guarda ou escapar.'},
-    'f-postura':{group:'Defesa', icon:'user', title:'Postura na Guarda', intro:'Manter a coluna ereta e o quadril afastado quando estiver dentro da guarda do oponente, evitando ser puxado para baixo.'},
-    'f-recomposicao':{group:'Defesa', icon:'repeat', title:'Recomposição de Guarda', intro:'Usar os pés e os joelhos para trazer a guarda de volta quando o oponente tenta passar, evitando perder a posição.'}
+    'f-guarda':{group:'Posição', icon:'square', title:'Guarda Fechada', intro:'Você fica de costas no chão prendendo o oponente entre as pernas com os tornozelos cruzados. É a base defensiva e ofensiva mais fundamental do jiu-jitsu.',
+      steps:['Deite de costas e enrole as pernas ao redor do quadril do oponente, cruzando os tornozelos atrás das costas dele.','Puxe os pulsos ou a gola dele para quebrar a postura, trazendo o peito dele em direção ao seu.','Controle a distância com os joelhos apertando as costelas — nunca deixe espaço para ele se levantar reto.'],
+      mistakes:['Deixar os tornozelos abertos, permitindo que o oponente se afaste e "empilhe" para passar.','Ficar com as costas totalmente no chão sem quebrar a postura dele, o que facilita passagens.'],
+      drill:'Solo: deitado, pratique levantar e girar o quadril simulando a quebra de postura (10 reps x 3 séries).',
+      gi:'Use a gola e a manga para puxar e quebrar a postura.', nogi:'Use pulso e nuca (collar tie) para o mesmo efeito.'},
+    'f-montada':{group:'Posição', icon:'triangle', title:'Montada', intro:'Você senta sobre o quadril do oponente, com um joelho de cada lado. Posição dominante com máximo acesso a ataques.',
+      steps:['Sente sobre o quadril dele, joelhos próximos às costelas para máxima mobilidade e pressão.','Mantenha o peso baixo e centralizado — evite sentar muito para trás (facilita bridge/upa) ou muito para frente.','Controle um braço ou a cabeça para impedir que ele crie espaço.'],
+      mistakes:['Sentar muito ereto e alto, ficando vulnerável a ser derrubado por um "upa" (bridge).','Deixar os joelhos afastados do corpo dele, perdendo pressão e controle de quadril.'],
+      drill:'Solo: pratique a base baixa alternando o apoio dos pés e mãos como se estivesse absorvendo um bridge (8 reps x 3 séries).'},
+    'f-lateral':{group:'Posição', icon:'minus', title:'Controle Lateral', intro:'Você fica perpendicular ao oponente, pressionando o peito com o peso do corpo. Impede que ele use as pernas para se defender.',
+      steps:['Deite o peito sobre o peito dele, perpendicular, com o quadril baixo e pressionado.','Controle a cabeça dele com um braço e o quadril ou braço distante com o outro.','Mantenha as pernas afastadas e os pés ativos no chão para gerar pressão e base.'],
+      mistakes:['Ficar de joelhos em vez de deitar o peso do corpo, perdendo pressão.','Não controlar o quadril distante, permitindo que ele recomponha a guarda.'],
+      drill:'Solo: pratique a transição de lateral para joelho na barriga e de volta, sentindo o deslocamento de peso (6 reps x 3 séries).'},
+    'f-costas':{group:'Posição', icon:'user-check', title:'Controle das Costas', intro:'Você fica atrás do oponente com ganchos nas coxas dele. A posição estatisticamente mais vantajosa do jiu-jitsu.',
+      steps:['Cole o peito nas costas dele e insira os dois calcanhares como "ganchos" na parte interna das coxas.','Controle um braço dele com "seatbelt" (um braço por cima do ombro, outro por baixo da axila).','Mantenha o queixo protegido atrás do ombro dele para não ser atingido.'],
+      mistakes:['Cruzar os pés atrás das costas dele (perigoso e ilegal em competição — pode sofrer footlock).','Perder o seatbelt e deixar os dois braços dele livres, facilitando a fuga.'],
+      drill:'Solo: pratique a entrada dos ganchos deitado de lado, alternando o quadril (10 reps x 3 séries).',
+      partnerRequired:true},
+    'f-joelho':{group:'Posição', icon:'move-diagonal', title:'Joelho na Barriga', intro:'Um joelho apoiado no abdômen do oponente e o outro pé no chão. Posição incômoda de transição, com boa mobilidade para atacar.',
+      steps:['Apoie um joelho leve sobre o abdômen dele, o outro pé plantado no chão para base.','Controle a gola ou nuca e o braço distante para impedir que ele gire.','Mantenha o quadril alto e móvel para acompanhar as reações dele.'],
+      mistakes:['Colocar peso demais no joelho parado, perdendo mobilidade para reagir a fugas.','Perder o controle da gola/nuca, permitindo que ele empurre e recomponha a guarda.'],
+      drill:'Solo: pratique a troca de joelho de um lado para o outro em base baixa (8 reps x 3 séries).'},
+    'f-armlock':{group:'Ataque', icon:'minus', title:'Armlock (Juji Gatame)', intro:'Chave de braço que hiperestende o cotovelo do oponente. Um dos primeiros ataques ensinados a partir da guarda ou da montada.',
+      steps:['Isole um braço dele, controlando o pulso com as duas mãos.','Gire o quadril perpendicular, passando uma perna por cima da cabeça dele.','Aperte os joelhos, leve o quadril para cima e puxe o pulso para finalizar controladamente.'],
+      mistakes:['Deixar o polegar dele virado para fora — sem controle de rotação o braço escapa girando.','Finalizar com um movimento brusco em vez de aumentar a pressão devagar — risco de lesão.'],
+      drill:'Solo: pratique a rotação de quadril para a posição de armlock a partir da guarda, sem parceiro (10 reps x 3 séries).',
+      counter:'Feche o braço preso junto ao corpo e gire o quadril na direção do polegar do atacante para tirar o ângulo da chave.', partnerRequired:true},
+    'f-triangulo':{group:'Ataque', icon:'triangle', title:'Triângulo', intro:'Estrangulamento feito com as próprias pernas, prendendo o pescoço e um braço do oponente entre as coxas.',
+      steps:['A partir da guarda, puxe um braço dele para dentro enquanto o outro fica preso junto ao pescoço.','Suba a perna sobre o ombro dele e trave o triângulo dobrando o joelho atrás do próprio tornozelo.','Puxe a cabeça dele para baixo e aperte os joelhos, ajustando o ângulo para fechar a pressão no pescoço.'],
+      mistakes:['Travar o triângulo com o ângulo errado (perna reta em vez de puxar a cabeça para baixo), perdendo pressão.','Deixar o braço dele livre para "empilhar" (stack) e passar por cima antes de travar.'],
+      drill:'Solo: pratique a passagem da perna sobre o ombro e o travamento do triângulo em posição estática (8 reps x 3 séries).',
+      counter:'Mantenha a postura e o braço livre pressionando o quadril dele para "empilhar" (stack) e passar por cima antes que as pernas fechem.', partnerRequired:true},
+    'f-cruzado':{group:'Ataque', icon:'shirt', title:'Estrangulamento Cruzado', intro:'Feito com a gola do kimono (gi), cruzando as mãos ao redor do pescoço do oponente a partir da guarda fechada.',
+      steps:['Pegue a gola profunda de um lado com a palma para cima.','Pegue a gola do outro lado, cruzando o braço por cima do primeiro, palma para baixo.','Puxe os cotovelos para o chão, aproximando as mãos do pescoço para fechar o estrangulamento.'],
+      mistakes:['Pegar as duas golas com a mesma orientação de mão, o que impede o cruzamento eficiente.','Puxar para trás em vez de para baixo — o ângulo correto é levar os cotovelos ao chão.'],
+      drill:'Este drill depende de gi e de um pescoço real — pratique apenas a mecânica das pegadas em uma gola pendurada.',
+      gi:'Técnica específica de Gi — depende da gola do kimono.', nogi:'Sem gi, o equivalente é o guilhotina ou o mata-leão.', partnerRequired:true},
+    'f-kimura':{group:'Ataque', icon:'lock', title:'Kimura', intro:'Chave de ombro que dobra o braço do oponente atrás das costas, aplicável de várias posições — guarda, lateral e mais.',
+      steps:['Controle o pulso dele com uma mão e passe a outra por baixo do cotovelo, segurando o próprio pulso (figure-four).','Puxe o cotovelo dele em direção ao corpo dele, mantendo o pulso preso.','Gire o pulso na direção das costas dele, rotacionando o ombro até a finalização ou a raspagem.'],
+      mistakes:['Deixar o cotovelo dele se afastar do corpo, perdendo a alavanca da chave.','Girar o pulso na direção errada — o movimento correto acompanha a rotação natural do ombro.'],
+      drill:'Solo: pratique a pegada figure-four e a rotação do quadril associada, sem parceiro (10 reps x 3 séries).',
+      counter:'Dobre o cotovelo para dentro do próprio corpo e gire junto com a chave, nunca deixando o braço esticar contra ela.', partnerRequired:true},
+    'f-mataleao':{group:'Ataque', icon:'wind', title:'Mata-Leão (RNC)', intro:'Estrangulamento sanguíneo aplicado a partir das costas. A finalização mais comum entre faixas brancas e azuis.',
+      steps:['Passe um braço ao redor do pescoço dele, dobrando o cotovelo na altura do queixo.','Segure o próprio bíceps com a mão livre e coloque a outra mão atrás da cabeça dele.','Aperte os braços em direção ao corpo, comprimindo as artérias laterais do pescoço.'],
+      mistakes:['Fechar o estrangulamento na traqueia (frente do pescoço) em vez das laterais — ineficaz e mais arriscado.','Perder o controle das costas antes de finalizar, permitindo que ele gire e escape.'],
+      drill:'Solo: pratique a pegada figure-four no próprio pescoço sem pressão, só para fixar a mecânica.',
+      counter:'Proteja o queixo com o próprio ombro ou mão antes que o braço feche ao redor do pescoço, e nunca exponha as costas totalmente retas.', partnerRequired:true},
+    'f-shrimp':{group:'Defesa', icon:'footprints', title:'Hip Escape (Shrimping)', intro:'Movimento de quadril para criar espaço e escapar de posições ruins. É a defesa mais básica e mais usada de todo o jiu-jitsu.',
+      steps:['Deitado de lado, apoie um cotovelo e o pé oposto no chão.','Empurre o quadril para trás e para longe, criando espaço entre você e o oponente imaginário.','Volte à posição inicial e repita para o outro lado, alternando.'],
+      mistakes:['Empurrar apenas com o braço, sem usar a força das pernas e do quadril.','Girar o corpo inteiro em vez de mover apenas o quadril, perdendo eficiência.'],
+      drill:'Solo: 3 séries de 10 shrimps para cada lado, focando em criar o máximo de espaço por repetição.'},
+    'f-frame':{group:'Defesa', icon:'shield', title:'Frame (proteção do pescoço)', intro:'Uso dos antebraços como barra rígida contra o pescoço ou o tronco do oponente para impedir que ele feche um estrangulamento.',
+      steps:['Coloque o antebraço na diagonal contra o pescoço ou peito dele, mão oposta reforçando o cotovelo.','Mantenha o braço rígido como uma barra, usando o corpo todo e não só a força do braço.','Use o espaço criado para inserir o joelho ou fugir do quadril.'],
+      mistakes:['Empurrar só com a mão em vez de travar o braço inteiro como estrutura rígida.','Manter o frame parado sem aproveitar o espaço criado para se mover.'],
+      drill:'Solo: pratique a posição de frame contra uma parede ou colchão, sentindo a rigidez correta do braço (30s x 3 séries).'},
+    'f-ponte':{group:'Defesa', icon:'arrow-up', title:'Ponte e Giro (Bridge)', intro:'Levantar o quadril e girar para o lado ao ser montado, criando espaço para recompor a guarda ou escapar.',
+      steps:['Plante os pés próximos ao quadril e trave um braço/perna dele com os seus.','Levante o quadril com força para cima e para o lado, tirando o equilíbrio dele.','Gire o corpo na direção do bridge e recomponha a guarda ou saia da posição.'],
+      mistakes:['Fazer o bridge reto para cima em vez de para o lado, o que não desequilibra o oponente.','Não travar o braço/perna dele antes do bridge, permitindo que ele apenas se ajuste e mantenha a posição.'],
+      drill:'Solo: 3 séries de 8 bridges alternando o lado do giro, deitado no chão.'},
+    'f-postura':{group:'Defesa', icon:'user', title:'Postura na Guarda', intro:'Manter a coluna ereta e o quadril afastado quando estiver dentro da guarda do oponente, evitando ser puxado para baixo.',
+      steps:['Mantenha a coluna reta e o queixo protegido, sem curvar o tronco para frente.','Afaste o quadril para trás, fora do alcance das pernas dele fecharem em finalizações.','Controle os quadris ou joelhos dele com as mãos para impedir raspagens.'],
+      mistakes:['Curvar a coluna para frente, ficando vulnerável a estrangulamentos e triângulos.','Deixar o quadril colado ao dele, facilitando raspagens e chaves de braço.'],
+      drill:'Solo: pratique a postura ajoelhada, quadril para trás e coluna reta, segurando por 30s x 3 séries.'},
+    'f-recomposicao':{group:'Defesa', icon:'repeat', title:'Recomposição de Guarda', intro:'Usar os pés e os joelhos para trazer a guarda de volta quando o oponente tenta passar, evitando perder a posição.',
+      steps:['Ao sentir a passagem, gire o quadril na direção da pressão dele (não contra).','Use o joelho de dentro como uma barreira ("knee shield") para bloquear o avanço.','Reinsira os pés e feche a guarda novamente assim que o espaço for recuperado.'],
+      mistakes:['Ficar quadrado (de frente) em vez de girar de lado, facilitando a passagem completa.','Empurrar apenas com os braços sem reposicionar o quadril, perdendo a barreira do joelho.'],
+      drill:'Solo: pratique o giro lateral com joelho ao peito, alternando os lados (8 reps x 3 séries).'}
   };
+  const statusLabels = ['Não iniciado','Aprendendo','Praticando','Consistente','Pronto p/ parceiro'];
+  function loadFundStatus(){
+    try{ return JSON.parse(localStorage.getItem('atlasbjj-fundstatus')) || {}; }catch(e){ return {}; }
+  }
+  function saveFundStatus(obj){
+    try{ localStorage.setItem('atlasbjj-fundstatus', JSON.stringify(obj)); }catch(e){}
+  }
+  function cycleFundStatus(key){
+    const st = loadFundStatus();
+    st[key] = ((st[key]||0)+1) % statusLabels.length;
+    saveFundStatus(st);
+    openFundamental(key);
+    renderFundamentals();
+  }
   function renderFundamentalModal(key){
     const f = fundamentals[key];
+    const st = loadFundStatus();
+    const idx = st[key]||0;
+    const stepsHtml = f.steps ? `<div class="art-block"><h3><i data-lucide="list-ordered"></i>PASSO A PASSO</h3><ol style="padding-left:18px; display:flex; flex-direction:column; gap:6px;">${f.steps.map(s=>`<li style="font-size:13.5px; line-height:1.6; color:#D4D4D8;">${s}</li>`).join('')}</ol></div>` : '';
+    const mistakesHtml = f.mistakes ? `<div class="art-block"><h3><i data-lucide="alert-triangle"></i>ERROS FREQUENTES</h3><ul class="disadv-list">${f.mistakes.map(m=>`<li>${m}</li>`).join('')}</ul></div>` : '';
+    const drillHtml = f.drill ? `<div class="art-block"><h3><i data-lucide="repeat"></i>DRILL SOLO</h3><p>${f.drill}</p></div>` : '';
+    const giNogiHtml = (f.gi || f.nogi) ? `<div class="art-block"><h3><i data-lucide="shirt"></i>GI VS NO-GI</h3>${f.gi?`<p><b>GI:</b> ${f.gi}</p>`:''}${f.nogi?`<p><b>NO-GI:</b> ${f.nogi}</p>`:''}</div>` : '';
+    const partnerHtml = f.partnerRequired ? `<div class="disclaimer-box"><i data-lucide="alert-triangle"></i><span><b>PARCEIRO OBRIGATÓRIO.</b> Não pratique esta finalização/controle com pressão real sem um parceiro treinado e supervisão.</span></div>` : '';
     return `
       <div class="modal-body" style="padding-top:26px;">
         <button class="modal-close" style="position:absolute; top:16px; right:16px; background:#1f1f1f;" onclick="closeModal()"><i data-lucide="x"></i></button>
         <div class="modal-eyebrow">${f.group.toUpperCase()} · FUNDAMENTAL</div>
         <h2>${f.title}</h2>
         <p>${f.intro}</p>
+        ${partnerHtml}
+        <div class="art-block" style="margin-top:16px;"><h3><i data-lucide="activity"></i>STATUS</h3>
+          <button class="flow-chip" onclick="cycleFundStatus('${key}')" style="cursor:pointer;"><i data-lucide="check-circle"></i>${statusLabels[idx]}<span style="color:var(--text-dis); font-weight:500; margin-left:4px;">(toque para avançar)</span></button>
+        </div>
+        ${stepsHtml}
+        ${mistakesHtml}
+        ${drillHtml}
+        ${giNogiHtml}
         ${f.counter ? `<div class="modal-tip"><b style="color:var(--accent-light);">Como se defender:</b> ${f.counter}</div>` : ''}
         <div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal()">FECHAR</button></div>
       </div>`;
@@ -1340,11 +1622,14 @@
   }
   function renderFundamentals(){
     const groups = {'Posição':'fund-posicoes','Ataque':'fund-ataques','Defesa':'fund-defesas'};
+    const st = loadFundStatus();
     Object.keys(groups).forEach(g=>{
       const wrap = document.getElementById(groups[g]);
       wrap.innerHTML = Object.keys(fundamentals).filter(k=>fundamentals[k].group===g).map(k=>{
         const f = fundamentals[k];
-        return `<div class="fund-card" onclick="openFundamental('${k}')">
+        const done = (st[k]||0) >= 4;
+        return `<div class="fund-card" onclick="openFundamental('${k}')" style="position:relative;">
+          ${done ? `<div style="position:absolute; top:6px; right:6px; width:8px; height:8px; border-radius:50%; background:#22c55e;"></div>` : ''}
           <div class="fund-ico"><i data-lucide="${f.icon}"></i></div>
           <p>${f.title}</p>
         </div>`;
@@ -1535,6 +1820,8 @@
   document.addEventListener('scroll', updateProgressBar, true);
   window.addEventListener('scroll', updateProgressBar);
   updateProgressBar();
+
+  renderDashboard();
 </script>
 </body>
 </html>
